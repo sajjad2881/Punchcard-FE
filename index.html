@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loyalty Rewards App</title>
+  <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
+  <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <h1>Loyalty Rewards App</h1>
+
+  <div id="login-form">
+    <h2>Login</h2>
+    <input type="text" id="login-username" placeholder="Username">
+    <input type="password" id="login-password" placeholder="Password">
+    <button onclick="signIn()">Login</button>
+  </div>
+
+  <div id="signup-form">
+    <h2>Sign up</h2>
+    <input type="text" id="signup-username" placeholder="Username">
+    <input type="text" id="signup-name" placeholder="Name">
+    <input type="date" id="signup-birthdate" placeholder="Birthday">
+    <input type="password" id="signup-password" placeholder="Password">
+    <button onclick="signUp()">Sign up</button>
+  </div>
+
+  <div id="verification-form" style="display: none;">
+    <input type="text" id="verification-code" placeholder="Verification code">
+    <button onclick="verify()">Verify</button>
+  </div>
+  
+</body>
+</html>
