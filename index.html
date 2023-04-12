@@ -10,22 +10,57 @@
 </head>
 <body>
   <h1>Loyalty Rewards App</h1>
-
-  <div id="login-form">
-    <h2>Login</h2>
-    <input type="text" id="login-username" placeholder="Username">
-    <input type="password" id="login-password" placeholder="Password">
-    <button onclick="signIn()">Login</button>
+  
+  <div id="selection-form">
+    <button onclick="showCustomer()">I'm a Customer</button>
+    <button onclick="showBusiness()">I'm a Business</button>
   </div>
 
-  <div id="signup-form">
-    <h2>Sign up</h2>
-    <input type="text" id="signup-username" placeholder="Username">
-    <input type="text" id="signup-name" placeholder="Name">
-    <input type="date" id="signup-birthdate" placeholder="Birthday">
-    <input type="password" id="signup-password" placeholder="Password">
-    <button onclick="signUp()">Sign up</button>
+  <div id="customer-form" style="display: none;">
+    <div id="login-form">
+      <h2>Login</h2>
+      <input type="text" id="login-username" placeholder="Username">
+      <input type="password" id="login-password" placeholder="Password">
+      <button onclick="signIn()">Login</button>
+    </div>
+
+    <div id="signup-form">
+      <h2>Sign up</h2>
+      <input type="text" id="signup-username" placeholder="Username">
+      <input type="text" id="signup-name" placeholder="Name">
+      <input type="date" id="signup-birthdate" placeholder="Birthday">
+      <input type="password" id="signup-password" placeholder="Password">
+      <button onclick="signUp()">Sign up</button>
+    </div>
   </div>
+
+  <div id="business-form" style="display: none;">
+    <div id="business-login-form">
+      <h2>Business Login</h2>
+      <input type="text" id="business-login-username" placeholder="Username">
+      <input type="password" id="business-login-password" placeholder="Password">
+      <button onclick="signInBusiness()">Login</button>
+    </div>
+  
+    <div id="business-signup-form">
+      <h2>Business Sign up</h2>
+      <input type="text" id="business-signup-username" placeholder="Username">
+      <input type="text" id="business-signup-name" placeholder="Name">
+      <input type="text" id="business-signup-address" placeholder="Address">
+      <input type="text" id="business-signup-email" placeholder="Email">
+      <input type="text" id="business-signup-phone" placeholder="Phone Number">
+      <input type="text" id="business-signup-website" placeholder="Website">
+      <input type="text" id="business-signup-adminName" placeholder="Admin Name">
+      <input type="password" id="business-signup-password" placeholder="Password">
+      <button onclick="signUpBusiness()">Sign up</button>
+    </div>
+  </div>
+  
+  <div id="business-verification-form" style="display: none;">
+    <input type="text" id="business-verification-code" placeholder="Verification code">
+    <button onclick="verifyBusiness()">Verify</button>
+  </div>
+  
 
   <div id="verification-form" style="display: none;">
     <input type="text" id="verification-code" placeholder="Verification code">
