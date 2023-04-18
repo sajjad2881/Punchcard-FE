@@ -3,6 +3,7 @@
 //    ClientId: '5v1l1dgami6h8qufckv96p5vrj',
  // };
 //const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+var apigClient = apigClientFactory.newClient();
   
 const poolDataCustomer = {
     UserPoolId: 'us-east-1_ViBGmruWb',
@@ -254,6 +255,49 @@ const poolDataCustomer = {
       document.getElementById('business-verification-form').style.display = 'none';
       document.getElementById('business-login-form').style.display = 'block';
     });
+  }
+
+  function generateCode() {
+    // Get the amountSpent value from the input field
+    const amountSpent = document.getElementById('amountSpent').value;
+  
+    // Validate the amountSpent value
+    if (isNaN(amountSpent) || amountSpent <= 0) {
+      alert('Please enter a valid amount spent.');
+      return;
+    }
+  
+    // Get the ID token from local storage
+    const restaurantID = localStorage.getItem('idToken');
+  
+    // Prepare the request body
+    const requestBody = {
+      amountSpent: amountSpent,
+      restaurantID: restaurantID
+    };
+  
+    // Prepare the parameters for the API call
+    const params = {}; // No path or query parameters are needed for this API call
+    const body = requestBody;
+    const additionalParams = {}; // No additional headers or query parameters are needed
+  
+    // Create an instance of the API Gateway client
+    var apigClient = apigClientFactory.newClient();
+  
+    // Make the API call to transactionPost
+    apigClient.transactionPost(params, body, additionalParams)
+      .then(function (result) {
+        // Handle the successful response
+        // Display the generated code and success message
+        const generatedCode = result.data.code; // Assuming the response contains the code in the 'code' field
+        document.getElementById('generated-code').innerText = generatedCode;
+        document.getElementById('code-display').style.display = 'block';
+        document.getElementById('success-message').style.display = 'block';
+      })
+      .catch(function (error) {
+        // Handle the error response
+        alert('Failed to generate code: ' + error.message);
+      });
   }
   
   
