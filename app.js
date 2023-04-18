@@ -289,7 +289,7 @@ const poolDataCustomer = {
       .then(function (result) {
         // Handle the successful response
         // Display the generated code and success message
-        const generatedCode = result.data.code; // Assuming the response contains the code in the 'code' field
+        const generatedCode = result.data.redemption_code; // Assuming the response contains the code in the 'code' field
         document.getElementById('generated-code').innerText = generatedCode;
         document.getElementById('code-display').style.display = 'block';
         document.getElementById('success-message').style.display = 'block';
