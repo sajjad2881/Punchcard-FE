@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generate Code</title>
+  <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
+  <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
+  <script src="../app.js" defer></script>
+  
+  <script>
+    const poolDataBusiness = {
+    UserPoolId: 'us-east-1_rGBGZ0es7',
+    ClientId: '2f6lm7fh4lfertij7i9pu0f2ro',
+  };
+  
+      const userPoolCustomer = new AmazonCognitoIdentity.CognitoUserPool(poolDataCustomer);
+      const userPoolBusiness = new AmazonCognitoIdentity.CognitoUserPool(poolDataBusiness);
+  </script>
+  <!-- Include the API Gateway SDK scripts -->
+  <script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
+  <script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
+  <script type="text/javascript" src="../lib/CryptoJS/rollups/sha256.js"></script>
+  <script type="text/javascript" src="../lib/CryptoJS/components/hmac.js"></script>
+  <script type="text/javascript" src="../lib/CryptoJS/components/enc-base64.js"></script>
+  <script type="text/javascript" src="../lib/url-template/url-template.js"></script>
+  <script type="text/javascript" src="../lib/apiGatewayCore/sigV4Client.js"></script>
+  <script type="text/javascript" src="../lib/apiGatewayCore/apiGatewayClient.js"></script>
+  <script type="text/javascript" src="../lib/apiGatewayCore/simpleHttpClient.js"></script>
+  <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
+  <script type="text/javascript" src="../apigClient.js"></script>
+</head>
+<body>
+  <h1>Generate Code</h1>
+  
+  <div id="generate-code-form">
+    <input type="number" id="amountSpent" placeholder="Amount Spent" min="0" step="0.01">
+    <button onclick="generateCode()">Generate Code</button>
+  </div>
+  
+  <div id="code-display" style="display: none;">
+    <h2>Generated Code:</h2>
+    <p id="generated-code"></p>
+  </div>
+  
+  <div id="success-message" style="display: none;">
+    <p>Code generated successfully!</p>
+  </div>
+  
+</body>
+</html>

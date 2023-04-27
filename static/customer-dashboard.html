@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
+    <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
+    <script src="../app.js" defer></script>
+    <script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/rollups/sha256.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/components/hmac.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/components/enc-base64.js"></script>
+    <script type="text/javascript" src="../lib/url-template/url-template.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/sigV4Client.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/apiGatewayClient.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/simpleHttpClient.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
+    <script type="text/javascript" src="../apigClient.js"></script>
+</head>
+<body>
+    <h1>Customer Dashboard</h1>
+    <h2>Welcome, <span id="customer-name"></span>!</h2>
+    <p>Email: <span id="email"></span></p>
+    <button onclick="goToClaimCodePage()">Claim a Code!</button>
+    <button onclick="signOut()">Sign Out</button>
+    <script>
+        document.getElementById('customer-name').innerText = localStorage.getItem('userName');
+        document.getElementById('email').innerText = localStorage.getItem('userEmail');
+
+        function goToClaimCodePage() {
+            // Replace 'claim-code.html' with the actual path to the claim-code page
+            window.location.href = 'claim-code.html';
+        }
+    </script>
+</body>
+</html>

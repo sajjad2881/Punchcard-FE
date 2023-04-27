@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Claim Code</title>
+		<style>
+			body {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				height: 100vh;
+				margin: 0;
+				padding: 0;
+				font-family: Arial, sans-serif;
+			}
+			
+			h1 {
+				font-size: 3rem;
+				margin-bottom: 1rem;
+				text-align: center;
+			}
+			
+			form {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				margin-top: 1rem;
+			}
+			
+			input[type="text"] {
+				padding: 0.5rem;
+				font-size: 1.5rem;
+				border-radius: 5px;
+				border: 1px solid #ccc;
+				width: 100%;
+				max-width: 400px;
+				box-sizing: border-box;
+			}
+			
+			button[type="submit"], button[type="button"] {
+				padding: 0.5rem 1rem;
+				font-size: 1.5rem;
+				background-color: black;
+				color: #fff;
+				border: none;
+				border-radius: 5px;
+				cursor: pointer;
+				margin-top: 1rem;
+			}
+		</style>
+	<head>
+	  <meta charset="UTF-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <title>Claim Code</title>
+	  <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
+	  <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
+	  <script src="../app.js" defer></script>
+	  <!-- Include the API Gateway SDK scripts -->
+	  <script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
+	  <script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
+	  <script type="text/javascript" src="../lib/CryptoJS/rollups/sha256.js"></script>
+	  <script type="text/javascript" src="../lib/CryptoJS/components/hmac.js"></script>
+	  <script type="text/javascript" src="../lib/CryptoJS/components/enc-base64.js"></script>
+	  <script type="text/javascript" src="../lib/url-template/url-template.js"></script>
+	  <script type="text/javascript" src="../lib/apiGatewayCore/sigV4Client.js"></script>
+	  <script type="text/javascript" src="../lib/apiGatewayCore/apiGatewayClient.js"></script>
+	  <script type="text/javascript" src="../lib/apiGatewayCore/simpleHttpClient.js"></script>
+	  <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
+	  <script type="text/javascript" src="../apigClient.js"></script>
+	</head>
+	<body>
+	  <h1>Claim Code</h1>
+	  
+	  <div id="claim-code-form">
+		<input type="text" id="claimCode" placeholder="Enter Code">
+		<button onclick="claimCode()">Claim Code</button>
+	  </div>
+	  
+	  <div id="success-message" style="display: none;">
+		<p>Successfully claimed code!</p>
+	 
+	</div>
+	  <div id="failure-message" style="display: none;">
+		<p>Code unsuccessful. Try again.</p>
+	  </div>
+	  <!-- Add a button to go back to the customer-dashboard page -->
+	<button type="button" onclick="goToCustomerDashboard()">Back to dashboard</button>
+	
+	  <script>
+		function claimCode() {
+		  // Get the claim code value from the input field
+		  const claimCode = document.getElementById('claimCode').value;
+	
+		  // Prepare the request body
+		  const requestBody = {
+			redemption_code: claimCode,
+			user_id: "a3f98d12-faca-4c3f-97b5-b45b70fc698d"
+		  };
+	
+		  // Prepare the parameters for the API call
+		  const params = {}; // No path or query parameters are needed for this API call
+		  const body = requestBody;
+		  const additionalParams = {}; // No additional headers or query parameters are needed
+	
+		  // Create an instance of the API Gateway client
+		  var apigClient = apigClientFactory.newClient();
+	
+		  // Make the API call to transactionPut
+		  apigClient.transactionPut(params, body, additionalParams)
+			.then(function (result) {
+			  // Handle the successful response
+			  // Display the success message
+			  document.getElementById('success-message').style.display = 'block';
+			  document.getElementById('failure-message').style.display = 'none';
+			})
+			.catch(function (error) {
+			  // Handle the error response
+			  // Display the failure message
+			  document.getElementById('success-message').style.display = 'none';
+			  document.getElementById('failure-message').style.display = 'block';
+			});
+		}
+		
+		// Function to navigate to the customer-dashboard page
+		function goToCustomerDashboard() {
+		  // Replace 'customer-dashboard.html' with the actual path to the customer-dashboard page
+		  window.location.href = 'customer-dashboard.html';
+		}
+	  </script>
+	</body>
+</html>

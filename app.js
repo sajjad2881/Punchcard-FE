@@ -87,7 +87,7 @@ const poolDataCustomer = {
               localStorage.setItem('userBirthdate', birthdate);
               localStorage.setItem('userEmail', username);
       
-              window.location.href = 'rewards.html';
+              window.location.href = '/static/customer-dashboard.html';
             });
           },
           onFailure: (err) => {
@@ -208,7 +208,7 @@ const poolDataCustomer = {
           localStorage.setItem('phoneNumber', attributes.find(attr => attr.Name === 'phone_number').Value);
           localStorage.setItem('website', attributes.find(attr => attr.Name === 'website').Value);
     
-          window.location.href = 'business-dashboard.html';
+          window.location.href = '/static/business-dashboard.html';
         });
       },
       onFailure: (err) => {
@@ -226,7 +226,7 @@ const poolDataCustomer = {
     const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
     cognitoUser.signOut();
     localStorage.clear();
-    window.location.href = 'index.html';
+    window.location.href = '/static/index.html';
   }
   
   
