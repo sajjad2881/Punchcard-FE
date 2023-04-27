@@ -27,6 +27,7 @@
     <p>Name: <span id="name"></span></p>
     <p>Phone Number: <span id="phone-number"></span></p>
     <p>Website: <span id="website"></span></p>
+    <button onclick="goToGenerateCodePage()">Generate new transaction code!</button>
     <button onclick="signOut()">Sign out</button>
     <script>
         document.getElementById('admin-name').innerText = localStorage.getItem('adminName');
@@ -35,6 +36,11 @@
         document.getElementById('name').innerText = localStorage.getItem('name');
         document.getElementById('phone-number').innerText = localStorage.getItem('phoneNumber');
         document.getElementById('website').innerText = localStorage.getItem('website');
+
+        function goToGenerateCodePage() {
+            // Replace 'claim-code.html' with the actual path to the claim-code page
+            window.location.href = 'generate-code.html';
+        }
     </script>
 </body>
 </html>
