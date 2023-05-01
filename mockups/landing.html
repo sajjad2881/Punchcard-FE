@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Punchcard - Loyalty Programs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        @keyframes gradient-bursts-1 {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes gradient-bursts-2 {
+            0% {
+                background-position: 100% 0%;
+            }
+            50% {
+                background-position: 0% 100%;
+            }
+            100% {
+                background-position: 100% 0%;
+            }
+        }
+
+        @keyframes gradient-bursts-3 {
+            0% {
+                background-position: 50% 0%;
+            }
+            50% {
+                background-position: 50% 100%;
+            }
+            100% {
+                background-position: 50% 0%;
+            }
+        }
+
+        @keyframes gradient-bursts-4 {
+            0% {
+                background-position: 0% 0%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            100% {
+                background-position: 0% 0%;
+            }
+        }
+
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .header {
+            background-color: #fff;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .logo-text {
+            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .nav-links .login {
+            border: 2px solid #333;
+            margin-left: 10px;
+            padding: 5px 10px;
+        }
+
+        .hero-section {
+            position: relative;
+            color: #fff;
+            text-align: center;
+            padding: 80px;
+            overflow: hidden;
+        }
+
+        .gradient-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            animation-duration: 96s;
+            animation-iteration-count: infinite;
+        }
+
+        .gradient-layer-1 {
+            background: linear-gradient(45deg, rgba(255,95,109,1) 
+0%, rgba(255,195,113,0.5) 25%, rgba(51,153,255,0.5) 50%, rgba(153,51,255,0.5) 75%);
+background-size: 400% 400%;
+animation-name: gradient-bursts-1;
+z-index: -1;
+}
+
+    .gradient-layer-2 {
+        background: linear-gradient(45deg, rgba(153,51,255,0.6) 0%, rgba(51,153,255,0.6) 25%, rgba(255,95,109,0.6) 50%, rgba(255,195,113,0.6) 75%);
+        background-size: 400% 400%;
+        animation-name: gradient-bursts-2;
+        animation-delay: 24s;
+        z-index: -2;
+    }
+
+    .gradient-layer-3 {
+        background: linear-gradient(45deg, rgba(51,153,255,0.4) 0%, rgba(255,95,109,0.4) 25%, rgba(153,51,255,0.4) 50%, rgba(255,195,113,0.4) 75%);
+        background-size: 400% 400%;
+        animation-name: gradient-bursts-3;
+        animation-delay: 48s;
+        z-index: -3;
+    }
+
+    .gradient-layer-4 {
+        background: linear-gradient(45deg, rgba(255,195,113,0.7) 0%, rgba(153,51,255,0.7) 25%, rgba(255,95,109,0.7) 50%, rgba(51,153,255,0.7) 75%);
+        background-size: 400% 400%;
+        animation-name: gradient-bursts-4;
+        animation-delay: 72s;
+        z-index: -4;
+    }
+
+    .title {
+        font-size: 48px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .subtitle {
+        font-size: 24px;
+        color: #e0e0e0;
+        margin-bottom: 40px;
+    }
+
+    .button {
+        padding: 15px 30px;
+        font-size: 16px;
+        border: none;
+        background-color: #fff;
+        color: #3f2b96;
+        cursor: pointer;
+        margin: 5px;
+        border-radius: 30px;
+        font-weight: 600;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .button:active {
+        transform: translateY(0);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .section {
+        padding: 80px;
+    }
+
+    .features-section {
+        text-align: center;
+    }
+
+    .feature {
+        display: inline-block;
+        width: 30%;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .feature-title {
+        font-weight: 600;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .feature-description {
+        font-size: 16px;
+        color: #777;
+    }
+
+    .about-section {
+        background-color
+: #f0f0f0;
+text-align: center;
+padding: 80px;
+}
+
+    .about-title {
+        font-size: 32px;
+        font-weight: 600;
+        margin-bottom: 30px;
+    }
+
+    .about-text {
+        font-size: 18px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .footer {
+        text-align: center;
+        font-size: 14px;
+        color: #777;
+        padding: 20px;
+    }
+</style>
+</head>
+<body>
+    <div class="header">
+        <!-- Logo and navigation links -->
+        <div class="logo-text">Punchcard</div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#contact">Contact</a>
+            <a href="#login" class="login">Business Login</a>
+            <a href="#login" class="login">Customer Login</a>
+        </div>
+    </div>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <!-- Gradient Layers -->
+        <div class="gradient-layer gradient-layer-1"></div>
+        <div class="gradient-layer gradient-layer-2"></div>
+        <div class="gradient-layer gradient-layer-3"></div>
+        <div class="gradient-layer gradient-layer-4"></div>
+        <!-- Content -->
+        <div class="title">Loyalty Programs Made Easy</div>
+        <div class="subtitle">Experience the joy of earning rewards and redeeming them at your favorite stores.</div>
+        <button class="button">Get Started</button>
+    </div>
+    <!-- Features Section -->
+    <div class="section features-section" id="features">
+        <div class="title">Why Punchcard</div>
+        <div class="feature">
+            <div class="feature-title">Seamless Experience</div>
+            <div class="feature-description">Easily earn and redeem rewards at your favorite stores.</div>
+        </div>
+        <div class="feature">
+            <div class="feature-title">Exclusive Offers</div>
+            <div class="feature-description">Gain access to special deals and promotions just for you.</div>
+        </div>
+        <div class="feature">
+            <div class="feature-title">All in One Place</div>
+            <div class="feature-description">Track rewards from multiple stores, all in one convenient app.</div>
+        </div>
+    </div>
+    <!-- About Section -->
+    <div class="section about-section">
+        <div class="about-title">About Punchcard</div>
+        <div class="about-text">
+            Punchcard is a modern loyalty program platform that empowers businesses to create customized reward programs and provides customers with a seamless experience to earn and redeem rewards. With Punchcard, we're making loyalty programs simple, fun, and rewarding for everyone.
+        </div>
+    </div>
+    <!-- Footer -->
+    <div class="footer">
+        Made with ❤️ by the Snooty Machines.
+    </div>
+</body>
+</html>
