@@ -149,41 +149,48 @@ const poolDataCustomer = {
     const descriptors = document.getElementById('business-signup-descriptors').value;
     const locationTags = document.getElementById('business-signup-locationTags').value;
     const pictureInput = document.getElementById('business-signup-picture');
+    const apiGatewayUrl = 'https://sbfye9qq29.execute-api.us-east-1.amazonaws.com/beta/image'; // Replace with your API Gateway URL
   
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const base64Picture = e.target.result;
-        
-      // Define and update the attributeList inside the onload event handler
-      const attributeList = [
-        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'name', Value: name }),
-        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'address', Value: address }),
-        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'email', Value: email }),
-        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'phone_number', Value: phone_number }),
-        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'website', Value: website }),
-        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:adminName', Value: adminName }),
-        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:cuisines', Value: cuisines }),
-        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:descriptionText', Value: descriptionText }),
-        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:descriptors', Value: descriptors }),
-        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:locationTags', Value: locationTags }),
-        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'picture', Value: base64Picture }),
-      ];
+    // Convert the image file to FormData and upload it to the API Gateway
+    const formData = new FormData();
+    formData.append('image', pictureInput.files[0]);
+    formData.append('username', username);
   
-      // Continue with the sign-up process
-      userPoolBusiness.signUp(username, password, attributeList, null, (err, result) => {
-        if (err) {
-          alert(err.message || JSON.stringify(err));
-          return;
-        }
-        localStorage.setItem('businessSignupUsername', username); // Store the username
-        alert('Business registered successfully. Please check your email for the verification code.');
-        document.getElementById('business-login-form').style.display = 'none';
-        document.getElementById('business-signup-form').style.display = 'none';
-        document.getElementById('business-verification-form').style.display = 'block';
-      });
-    };
-    reader.readAsDataURL(pictureInput.files[0]);
-  }
+    axios.post(apiGatewayUrl, formData)
+      .then(response => {
+        const image_url = response.data.image_url; // Get the image URL from the response
+  
+        // Update the attributeList to include the image URL and other attributes
+        const attributeList = [
+          new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'name', Value: name }),
+          new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'address', Value: address }),
+          new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'email', Value: email }),
+          new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'phone_number', Value: phone_number }),
+          new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'website', Value: website }),
+          new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:adminName', Value: adminName }),
+          new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:cuisines', Value: cuisines }),
+          new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:descriptionText', Value: descriptionText }),
+          new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:descriptors', Value: descriptors }),
+          new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:locationTags', Value: locationTags }),
+          new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'picture', Value: image_url }),
+        ];
+  
+        // Continue with the sign-up process
+        userPoolBusiness.signUp(username, password, attributeList, null, (err, result) => {
+          if (err) {
+            alert(err.message || JSON.stringify(err));
+            return;
+          }
+          localStorage.setItem('businessSignupUsername', username); // Store the username
+          alert('Business registered successfully. Please check your email for the verification code.');
+          document.getElementById('business-login-form').style.display = 'none';
+          document.getElementById('business-signup-form').style.display = 'none';
+          document.getElementById('business-verification-form').style.display = 'block';
+        });
+      })
+      .catch(error => {
+        alert(error.message || JSON.stringify(error));
+});
   
 
   function signInBusiness() {
@@ -227,7 +234,8 @@ const poolDataCustomer = {
           localStorage.setItem('descriptors', attributes.find(attr => attr.Name === 'custom:descriptors').Value);
           localStorage.setItem('locationTags', attributes.find(attr => attr.Name === 'custom:locationTags').Value);
           localStorage.setItem('picture', attributes.find(attr => attr.Name === 'picture').Value); // Added 'picture' attribute
-    
+          localStorage.setItem('profileImageUrl', attributes.find(attr => attr.Name === 'picture').Value);
+
           window.location.href = '/static/business-dashboard.html';
         });
       },

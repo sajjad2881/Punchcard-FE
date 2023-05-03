@@ -20,7 +20,7 @@
     <script type="text/javascript" src="../apigClient.js"></script>
 </head>
 <body>
-    <h1>Business Dashboard</h1>
+    <h1>Business Dashboard!</h1>
     <h2>Welcome, <span id="admin-name"></span>!</h2>
     <img id="business-picture" src="" alt="Business Picture">
     <p>Email: <span id="email"></span></p>
@@ -38,6 +38,9 @@
         document.getElementById('phone-number').innerText = localStorage.getItem('phoneNumber');
         document.getElementById('website').innerText = localStorage.getItem('website');
         document.getElementById('business-picture').src = localStorage.getItem('picture');
+        document.getElementById('profile-image').src = localStorage.getItem('profileImageUrl');
+        <img id="profile-image" src="#" alt="Profile Image" />
+
 
         function goToGenerateCodePage() {
             // Replace 'claim-code.html' with the actual path to the claim-code page
