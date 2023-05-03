@@ -136,6 +136,9 @@ const poolDataCustomer = {
 
 
   function signUpBusiness() {
+    const bucket_name = 'business-profile-pictures';
+    const folder_name = 'profile-images/'
+
     const username = document.getElementById('business-signup-username').value;
     const password = document.getElementById('business-signup-password').value;
     const name = document.getElementById('business-signup-name').value;
@@ -162,7 +165,8 @@ const poolDataCustomer = {
     
       axios.post(apiGatewayUrl, payload)
         .then(response => {
-        const image_url = response.data.image_url; // Get the image URL from the response
+        //const image_url = response.data.image_url; // Get the image URL from the response
+        const image_url = `https://${bucket_name}.s3.amazonaws.com/${folder_name}${username}.jpg`;
   
         // Update the attributeList to include the image URL and other attributes
         const attributeList = [
