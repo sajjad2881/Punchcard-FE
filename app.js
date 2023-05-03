@@ -149,53 +149,42 @@ const poolDataCustomer = {
     const descriptors = document.getElementById('business-signup-descriptors').value;
     const locationTags = document.getElementById('business-signup-locationTags').value;
     const pictureInput = document.getElementById('business-signup-picture');
-
+  
     const reader = new FileReader();
     reader.onload = (e) => {
       const base64Picture = e.target.result;
-      
-      // Update the attributeList to include the picture attribute
+        
+      // Define and update the attributeList inside the onload event handler
       const attributeList = [
-        // ...
+        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'name', Value: name }),
+        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'address', Value: address }),
+        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'email', Value: email }),
+        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'phone_number', Value: phone_number }),
+        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'website', Value: website }),
+        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:adminName', Value: adminName }),
+        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:cuisines', Value: cuisines }),
+        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:descriptionText', Value: descriptionText }),
+        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:descriptors', Value: descriptors }),
+        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:locationTags', Value: locationTags }),
         new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'picture', Value: base64Picture }),
-        // ...
       ];
-
+  
       // Continue with the sign-up process
       userPoolBusiness.signUp(username, password, attributeList, null, (err, result) => {
-        // ...
+        if (err) {
+          alert(err.message || JSON.stringify(err));
+          return;
+        }
+        localStorage.setItem('businessSignupUsername', username); // Store the username
+        alert('Business registered successfully. Please check your email for the verification code.');
+        document.getElementById('business-login-form').style.display = 'none';
+        document.getElementById('business-signup-form').style.display = 'none';
+        document.getElementById('business-verification-form').style.display = 'block';
       });
     };
     reader.readAsDataURL(pictureInput.files[0]);
-  
-    // Update the attributeList to include the new attributes
-    const attributeList = [
-      new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'name', Value: name }),
-      new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'address', Value: address }),
-      new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'email', Value: email }),
-      new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'phone_number', Value: phone_number }),
-      new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'website', Value: website }),
-      new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:adminName', Value: adminName }),
-      new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:cuisines', Value: cuisines }),
-      new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:descriptionText', Value: descriptionText }),
-      new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:descriptors', Value: descriptors }),
-      new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:locationTags', Value: locationTags }),
-    ];
-    console.log(attributeList)
-  
-    userPoolBusiness.signUp(username, password, attributeList, null, (err, result) => {
-      if (err) {
-        alert(err.message || JSON.stringify(err));
-        return;
-      }
-      localStorage.setItem('businessSignupUsername', username); // Store the username
-      alert('Business registered successfully. Please check your email for the verification code.');
-      document.getElementById('business-login-form').style.display = 'none';
-      document.getElementById('business-signup-form').style.display = 'none';
-      document.getElementById('business-verification-form').style.display = 'block';
-      
-    });
   }
+  
 
   function signInBusiness() {
     const username = document.getElementById('business-login-username').value;
