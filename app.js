@@ -17,6 +17,7 @@ const poolDataCustomer = {
   
   const userPoolCustomer = new AmazonCognitoIdentity.CognitoUserPool(poolDataCustomer);
   const userPoolBusiness = new AmazonCognitoIdentity.CognitoUserPool(poolDataBusiness);
+  console.log("user business", userPoolBusiness);
   
 
   function signUp() {
