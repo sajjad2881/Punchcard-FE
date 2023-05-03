@@ -22,12 +22,15 @@
 <body>
     <h1>Business Dashboard!!</h1>
     <h2>Welcome, <span id="admin-name"></span>!</h2>
-    <img id="business-picture" src="" alt="Business Picture">
     <p>Email: <span id="email"></span></p>
     <p>Address: <span id="address"></span></p>
     <p>Name: <span id="name"></span></p>
     <p>Phone Number: <span id="phone-number"></span></p>
     <p>Website: <span id="website"></span></p>
+    <p>Cuisines: <span id="cuisines"></span></p>
+    <p>Description: <span id="description-text"></span></p>
+    <p>Descriptors: <span id="descriptors"></span></p>
+    <p>Location Tags: <span id="location-tags"></span></p>
     <img id="profile-image" src="#" alt="Profile Image" />
     <button onclick="goToGenerateCodePage()">Generate new transaction code!</button>
     <button onclick="signOut()">Sign out</button>
@@ -38,8 +41,12 @@
         document.getElementById('name').innerText = localStorage.getItem('name');
         document.getElementById('phone-number').innerText = localStorage.getItem('phoneNumber');
         document.getElementById('website').innerText = localStorage.getItem('website');
+        document.getElementById('cuisines').innerText = localStorage.getItem('cuisines');
+        document.getElementById('description-text').innerText = localStorage.getItem('descriptionText');
+        document.getElementById('descriptors').innerText = localStorage.getItem('descriptors');
+        document.getElementById('location-tags').innerText = localStorage.getItem('locationTags');
         document.getElementById('profile-image').src = localStorage.getItem('profileImageUrl');
-        
+
 
 
         function goToGenerateCodePage() {
