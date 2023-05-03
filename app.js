@@ -11,8 +11,8 @@ const poolDataCustomer = {
   };
   
   const poolDataBusiness = {
-    UserPoolId: 'us-east-1_rGBGZ0es7',
-    ClientId: '2f6lm7fh4lfertij7i9pu0f2ro',
+    UserPoolId: 'us-east-1_ztoLLvLv4',
+    ClientId: '3umbif497oieqmdl493cv9tr6g',
   };
   
   const userPoolCustomer = new AmazonCognitoIdentity.CognitoUserPool(poolDataCustomer);
@@ -144,7 +144,31 @@ const poolDataCustomer = {
     const phone_number = document.getElementById('business-signup-phone').value;
     const website = document.getElementById('business-signup-website').value;
     const adminName = document.getElementById('business-signup-adminName').value;
+    const cuisines = document.getElementById('business-signup-cuisines').value;
+    const descriptionText = document.getElementById('business-signup-descriptionText').value;
+    const descriptors = document.getElementById('business-signup-descriptors').value;
+    const locationTags = document.getElementById('business-signup-locationTags').value;
+    const pictureInput = document.getElementById('business-signup-picture');
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64Picture = e.target.result;
+      
+      // Update the attributeList to include the picture attribute
+      const attributeList = [
+        // ...
+        new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'picture', Value: base64Picture }),
+        // ...
+      ];
+
+      // Continue with the sign-up process
+      userPoolBusiness.signUp(username, password, attributeList, null, (err, result) => {
+        // ...
+      });
+    };
+    reader.readAsDataURL(pictureInput.files[0]);
   
+    // Update the attributeList to include the new attributes
     const attributeList = [
       new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'name', Value: name }),
       new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'address', Value: address }),
@@ -152,6 +176,10 @@ const poolDataCustomer = {
       new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'phone_number', Value: phone_number }),
       new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'website', Value: website }),
       new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:adminName', Value: adminName }),
+      new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:cuisines', Value: cuisines }),
+      new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:descriptionText', Value: descriptionText }),
+      new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:descriptors', Value: descriptors }),
+      new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:locationTags', Value: locationTags }),
     ];
     console.log(attributeList)
   
@@ -168,8 +196,62 @@ const poolDataCustomer = {
       
     });
   }
-  
+
   function signInBusiness() {
+    const username = document.getElementById('business-login-username').value;
+    const password = document.getElementById('business-login-password').value;
+  
+    const authenticationData = {
+      Username: username,
+      Password: password,
+    };
+  
+    const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+  
+    const userData = {
+      Username: username,
+      Pool: userPoolBusiness,
+    };
+  
+    const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+    cognitoUser.authenticateUser(authenticationDetails, {
+      onSuccess: (result) => {
+        // Access the ID token
+        const idToken = result.getIdToken().getJwtToken();
+        // Store the ID token in local storage
+        localStorage.setItem('idToken', idToken);
+  
+        cognitoUser.getUserAttributes((err, attributes) => {
+          if (err) {
+            alert(err.message || JSON.stringify(err));
+            return;
+          }
+          
+          localStorage.setItem('adminName', attributes.find(attr => attr.Name === 'custom:adminName').Value);
+          localStorage.setItem('userEmail', attributes.find(attr => attr.Name === 'email').Value);
+          localStorage.setItem('address', attributes.find(attr => attr.Name === 'address').Value);
+          localStorage.setItem('name', attributes.find(attr => attr.Name === 'name').Value);
+          localStorage.setItem('phoneNumber', attributes.find(attr => attr.Name === 'phone_number').Value);
+          localStorage.setItem('website', attributes.find(attr => attr.Name === 'website').Value);
+          localStorage.setItem('cuisines', attributes.find(attr => attr.Name === 'custom:cuisines').Value);
+          localStorage.setItem('descriptionText', attributes.find(attr => attr.Name === 'custom:descriptionText').Value);
+          localStorage.setItem('descriptors', attributes.find(attr => attr.Name === 'custom:descriptors').Value);
+          localStorage.setItem('locationTags', attributes.find(attr => attr.Name === 'custom:locationTags').Value);
+          localStorage.setItem('picture', attributes.find(attr => attr.Name === 'picture').Value); // Added 'picture' attribute
+    
+          window.location.href = '/static/business-dashboard.html';
+        });
+      },
+      onFailure: (err) => {
+        alert(err.message || JSON.stringify(err));
+      },
+    });
+  }
+  
+  
+  
+  
+  /*function signInBusiness() {
     const username = document.getElementById('business-login-username').value;
     const password = document.getElementById('business-login-password').value;
   
@@ -216,7 +298,7 @@ const poolDataCustomer = {
         alert(err.message || JSON.stringify(err));
       },
     });
-  }
+  } */
 
   function signOut() {
     const userData = {
