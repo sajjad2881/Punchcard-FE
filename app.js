@@ -191,6 +191,7 @@ const poolDataCustomer = {
       .catch(error => {
         alert(error.message || JSON.stringify(error));
 });
+  }
   
 
   function signInBusiness() {
