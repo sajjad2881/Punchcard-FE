@@ -149,15 +149,19 @@ const poolDataCustomer = {
     const descriptors = document.getElementById('business-signup-descriptors').value;
     const locationTags = document.getElementById('business-signup-locationTags').value;
     const pictureInput = document.getElementById('business-signup-picture');
-    const apiGatewayUrl = 'https://sbfye9qq29.execute-api.us-east-1.amazonaws.com/beta/image'; // Replace with your API Gateway URL
-  
-    // Convert the image file to FormData and upload it to the API Gateway
-    const formData = new FormData();
-    formData.append('image', pictureInput.files[0]);
-    formData.append('username', username);
-  
-    axios.post(apiGatewayUrl, formData)
-      .then(response => {
+    const file = pictureInput.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64data = reader.result.split(',')[1];
+      const payload = {
+        image: base64data,
+        username: username
+      };
+      // URL of your Lambda function (API Gateway endpoint)
+      const apiGatewayUrl = 'https://sbfye9qq29.execute-api.us-east-1.amazonaws.com/beta/image';
+    
+      axios.post(apiGatewayUrl, payload)
+        .then(response => {
         const image_url = response.data.image_url; // Get the image URL from the response
   
         // Update the attributeList to include the image URL and other attributes
@@ -190,7 +194,9 @@ const poolDataCustomer = {
       })
       .catch(error => {
         alert(error.message || JSON.stringify(error));
-});
+      });
+    };
+    reader.readAsDataURL(file);
   }
   
 
