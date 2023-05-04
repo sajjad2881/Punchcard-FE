@@ -235,7 +235,7 @@ const poolDataCustomer = {
           }
           
           localStorage.setItem('Username', username);
-          localStorage.setItem('tokennn', attributes.find(attr => attr.Name === 'sub').Value);
+          localStorage.setItem('sub', attributes.find(attr => attr.Name === 'sub').Value);
           localStorage.setItem('adminName', attributes.find(attr => attr.Name === 'custom:adminName').Value);
           localStorage.setItem('userEmail', attributes.find(attr => attr.Name === 'email').Value);
           localStorage.setItem('address', attributes.find(attr => attr.Name === 'address').Value);
