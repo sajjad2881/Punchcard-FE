@@ -234,6 +234,7 @@ const poolDataCustomer = {
             return;
           }
           
+          localStorage.setItem('Username', username);
           localStorage.setItem('adminName', attributes.find(attr => attr.Name === 'custom:adminName').Value);
           localStorage.setItem('userEmail', attributes.find(attr => attr.Name === 'email').Value);
           localStorage.setItem('address', attributes.find(attr => attr.Name === 'address').Value);
@@ -258,55 +259,6 @@ const poolDataCustomer = {
   
   
   
-  
-  /*function signInBusiness() {
-    const username = document.getElementById('business-login-username').value;
-    const password = document.getElementById('business-login-password').value;
-  
-    const authenticationData = {
-      Username: username,
-      Password: password,
-    };
-  
-    const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
-  
-    const userData = {
-      Username: username,
-      Pool: userPoolBusiness,
-    };
-  
-    const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-    cognitoUser.authenticateUser(authenticationDetails, {
-      onSuccess: (result) => {
-        // Access the ID token
-        const idToken = result.getIdToken().getJwtToken();
-        // Store the ID token in local storage
-        localStorage.setItem('idToken', idToken);
-
-        console.log("idToken")
-        console.log(idToken)
-  
-        cognitoUser.getUserAttributes((err, attributes) => {
-          if (err) {
-            alert(err.message || JSON.stringify(err));
-            return;
-          }
-          
-          localStorage.setItem('adminName', attributes.find(attr => attr.Name === 'custom:adminName').Value);
-          localStorage.setItem('userEmail', attributes.find(attr => attr.Name === 'email').Value);
-          localStorage.setItem('address', attributes.find(attr => attr.Name === 'address').Value);
-          localStorage.setItem('name', attributes.find(attr => attr.Name === 'name').Value);
-          localStorage.setItem('phoneNumber', attributes.find(attr => attr.Name === 'phone_number').Value);
-          localStorage.setItem('website', attributes.find(attr => attr.Name === 'website').Value);
-    
-          window.location.href = '/static/business-dashboard.html';
-        });
-      },
-      onFailure: (err) => {
-        alert(err.message || JSON.stringify(err));
-      },
-    });
-  } */
 
   function signOut() {
     const userData = {
