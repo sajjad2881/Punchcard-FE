@@ -72,17 +72,15 @@
             <label for="locations">Locations (comma and space separated):</label>
             <input type="text" id="locations" required>
             <label>
-                <input type="checkbox" id="use-current-location">
+                <input type="checkbox" id="use-current-location" onchange="toggleLocationField()">
                 Use Current Location
             </label>
             <label for="num-restaurants">Number of Restaurants to Recommend Each Week:</label>
-            <input type="number" id="num-restaurants" required>
+            <input type="number" id="num-restaurants" min="1" value="5" required>
             <button type="submit">Schedule Recurring Event</button>
+            <button type="button" onclick="goToCustomerDashboard()">Back to dashboard</button>
         </form>
-        <button type="button" onclick="goToCustomerDashboard()">Back to dashboard</button>
         <div class="confirmation" id="confirmation"></div>
-
-        
     </div>
 
     <script>
@@ -90,9 +88,24 @@
         var apigClient = apigClientFactory.newClient();
 
         function goToCustomerDashboard() {
-		  // Replace 'customer-dashboard.html' with the actual path to the customer-dashboard page
-		  window.location.href = 'customer-dashboard.html';
-		}
+            // Replace 'customer-dashboard.html' with the actual path to the customer-dashboard page
+            window.location.href = 'customer-dashboard.html';
+        }
+
+        // Function to toggle the location field based on the "Use Current Location" checkbox
+        function toggleLocationField() {
+            var useCurrentLocation = document.getElementById('use-current-location').checked;
+            var locationsField = document.getElementById('locations');
+            if (useCurrentLocation) {
+                locationsField.disabled = true;
+                locationsField.style.backgroundColor = '#f0f0f0';
+                locationsField.required = false;
+            } else {
+                locationsField.disabled = false;
+                locationsField.style.backgroundColor = '';
+                locationsField.required = true;
+            }
+        }
 
         // Form submit event handler
         document.getElementById('schedule-form').addEventListener('submit', function (event) {
@@ -123,15 +136,15 @@
                     user_id: 'test_user',
                     frequency: frequency,
                     locations: locations,
-                    num_restaurants: numRestaurants
+                    num_restaurants: numRestaurants,
+                    isCoordinates: useCurrentLocation
                 };
                 var additionalParams = {};
 
                 apigClient.recommendationsScheduledEventPost(params, body, additionalParams)
                     .then(function (result) {
                         // Show confirmation message
-                        var confirmation = document.getElementById
-                            ('confirmation');
+                        var confirmation = document.getElementById('confirmation');
                         confirmation.innerHTML = 'Event scheduled! Details:<br>' +
                             'Frequency: ' + frequency + ' minutes<br>' +
                             'Locations: ' + locations.join(', ') + '<br>' +
@@ -143,6 +156,7 @@
                         document.getElementById('locations').value = '';
                         document.getElementById('use-current-location').checked = false;
                         document.getElementById('num-restaurants').value = '';
+                        toggleLocationField(); // Reset the location field
                     }).catch(function (error) {
                         console.error('Error scheduling event:', error);
                     });
