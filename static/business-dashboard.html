@@ -33,6 +33,7 @@
     <p>Location Tags: <span id="location-tags"></span></p>
     <img id="profile-image" src="#" alt="Profile Image" />
     <button onclick="goToGenerateCodePage()">Generate new transaction code!</button>
+    <button onclick="goToScheduledAnalyticsPage()">Customize analytics emails</button>
     <button onclick="signOut()">Sign out</button>
     <script>
         document.getElementById('admin-name').innerText = localStorage.getItem('adminName');
@@ -48,10 +49,14 @@
         document.getElementById('profile-image').src = localStorage.getItem('profileImageUrl');
 
 
-
         function goToGenerateCodePage() {
             // Replace 'claim-code.html' with the actual path to the claim-code page
             window.location.href = 'generate-code.html';
+        }
+
+        function goToScheduledAnalyticsPage() {
+            // Replace 'claim-code.html' with the actual path to the claim-code page
+            window.location.href = 'schedule-analytics.html';
         }
     </script>
 </body>

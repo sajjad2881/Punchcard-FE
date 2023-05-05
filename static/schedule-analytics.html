@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Schedule Recurring Analytics Tasks</title>
+    <style>
+        .form-container {
+            width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        .form-container h2 {
+            text-align: center;
+        }
+
+        .form-container label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        .form-container input[type="number"] {
+            width: 100%;
+            padding: 5px;
+        }
+
+        .form-container button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .confirmation {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+        }
+    </style>
+
+    <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
+    <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
+    <script src="../app.js" defer></script>
+
+    <script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/rollups/sha256.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/components/hmac.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/components/enc-base64.js"></script>
+    <script type="text/javascript" src="../lib/url-template/url-template.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/sigV4Client.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/apiGatewayClient.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/simpleHttpClient.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
+    <script type="text/javascript" src="../apigClient.js"></script>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>Schedule Recurring Analytics Tasks!</h2>
+        <form id="schedule-form">
+            <label for="frequency">Frequency of Analytics Tasks (in minutes):</label>
+            <input type="number" id="frequency" required>
+            <button type="submit">Schedule Recurring Task</button>
+            <button type="button" onclick="goToBusinessDashboard()">Back to dashboard</button>
+        </form>
+        <div class="confirmation" id="confirmation"></div>
+    </div>
+
+    <script>
+        // API Gateway client
+        var apigClient = apigClientFactory.newClient();
+
+        function goToBusinessDashboard() {
+            // Replace 'business-dashboard.html' with the actual path to the business-dashboard page
+            window.location.href = 'business-dashboard.html';
+        }
+
+        // Form submit event handler
+        document.getElementById
+            ('schedule-form').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                // Get form values
+                var frequency = document.getElementById('frequency').value;
+
+                // Schedule the event
+                function scheduleEvent() {
+                    var params = {};
+                    var body = {
+                        restaurant_id: 'test_restaurant',
+                        frequency: frequency
+                    };
+                    var additionalParams = {};
+
+                    apigClient.analyticsScheduledEventPost(params, body, additionalParams)
+                        .then(function (result) {
+                            // Show confirmation message
+                            var confirmation = document.getElementById('confirmation');
+                            confirmation.innerHTML = 'Task scheduled! Details:<br>' +
+                                'Frequency: ' + frequency + ' minutes';
+                            confirmation.style.display = 'block';
+
+                            // Clear form fields
+                            document.getElementById('frequency').value = '';
+                        }).catch(function (error) {
+                            console.error('Error scheduling task:', error);
+                        });
+                }
+                scheduleEvent();
+            });
+    </script>
+</body>
+
+</html>
