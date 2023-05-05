@@ -24,6 +24,7 @@
     <h2>Welcome, <span id="customer-name"></span>!</h2>
     <p>Email: <span id="email"></span></p>
     <button onclick="goToClaimCodePage()">Claim a Code!</button>
+    <button onclick="goToScheduleRecommendationPage()">Customize email recommendations</button>
     <button onclick="signOut()">Sign Out</button>
     <script>
         document.getElementById('customer-name').innerText = localStorage.getItem('userName');
@@ -32,6 +33,11 @@
         function goToClaimCodePage() {
             // Replace 'claim-code.html' with the actual path to the claim-code page
             window.location.href = 'claim-code.html';
+        }
+
+        function goToScheduleRecommendationPage() {
+            // Replace 'claim-code.html' with the actual path to the claim-code page
+            window.location.href = 'schedule-recommendations.html';
         }
     </script>
 </body>

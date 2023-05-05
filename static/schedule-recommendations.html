@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Schedule Recurring Restaurant Recommendations</title>
+    <style>
+        .form-container {
+            width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        .form-container h2 {
+            text-align: center;
+        }
+
+        .form-container label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="number"] {
+            width: 100%;
+            padding: 5px;
+        }
+
+        .form-container button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .confirmation {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+        }
+    </style>
+
+    <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
+    <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
+    <script src="../app.js" defer></script>
+
+    <script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/rollups/sha256.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/components/hmac.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/components/enc-base64.js"></script>
+    <script type="text/javascript" src="../lib/url-template/url-template.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/sigV4Client.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/apiGatewayClient.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/simpleHttpClient.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
+    <script type="text/javascript" src="../apigClient.js"></script>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>Schedule Recurring Restaurant Suggestions!</h2>
+        <form id="schedule-form">
+            <label for="frequency">Frequency of Recommendations (in minutes):</label>
+            <input type="number" id="frequency" required>
+            <label for="locations">Locations (comma and space separated):</label>
+            <input type="text" id="locations" required>
+            <label>
+                <input type="checkbox" id="use-current-location">
+                Use Current Location
+            </label>
+            <label for="num-restaurants">Number of Restaurants to Recommend Each Week:</label>
+            <input type="number" id="num-restaurants" required>
+            <button type="submit">Schedule Recurring Event</button>
+        </form>
+        <button type="button" onclick="goToCustomerDashboard()">Back to dashboard</button>
+        <div class="confirmation" id="confirmation"></div>
+
+        
+    </div>
+
+    <script>
+        // API Gateway client
+        var apigClient = apigClientFactory.newClient();
+
+        function goToCustomerDashboard() {
+		  // Replace 'customer-dashboard.html' with the actual path to the customer-dashboard page
+		  window.location.href = 'customer-dashboard.html';
+		}
+
+        // Form submit event handler
+        document.getElementById('schedule-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Get form values
+            var frequency = document.getElementById('frequency').value;
+            var locations = document.getElementById('locations').value.split(', ');
+            var useCurrentLocation = document.getElementById('use-current-location').checked;
+            var numRestaurants = document.getElementById('num-restaurants').value;
+
+            // Get current location if selected
+            if (useCurrentLocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    locations = [lat + ',' + lon];
+                    scheduleEvent();
+                });
+            } else {
+                scheduleEvent();
+            }
+
+            // Schedule the event
+            function scheduleEvent() {
+                var params = {};
+                var body = {
+                    user_id: 'test_user',
+                    frequency: frequency,
+                    locations: locations,
+                    num_restaurants: numRestaurants
+                };
+                var additionalParams = {};
+
+                apigClient.recommendationsScheduledEventPost(params, body, additionalParams)
+                    .then(function (result) {
+                        // Show confirmation message
+                        var confirmation = document.getElementById
+                            ('confirmation');
+                        confirmation.innerHTML = 'Event scheduled! Details:<br>' +
+                            'Frequency: ' + frequency + ' minutes<br>' +
+                            'Locations: ' + locations.join(', ') + '<br>' +
+                            'Number of Restaurants: ' + numRestaurants;
+                        confirmation.style.display = 'block';
+
+                        // Clear form fields
+                        document.getElementById('frequency').value = '';
+                        document.getElementById('locations').value = '';
+                        document.getElementById('use-current-location').checked = false;
+                        document.getElementById('num-restaurants').value = '';
+                    }).catch(function (error) {
+                        console.error('Error scheduling event:', error);
+                    });
+            }
+        });
+    </script>
+</body>
+
+</html>
