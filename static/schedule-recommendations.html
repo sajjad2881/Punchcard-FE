@@ -122,7 +122,7 @@
                 navigator.geolocation.getCurrentPosition(function (position) {
                     var lat = position.coords.latitude;
                     var lon = position.coords.longitude;
-                    locations = [lat + ',' + lon];
+                    locations = [lat, lon];
                     scheduleEvent();
                 });
             } else {
@@ -133,11 +133,11 @@
             function scheduleEvent() {
                 var params = {};
                 var body = {
-                    user_id: 'test_user',
+                    user_id: 'test_user_4',
                     frequency: frequency,
                     locations: locations,
                     num_restaurants: numRestaurants,
-                    isCoordinates: useCurrentLocation
+                    is_coordinates: useCurrentLocation
                 };
                 var additionalParams = {};
 
@@ -147,7 +147,7 @@
                         var confirmation = document.getElementById('confirmation');
                         confirmation.innerHTML = 'Event scheduled! Details:<br>' +
                             'Frequency: ' + frequency + ' minutes<br>' +
-                            'Locations: ' + locations.join(', ') + '<br>' +
+                            (useCurrentLocation ? 'Location (Current Location): ' + locations.join(', ') + '<br>' : 'Locations: ' + locations.join(', ') + '<br>') +
                             'Number of Restaurants: ' + numRestaurants;
                         confirmation.style.display = 'block';
 
