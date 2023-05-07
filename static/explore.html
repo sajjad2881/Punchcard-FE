@@ -37,7 +37,8 @@
   <div id="info"></div>
 
   <script>
-    let restaurantIDs = ["e0f9f94f-c8bb-41a5-8499-3972beaafe17", "bd132eba-4dd7-4348-afa4-10ed3689893c", "06639a5a-61df-409b-84ab-27c26025526b"];
+    let restaurantIDs = [];
+    // let restaurantIDs = ["e0f9f94f-c8bb-41a5-8499-3972beaafe17", "bd132eba-4dd7-4348-afa4-10ed3689893c", "06639a5a-61df-409b-84ab-27c26025526b"];
     const apigClient = apigClientFactory.newClient();
 
     let userLocation;
@@ -53,32 +54,43 @@
 
     function searchAndUpdate() {
       const query = document.getElementById("search-input").value;
-      const queryParams = {
+      const body = {
         query: query,
-        location: JSON.stringify(userLocation)
+        location: userLocation
       };
 
-      apigClient.searchRestaurantsGet(queryParams, {}, {})
+      apigClient.searchRestaurantsGet({}, body, {})
         .then(function (result) {
           // Update the restaurantIDs with the result
-          restaurantIDs = result.data;
-          // Redraw the map
-          initMap();
+          const restaurantIDs = result.data;
+
+          // Retrieve additional details for each restaurant
+          const restaurantsPromise = Promise.all(restaurantIDs.map(restaurantID => {
+            const pathParameters = { restaurantID };
+            return apigClient.restaurantsRestaurantIDGet(pathParameters, {}, {});
+          }));
+
+          // Update the restaurants variable and redraw the map
+          restaurantsPromise.then(responses => {
+            restaurants = responses.map(response => response.data);
+            initMap();
+          });
+
         }).catch(function (result) {
           console.error("Error: " + result);
         });
     }
 
-    const restaurantsPromise = Promise.all(restaurantIDs.map(restaurantID => {
-      const pathParameters = { restaurantID };
-      return apigClient.restaurantsRestaurantIDGet(pathParameters, {}, {});
-    }));
+    // const restaurantsPromise = Promise.all(restaurantIDs.map(restaurantID => {
+    //   const pathParameters = { restaurantID };
+    //   return apigClient.restaurantsRestaurantIDGet(pathParameters, {}, {});
+    // }));
 
-    let restaurants = [];
-    restaurantsPromise.then(responses => {
-      restaurants = responses.map(response => response.data);
-      initMap();
-    });
+    // let restaurants = [];
+    // restaurantsPromise.then(responses => {
+    //   restaurants = responses.map(response => response.data);
+    //   initMap();
+    // });
 
     function initMap() {
       document.getElementById('info').innerHTML = ``;
