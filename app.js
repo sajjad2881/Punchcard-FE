@@ -3,6 +3,26 @@
 //    ClientId: '5v1l1dgami6h8qufckv96p5vrj',
  // };
 //const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+let place;
+let addressInput = document.getElementById('business-signup-address');
+        let autocomplete = new google.maps.places.Autocomplete(addressInput);
+
+        autocomplete.addListener('place_changed', function() {
+            place = autocomplete.getPlace();
+            if (place.geometry) {
+                let lat = place.geometry.location.lat();
+                let lng = place.geometry.location.lng();
+                let address = place.formatted_address; // Get the formatted address
+
+                console.log('Address: ' + address);
+                console.log('Latitude: ' + lat);
+                console.log('Longitude: ' + lng);
+                console.log('Location tags: ' + place.types.join(', '));
+            }
+        });
+
+
 var apigClient = apigClientFactory.newClient();
   
 const poolDataCustomer = {
@@ -138,13 +158,15 @@ const poolDataCustomer = {
 
 
   function signUpBusiness() {
+    console.log(place)
+
     const bucket_name = 'business-profile-pictures';
     const folder_name = 'profile-images/'
 
     const username = document.getElementById('business-signup-username').value;
     const password = document.getElementById('business-signup-password').value;
     const name = document.getElementById('business-signup-name').value;
-    const address = document.getElementById('business-signup-address').value;
+    const address = place.formatted_address;
     const email = document.getElementById('business-signup-email').value;
     const phone_number = document.getElementById('business-signup-phone').value;
     const website = document.getElementById('business-signup-website').value;
@@ -154,6 +176,9 @@ const poolDataCustomer = {
     const descriptors = document.getElementById('business-signup-descriptors').value;
     const locationTags = document.getElementById('business-signup-locationTags').value;
     const pictureInput = document.getElementById('business-signup-picture');
+    const latitude = place.geometry.location.lat();
+    const longitude = place.geometry.location.lng();
+
     const file = pictureInput.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -183,6 +208,8 @@ const poolDataCustomer = {
           new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:descriptors', Value: descriptors }),
           new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:locationTags', Value: locationTags }),
           new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'picture', Value: image_url }),
+          new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:latitude', Value: latitude.toString() }),
+          new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'custom:longitude', Value: longitude.toString() }),
         ];
   
         // Continue with the sign-up process
