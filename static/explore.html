@@ -32,64 +32,33 @@
   <div id="info"></div>
 
   <script>
-    // Sample data for restaurants
-    /*
-      {"website": "columbia.edu", 
-      "custom:cuisines": "Indian, Desi, South Indian, Curry", 
-      "phone_number_verified": "false", "cognito:email_alias": 
-      "sanjay.rajasekharan@gmail.com", 
-      "address": "605-615 W 115th St, New York, NY 10027, USA", 
-      "custom:latitude": "40.80785939999999", 
-      "picture": "https://business-profile-pictures.s3.amazonaws.com/profile-images/sanjay.rajasekharan@gmail.com.jpg", 
-      "email": "sanjay.rajasekharan@gmail.com", 
-      "name": "Sanjay's Curry House", 
-      "restaurantID": "e0f9f94f-c8bb-41a5-8499-3972beaafe17", 
-      "email_verified": "true", 
-      "custom:descriptors": "quack, pee pee, poo poo", 
-      "custom:longitude": "-73.9651746", 
-      "custom:locationTags": "uws, nyc, manhattan", 
-      "phone_number": "+14086219659", 
-      "cognito:user_status": "CONFIRMED", 
-      "custom:descriptionText": "The masters of the culinary arts.", 
-      "custom:adminName": "Sanjay"}
-    */
-
-    // Sample restaurantIDs
     const restaurantIDs = ["e0f9f94f-c8bb-41a5-8499-3972beaafe17", "bd132eba-4dd7-4348-afa4-10ed3689893c", "06639a5a-61df-409b-84ab-27c26025526b"];
-
-    // Get restaurant information from the API Gateway
     const apigClient = apigClientFactory.newClient();
     const pathTemplate = '/restaurants/{restaurantID}';
     const method = 'GET';
     const additionalParams = {};
     const body = {};
+
     const restaurantsPromise = Promise.all(restaurantIDs.map(restaurantID => {
-      const pathParameters = { restaurantID }; // Updated parameter name
+      const pathParameters = { restaurantID };
       return apigClient.restaurantsRestaurantIDGet(pathParameters, body, additionalParams);
     }));
-    // Wait for all the API calls to finish
+
     let restaurants = [];
     restaurantsPromise.then(responses => {
-
-      // Extract the data from each response
       restaurants = responses.map(response => response.data);
-
       initMap();
     });
 
-    // Initialize the map
     function initMap() {
+      const defaultLocation = { lat: 40.80785939999999, lng: -73.9651746 };
       const map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 40.80785939999999, lng: -73.9651746 },
+        center: defaultLocation,
         zoom: 12
       });
 
-      // Add markers for each restaurant
-      // restaurants is not iterable?
-      console.log(restaurants)
       if (typeof restaurants !== "undefined") {
         for (let restaurant of restaurants) {
-          console.log(restaurant["custom:latitude"], restaurant["custom:longitude"])
           const marker = new google.maps.Marker({
             position: {
               lat: parseFloat(restaurant["custom:latitude"]),
@@ -99,9 +68,7 @@
             title: restaurant.name
           });
 
-          // Add click listener to the marker
           marker.addListener('click', () => {
-            // Display restaurant information when the marker is clicked
             document.getElementById('info').innerHTML = `
             <h3>${restaurant['name']}</h3>
             <p>${restaurant['custom:descriptionText']}</p>
@@ -110,6 +77,36 @@
           `;
           });
         }
+      }
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const userLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          const userMarker = new google.maps.Marker({
+            position: userLocation,
+            map: map,
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 10,
+              strokeColor: '#6495ed',
+              strokeOpacity: 0.8,
+              strokeWeight: 2,
+              fillColor: '#6495ed',
+              fillOpacity: 0.35,
+            },
+          });
+
+          map.panTo(userLocation);
+        }, () => {
+          // If the user declines to share their location, use the default center
+          map.panTo(defaultLocation);
+        });
+      } else {
+        // Browser doesn't support Geolocation
+        map.panTo(defaultLocation);
       }
     }
   </script>
