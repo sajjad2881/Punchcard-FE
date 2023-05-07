@@ -18,7 +18,6 @@ const poolDataCustomer = {
   const userPoolCustomer = new AmazonCognitoIdentity.CognitoUserPool(poolDataCustomer);
   const userPoolBusiness = new AmazonCognitoIdentity.CognitoUserPool(poolDataBusiness);
   console.log("user business", userPoolBusiness);
-  
 
   function signUp() {
     const username = document.getElementById('signup-username').value;
@@ -74,16 +73,18 @@ const poolDataCustomer = {
             // Access the ID token
             const idToken = result.getIdToken().getJwtToken();
             // Store the ID token in local storage
-            localStorage.setItem('idToken', idToken);
+            localStorage.setItem('l', idToken);
             
             cognitoUser.getUserAttributes((err, attributes) => {
               if (err) {
                 alert(err.message || JSON.stringify(err));
                 return;
               }
+              const userID = attributes.find(attr => attr.Name === 'sub').Value;
               const name = attributes.find(attr => attr.Name === 'name').Value;
               const birthdate = attributes.find(attr => attr.Name === 'birthdate').Value;
       
+              localStorage.setItem('userID', userID);
               localStorage.setItem('userName', name);
               localStorage.setItem('userBirthdate', birthdate);
               localStorage.setItem('userEmail', username);
