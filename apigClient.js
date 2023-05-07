@@ -81,8 +81,6 @@ apigClientFactory.newClient = function (config) {
 
     var apiGatewayClient = apiGateway.core.apiGatewayClientFactory.newClient(simpleHttpClientConfig, sigV4ClientConfig);
     
-    
-    
     apigClient.analyticsOptions = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         

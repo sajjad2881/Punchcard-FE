@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configure Rewards Program</title>
+  <link rel="stylesheet" href="configure-rewards.css">
+
+  <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
+  <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
+
+  <script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
+  <script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
+  <script type="text/javascript" src="../lib/CryptoJS/rollups/sha256.js"></script>
+  <script type="text/javascript" src="../lib/CryptoJS/components/hmac.js"></script>
+  <script type="text/javascript" src="../lib/CryptoJS/components/enc-base64.js"></script>
+  <script type="text/javascript" src="../lib/url-template/url-template.js"></script>
+  <script type="text/javascript" src="../lib/apiGatewayCore/sigV4Client.js"></script>
+  <script type="text/javascript" src="../lib/apiGatewayCore/apiGatewayClient.js"></script>
+  <script type="text/javascript" src="../lib/apiGatewayCore/simpleHttpClient.js"></script>
+  <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
+  <script type="text/javascript" src="../apigClient.js"></script>
+
+</head>
+<body>
+  <h1>Configure Rewards Program</h1>
+  <form id="rewards-form">
+    <div id="tiers-section">
+      <h2>Tiers</h2>
+      <div id="tiers-container">
+        <!-- Tiers will be dynamically added here -->
+      </div>
+      <button type="button" id="add-tier-btn">Add new tier</button>
+    </div>
+    <button type="submit" id="submit-btn">Submit</button>
+  </form>
+  <div id="result-message"></div>
+  <div id="reward-program-display" style="display:none;"></div>
+  <button type="button" id="return-dashboard-btn" onclick="window.location.href='/static/business-dashboard.html'">Return to dashboard</button>
+  <script src="../configure-rewards.js"></script>
+
+</body>
+</html>
