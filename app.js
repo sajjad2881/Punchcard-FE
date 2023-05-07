@@ -293,8 +293,6 @@ function signInBusiness() {
   });
 }
 
-let userPoolCustomer;
-let userPoolBusiness;
 
 function initUserPools() {
   const poolDataCustomer = {
@@ -307,15 +305,17 @@ function initUserPools() {
     ClientId: '3umbif497oieqmdl493cv9tr6g',
   };
 
-  userPoolCustomer = new AmazonCognitoIdentity.CognitoUserPool(poolDataCustomer);
-  userPoolBusiness = new AmazonCognitoIdentity.CognitoUserPool(poolDataBusiness);
+  let userPoolCustomer = new AmazonCognitoIdentity.CognitoUserPool(poolDataCustomer);
+  let userPoolBusiness = new AmazonCognitoIdentity.CognitoUserPool(poolDataBusiness);
+  return userPoolBusiness;
 }
 
+
 function signOut() {
-  initUserPools();
+  let userPoolBusiness = initUserPools();
   const userData = {
     Username: localStorage.getItem('userEmail'),
-    Pool: userPoolBusiness,
+    Pool: userPoolBusiness
   };
   console.log("trying to signout")
   const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
