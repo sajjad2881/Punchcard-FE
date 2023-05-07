@@ -310,7 +310,6 @@ function initUserPools() {
   return userPoolBusiness;
 }
 
-
 function signOut() {
   let userPoolBusiness = initUserPools();
   const userData = {

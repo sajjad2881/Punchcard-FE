@@ -22,6 +22,7 @@
 <body>
     <h1>Business Dashboard!!</h1>
     <h2>Welcome, <span id="admin-name"></span>!</h2>
+    <button onclick="goToConfigureMenuItemsPage()">Configure Menu Items</button>
     <p>Email: <span id="email"></span></p>
     <p>Address: <span id="address"></span></p>
     <p>Name: <span id="name"></span></p>
@@ -57,6 +58,10 @@
         function goToScheduledAnalyticsPage() {
             // Replace 'claim-code.html' with the actual path to the claim-code page
             window.location.href = 'schedule-analytics.html';
+        }
+
+        function goToConfigureMenuItemsPage() {
+        window.location.href = 'configure-menu-items.html';
         }
     </script>
 </body>

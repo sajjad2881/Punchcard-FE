@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configure Menu Items</title>
+    <style>
+        .menu-item-row {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Configure Menu Items</h1>
+    <form id="menu-items-form">
+        <div id="menu-items-container">
+            <!-- The menu items will be dynamically added here -->
+        </div>
+        <button type="button" onclick="addMenuItem()">Add Another Menu Item</button>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+    <!-- Add this button -->
+    <button onclick="goBackToDashboard()">Go Back to Dashboard</button>
+
+    <script>
+        function addMenuItem() {
+            const container = document.getElementById('menu-items-container');
+            const newRow = document.createElement('div');
+            newRow.classList.add('menu-item-row');
+
+            const itemInput = document.createElement('input');
+            itemInput.placeholder = 'Menu Item';
+            newRow.appendChild(itemInput);
+
+            const amountInput = document.createElement('input');
+            amountInput.placeholder = 'Dollar Amount';
+            newRow.appendChild(amountInput);
+
+            container.appendChild(newRow);
+        }
+
+        document.getElementById('menu-items-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const menuItems = [];
+            const rows = document.querySelectorAll('.menu-item-row');
+
+            for (const row of rows) {
+                const item = row.querySelector('input:nth-child(1)').value;
+                const amount = row.querySelector('input:nth-child(2)').value;
+                menuItems.push({ item, amount });
+            }
+
+            console.log(JSON.stringify(menuItems));
+            // Send the menuItems to the backend via API
+        });
+
+        // Add this function
+        function goBackToDashboard() {
+            window.location.href = 'index.html'; // Replace 'index.html' with the actual path to your dashboard page
+        }
+
+        // Add the first menu item row
+        addMenuItem();
+    </script>
+</body>
+</html>
