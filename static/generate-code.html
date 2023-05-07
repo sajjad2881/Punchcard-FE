@@ -73,25 +73,70 @@
       });
   }
 
-  async function getMenuItems() {
-    try {
-      const restaurantID = localStorage.getItem('restaurantID');
-      const response = await axios.get(`https://st9n96e2x7.execute-api.us-east-1.amazonaws.com/Stage1/analytics/menu/${restaurantID}`);
-      const menuItems = response.data;
-      console.log('Response:', response);
-      console.log('Menu Items:', menuItems);
+  let totalSpent = 0;
+const selectedItems = [];
 
-      // Display menu items in the HTML
-      const menuItemsContainer = document.getElementById('menu-items');
-      for (const menuItem of menuItems) {
-        const itemElement = document.createElement('p');
-        itemElement.innerText = `${menuItem.item}: $${menuItem.price}`;
-        menuItemsContainer.appendChild(itemElement);
-      }
-    } catch (error) {
-      console.error('Error fetching menu items:', error);
+async function getMenuItems() {
+  try {
+    const restaurantID = localStorage.getItem('restaurantID');
+    const response = await axios.get(`https://st9n96e2x7.execute-api.us-east-1.amazonaws.com/Stage1/analytics/menu/${restaurantID}`);
+    const menuItems = response.data;
+    console.log('Response:', response);
+    console.log('Menu Items:', menuItems);
+
+    // Display menu items in the HTML
+    const menuItemsContainer = document.getElementById('menu-items');
+    for (const menuItem of menuItems) {
+      const itemElement = document.createElement('p');
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.value = menuItem.price;
+      checkbox.onchange = function() {
+        if (this.checked) {
+          totalSpent += parseFloat(this.value);
+          selectedItems.push(menuItem);
+        } else {
+          totalSpent -= parseFloat(this.value);
+          const index = selectedItems.indexOf(menuItem);
+          if (index > -1) {
+            selectedItems.splice(index, 1);
+          }
+        }
+        document.getElementById('amountSpent').value = totalSpent.toFixed(2);
+      };
+      itemElement.innerText = `${menuItem.item}: $${menuItem.price}`;
+      itemElement.prepend(checkbox);
+      menuItemsContainer.appendChild(itemElement);
     }
+  } catch (error) {
+    console.error('Error fetching menu items:', error);
   }
+}
+
+function generateCode() {
+  // Get the amountSpent value from the input field
+  const amountSpent = document.getElementById('amountSpent').value;
+
+  // Validate the amountSpent value
+  if (isNaN(amountSpent) || amountSpent <= 0) {
+    alert('Please select at least one menu item.');
+    return;
+  }
+
+  // Get the ID token from local storage
+  const restaurantID = localStorage.getItem('userID');
+
+  // Prepare the request body
+  const requestBody = {
+    amountSpent: amountSpent,
+    restaurantID: restaurantID
+  };
+
+  // Log the selected items
+  console.log('Selected items:', selectedItems);
+
+  // ... rest of your generateCode function ...
+}
 
 
   // Function to navigate to the customer-dashboard page
@@ -105,16 +150,17 @@
 <body>
   <h1>Generate Code</h1>
   
-  <div id="generate-code-form">
-    <input type="number" id="amountSpent" placeholder="Amount Spent" min="0" step="0.01">
-    <button onclick="generateCode()">Generate Code</button>
-    <!-- Add a button to go back to the customer-dashboard page -->
-	<button type="button" onclick="goToBusinessDashboard()">Back to dashboard</button>
-  </div>
 
   <div id="menu-items">
     <h2>Menu Items:</h2>
     <!-- Menu items will be displayed here -->
+  </div>
+
+  <div id="generate-code-form">
+    <input type="number" id="amountSpent" placeholder="Amount Spent" min="0" step="0.01" readonly>
+    <button onclick="generateCode()">Generate Code</button>
+    <!-- Add a button to go back to the customer-dashboard page -->
+    <button type="button" onclick="goToBusinessDashboard()">Back to dashboard</button>
   </div>
   
   
