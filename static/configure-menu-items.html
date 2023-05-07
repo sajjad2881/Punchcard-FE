@@ -48,8 +48,8 @@
 
             for (const row of rows) {
                 const item = row.querySelector('input:nth-child(1)').value;
-                const amount = row.querySelector('input:nth-child(2)').value;
-                menuItems.push({ item, amount });
+                const price = row.querySelector('input:nth-child(2)').value;
+                menuItems.push({ item, price });
             }
 
             console.log(JSON.stringify(menuItems));
@@ -59,7 +59,16 @@
 
         async function sendMenuItems(menuItems) {
             try {
-                const response = await axios.post('https://st9n96e2x7.execute-api.us-east-1.amazonaws.com/Stage1/analytics/menu', menuItems);
+                // Retrieve the restaurant ID from local storage
+                const restaurantID = localStorage.getItem('restaurantID');
+
+                // Include the restaurant ID in the request payload
+                const payload = {
+                    restaurantID,
+                    menuItems
+                };
+
+                const response = await axios.post('https://st9n96e2x7.execute-api.us-east-1.amazonaws.com/Stage1/analytics/menu', payload);
                 console.log(response.data);
             } catch (error) {
                 console.error('Error sending menu items:', error);
