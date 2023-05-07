@@ -297,6 +297,7 @@ function signInBusiness() {
 
 
 function signOut() {
+  const userPoolCustomer = new AmazonCognitoIdentity.CognitoUserPool(poolDataCustomer);
   const userData = {
     Username: localStorage.getItem('userEmail'),
     Pool: userPoolCustomer //userPoolBusiness,
