@@ -78,7 +78,8 @@
       const restaurantID = localStorage.getItem('restaurantID');
       const response = await axios.get(`https://st9n96e2x7.execute-api.us-east-1.amazonaws.com/Stage1/analytics/menu/${restaurantID}`);
       const menuItems = response.data;
-      console.log("menu items are", menuItems);
+      console.log('Response:', response);
+      console.log('Menu Items:', menuItems);
 
       // Display menu items in the HTML
       const menuItemsContainer = document.getElementById('menu-items');
@@ -91,6 +92,7 @@
       console.error('Error fetching menu items:', error);
     }
   }
+
 
   // Function to navigate to the customer-dashboard page
   function goToBusinessDashboard() {
