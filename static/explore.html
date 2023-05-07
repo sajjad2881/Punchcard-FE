@@ -85,16 +85,16 @@
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
-          let scale = 500; // Initial radius of the circle
-          let increment = 5; // Change in radius per interval
+          let scale = 5; // Initial radius of the circle
+          let increment = 0.05; // Change in radius per interval
 
           // Create the circle
           let circle = new google.maps.Circle({
             strokeColor: '#FFFFFF', // White border
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
+            strokeOpacity: 1,
+            strokeWeight: 5,
             fillColor: '#0000FF', // Blue fill
-            fillOpacity: 0.35,
+            fillOpacity: 1,
             map: map,
             center: { lat: userLocation.lat, lng: userLocation.lng }, // Replace with your coordinates
             radius: scale
