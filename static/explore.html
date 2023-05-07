@@ -85,8 +85,8 @@
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
-          let scale = 5; // Initial radius of the circle
-          let increment = 0.05; // Change in radius per interval
+          let scale = 50; // Initial radius of the circle
+          // let increment = 0.05; // Change in radius per interval
 
           // Create the circle
           let circle = new google.maps.Circle({
@@ -101,17 +101,17 @@
           });
 
           // Animate the circle
-          setInterval(() => {
-            scale += increment;
+          // setInterval(() => {
+          //   scale += increment;
 
-            // Reverse direction if the circle gets too big or too small
-            if (scale > 1 || scale < 0.5) {
-              increment = -increment;
-            }
+          //   // Reverse direction if the circle gets too big or too small
+          //   if (scale > 1 || scale < 0.5) {
+          //     increment = -increment;
+          //   }
 
-            // Update the radius of the circle
-            circle.setRadius(scale);
-          }, 100); // Change the interval as desired
+          //   // Update the radius of the circle
+          //   circle.setRadius(scale);
+          // }, 100); // Change the interval as desired
 
           map.panTo(userLocation);
         }, () => {
