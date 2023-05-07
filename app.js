@@ -85,6 +85,7 @@ const poolDataCustomer = {
               const birthdate = attributes.find(attr => attr.Name === 'birthdate').Value;
       
               localStorage.setItem('userID', userID);
+              console.log("userID", userID)
               localStorage.setItem('userName', name);
               localStorage.setItem('userBirthdate', birthdate);
               localStorage.setItem('userEmail', username);
