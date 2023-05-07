@@ -90,30 +90,26 @@ async function getMenuItems() {
     const menuItemsContainer = document.getElementById('menu-items');
     for (const menuItem of menuItems) {
       const itemElement = document.createElement('p');
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.value = menuItem.price;
-      checkbox.onchange = function() {
-        if (this.checked) {
-          totalSpent += parseFloat(this.value);
-          selectedItems.push(menuItem);
-        } else {
-          totalSpent -= parseFloat(this.value);
-          const index = selectedItems.indexOf(menuItem);
-          if (index > -1) {
-            selectedItems.splice(index, 1);
-          }
-        }
+      const quantityInput = document.createElement('input');
+      quantityInput.type = 'number';
+      quantityInput.min = 0;
+      quantityInput.value = 0;
+      quantityInput.onchange = function() {
+        const quantity = parseInt(this.value);
+        const previousQuantity = selectedItems[menuItem.item] ? selectedItems[menuItem.item].quantity : 0;
+        selectedItems[menuItem.item] = { quantity, price: menuItem.price };
+        totalSpent += (quantity - previousQuantity) * menuItem.price;
         document.getElementById('amountSpent').value = totalSpent.toFixed(2);
       };
       itemElement.innerText = `${menuItem.item}: $${menuItem.price}`;
-      itemElement.prepend(checkbox);
+      itemElement.prepend(quantityInput);
       menuItemsContainer.appendChild(itemElement);
     }
   } catch (error) {
     console.error('Error fetching menu items:', error);
   }
 }
+
 
 function generateCode() {
     // Get the amountSpent value from the input field
