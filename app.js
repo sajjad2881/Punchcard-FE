@@ -301,7 +301,7 @@ function signOut() {
     Username: localStorage.getItem('userEmail'),
     Pool: userPoolBusiness,
   };
-
+  console.log("trying to signout")
   const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
   cognitoUser.signOut();
   localStorage.clear();
