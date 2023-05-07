@@ -37,11 +37,14 @@
   <div id="info"></div>
 
   <script>
-    let restaurantIDs = [];
-    // let restaurantIDs = ["e0f9f94f-c8bb-41a5-8499-3972beaafe17", "bd132eba-4dd7-4348-afa4-10ed3689893c", "06639a5a-61df-409b-84ab-27c26025526b"];
+    let restaurantIDs = ["e0f9f94f-c8bb-41a5-8499-3972beaafe17", "bd132eba-4dd7-4348-afa4-10ed3689893c", "06639a5a-61df-409b-84ab-27c26025526b"];
+    let restaurants = [];
     const apigClient = apigClientFactory.newClient();
 
-    let userLocation;
+    let userLocation = {
+      lat: 40.80785939999999,
+      lng: -73.9651746
+    };
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
@@ -54,23 +57,22 @@
 
     function searchAndUpdate() {
       const query = document.getElementById("search-input").value;
-      const body = {
+      const queryParams = {
         query: query,
-        location: userLocation
+        location: JSON.stringify(userLocation)
       };
 
-      apigClient.searchRestaurantsGet({}, body, {})
+      apigClient.searchRestaurantsGet(queryParams, {}, {})
         .then(function (result) {
           // Update the restaurantIDs with the result
-          const restaurantIDs = result.data;
+          console.log(result)
+          restaurantIDs = result.data;
+          // Redraw the map
 
-          // Retrieve additional details for each restaurant
           const restaurantsPromise = Promise.all(restaurantIDs.map(restaurantID => {
             const pathParameters = { restaurantID };
             return apigClient.restaurantsRestaurantIDGet(pathParameters, {}, {});
           }));
-
-          // Update the restaurants variable and redraw the map
           restaurantsPromise.then(responses => {
             restaurants = responses.map(response => response.data);
             initMap();
@@ -81,18 +83,8 @@
         });
     }
 
-    // const restaurantsPromise = Promise.all(restaurantIDs.map(restaurantID => {
-    //   const pathParameters = { restaurantID };
-    //   return apigClient.restaurantsRestaurantIDGet(pathParameters, {}, {});
-    // }));
-
-    // let restaurants = [];
-    // restaurantsPromise.then(responses => {
-    //   restaurants = responses.map(response => response.data);
-    //   initMap();
-    // });
-
     function initMap() {
+      console.log("restaurants", restaurants);
       document.getElementById('info').innerHTML = ``;
       const defaultLocation = { lat: 40.80785939999999, lng: -73.9651746 };
       const map = new google.maps.Map(document.getElementById('map'), {
