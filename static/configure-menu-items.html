@@ -59,7 +59,7 @@
 
         async function sendMenuItems(menuItems) {
             try {
-                const response = await axios.post('https://st9n96e2x7.execute-api.us-east-1.amazonaws.com/Stage1/menu', menuItems);
+                const response = await axios.post('https://st9n96e2x7.execute-api.us-east-1.amazonaws.com/Stage1/analytics/menu', menuItems);
                 console.log(response.data);
             } catch (error) {
                 console.error('Error sending menu items:', error);
