@@ -35,6 +35,8 @@
     <img id="profile-image" src="#" alt="Profile Image" />
     <button onclick="goToGenerateCodePage()">Generate new transaction code!</button>
     <button onclick="goToScheduledAnalyticsPage()">Customize analytics emails</button>
+    <button onclick="goToConfigureRewardsPage()">Configure Rewards</button>
+    <button onclick="goToConfigureMenuItemsPage()">Configure Menu Items</button>
     <button onclick="signOut()">Sign out</button>
     <script>
         document.getElementById('admin-name').innerText = localStorage.getItem('adminName');
@@ -62,6 +64,10 @@
 
         function goToConfigureMenuItemsPage() {
         window.location.href = 'configure-menu-items.html';
+        }
+
+        function goToConfigureRewardsPage() {
+        window.location.href = 'configure-rewards.html';
         }
     </script>
 </body>
