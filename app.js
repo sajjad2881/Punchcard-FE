@@ -294,9 +294,23 @@ function signInBusiness() {
 }
 
 
+function initUserPools() {
+  const poolDataCustomer = {
+    UserPoolId: 'us-east-1_ViBGmruWb',
+    ClientId: '5v1l1dgami6h8qufckv96p5vrj',
+  };
 
+  const poolDataBusiness = {
+    UserPoolId: 'us-east-1_ztoLLvLv4',
+    ClientId: '3umbif497oieqmdl493cv9tr6g',
+  };
+
+  userPoolCustomer = new AmazonCognitoIdentity.CognitoUserPool(poolDataCustomer);
+  userPoolBusiness = new AmazonCognitoIdentity.CognitoUserPool(poolDataBusiness);
+}
 
 function signOut() {
+  initUserPools();
   const userData = {
     Username: localStorage.getItem('userEmail'),
     Pool: userPoolBusiness,
