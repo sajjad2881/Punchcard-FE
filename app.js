@@ -6,21 +6,21 @@
 
 let place;
 let addressInput = document.getElementById('business-signup-address');
-//let autocomplete = new google.maps.places.Autocomplete(addressInput);
+let autocomplete = new google.maps.places.Autocomplete(addressInput);
 
-// autocomplete.addListener('place_changed', function () {
-//   place = autocomplete.getPlace();
-//   if (place.geometry) {
-//     let lat = place.geometry.location.lat();
-//     let lng = place.geometry.location.lng();
-//     let address = place.formatted_address; // Get the formatted address
+autocomplete.addListener('place_changed', function () {
+  place = autocomplete.getPlace();
+  if (place.geometry) {
+    let lat = place.geometry.location.lat();
+    let lng = place.geometry.location.lng();
+    let address = place.formatted_address; // Get the formatted address
 
-//     console.log('Address: ' + address);
-//     console.log('Latitude: ' + lat);
-//     console.log('Longitude: ' + lng);
-//     console.log('Location tags: ' + place.types.join(', '));
-//   }
-// });
+    console.log('Address: ' + address);
+    console.log('Latitude: ' + lat);
+    console.log('Longitude: ' + lng);
+    console.log('Location tags: ' + place.types.join(', '));
+  }
+});
 
 
 
