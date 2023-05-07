@@ -293,6 +293,8 @@ function signInBusiness() {
   });
 }
 
+let userPoolCustomer;
+let userPoolBusiness;
 
 function initUserPools() {
   const poolDataCustomer = {
