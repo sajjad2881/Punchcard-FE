@@ -299,7 +299,7 @@ function signInBusiness() {
 function signOut() {
   const userData = {
     Username: localStorage.getItem('userEmail'),
-    Pool: userPoolBusiness,
+    Pool: userPoolCustomer //userPoolBusiness,
   };
   console.log("trying to signout")
   const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
