@@ -81,6 +81,8 @@ apigClientFactory.newClient = function (config) {
 
     var apiGatewayClient = apiGateway.core.apiGatewayClientFactory.newClient(simpleHttpClientConfig, sigV4ClientConfig);
     
+    
+    
     apigClient.analyticsOptions = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
@@ -117,24 +119,6 @@ apigClientFactory.newClient = function (config) {
     };
     
     
-    apigClient.analyticsMenuGet = function (params, body, additionalParams) {
-        if(additionalParams === undefined) { additionalParams = {}; }
-        
-        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
-        
-        var analyticsMenuGetRequest = {
-            verb: 'get'.toUpperCase(),
-            path: pathComponent + uritemplate('/analytics/menu').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
-            headers: apiGateway.core.utils.parseParametersToObject(params, []),
-            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
-            body: body
-        };
-        
-        
-        return apiGatewayClient.makeRequest(analyticsMenuGetRequest, authType, additionalParams, config.apiKey);
-    };
-    
-    
     apigClient.analyticsMenuPost = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
@@ -168,6 +152,42 @@ apigClientFactory.newClient = function (config) {
         
         
         return apiGatewayClient.makeRequest(analyticsMenuOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.analyticsMenuRestaurantidGet = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, ['restaurantid'], ['body']);
+        
+        var analyticsMenuRestaurantidGetRequest = {
+            verb: 'get'.toUpperCase(),
+            path: pathComponent + uritemplate('/analytics/menu/{restaurantid}').expand(apiGateway.core.utils.parseParametersToObject(params, ['restaurantid'])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(analyticsMenuRestaurantidGetRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.analyticsMenuRestaurantidOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var analyticsMenuRestaurantidOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/analytics/menu/{restaurantid}').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(analyticsMenuRestaurantidOptionsRequest, authType, additionalParams, config.apiKey);
     };
     
     
@@ -243,6 +263,42 @@ apigClientFactory.newClient = function (config) {
     };
     
     
+    apigClient.programsEnrolledProgramsPost = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var programsEnrolledProgramsPostRequest = {
+            verb: 'post'.toUpperCase(),
+            path: pathComponent + uritemplate('/programs/enrolledPrograms').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(programsEnrolledProgramsPostRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.programsEnrolledProgramsOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var programsEnrolledProgramsOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/programs/enrolledPrograms').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(programsEnrolledProgramsOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
     apigClient.programsEnrolledProgramsUseridGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
@@ -258,6 +314,24 @@ apigClientFactory.newClient = function (config) {
         
         
         return apiGatewayClient.makeRequest(programsEnrolledProgramsUseridGetRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.programsEnrolledProgramsUseridOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var programsEnrolledProgramsUseridOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/programs/enrolledPrograms/{userid}').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(programsEnrolledProgramsUseridOptionsRequest, authType, additionalParams, config.apiKey);
     };
     
     
