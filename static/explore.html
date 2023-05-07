@@ -71,7 +71,7 @@
 
     const restaurantsPromise = Promise.all(restaurantIDs.map(restaurantID => {
       const pathParameters = { restaurantID };
-      return apigClient.restaurantsRestaurantIDGet(pathParameters, body, additionalParams);
+      return apigClient.restaurantsRestaurantIDGet(pathParameters, {}, {});
     }));
 
     let restaurants = [];
