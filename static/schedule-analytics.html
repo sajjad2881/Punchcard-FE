@@ -95,7 +95,7 @@
                 function scheduleEvent() {
                     var params = {};
                     var body = {
-                        restaurant_id: 'test_restaurant',
+                        restaurant_id: localStorage.getItem('restaurantID'),
                         frequency: frequency
                     };
                     var additionalParams = {};

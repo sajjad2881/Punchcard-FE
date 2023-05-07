@@ -23,6 +23,7 @@ let addressInput = document.getElementById('business-signup-address');
 // });
 
 
+
 var apigClient = apigClientFactory.newClient();
 
 const poolDataCustomer = {
@@ -166,7 +167,9 @@ function signUpBusiness() {
   const username = document.getElementById('business-signup-username').value;
   const password = document.getElementById('business-signup-password').value;
   const name = document.getElementById('business-signup-name').value;
-  const address = place.formatted_address;
+  // const address = place.formatted_address;
+  //Temporary replacement
+  const address = document.getElementById('business-signup-address').value;
   const email = document.getElementById('business-signup-email').value;
   const phone_number = document.getElementById('business-signup-phone').value;
   const website = document.getElementById('business-signup-website').value;
@@ -176,8 +179,11 @@ function signUpBusiness() {
   const descriptors = document.getElementById('business-signup-descriptors').value;
   const locationTags = document.getElementById('business-signup-locationTags').value;
   const pictureInput = document.getElementById('business-signup-picture');
-  const latitude = place.geometry.location.lat();
-  const longitude = place.geometry.location.lng();
+  // const latitude = place.geometry.location.lat();
+  // const longitude = place.geometry.location.lng();
+  //Temporary replacement
+  const latitude = 45.508271;
+  const longitude = -122.610036;
 
   const file = pictureInput.files[0];
   const reader = new FileReader();
@@ -236,7 +242,7 @@ function signUpBusiness() {
 function signInBusiness() {
   const username = document.getElementById('business-login-username').value;
   const password = document.getElementById('business-login-password').value;
-
+        
   const authenticationData = {
     Username: username,
     Password: password,
@@ -264,7 +270,7 @@ function signInBusiness() {
         }
 
         localStorage.setItem('Username', username);
-        localStorage.setItem('sub', attributes.find(attr => attr.Name === 'sub').Value);
+        localStorage.setItem('restaurantID', attributes.find(attr => attr.Name === 'sub').Value);
         localStorage.setItem('adminName', attributes.find(attr => attr.Name === 'custom:adminName').Value);
         localStorage.setItem('userEmail', attributes.find(attr => attr.Name === 'email').Value);
         localStorage.setItem('address', attributes.find(attr => attr.Name === 'address').Value);
