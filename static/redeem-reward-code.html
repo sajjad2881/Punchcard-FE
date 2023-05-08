@@ -2,52 +2,75 @@
 <html>
   <head>
     <title>Redeem Reward Code</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-        
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 1rem;
-        }
-        
-        input[type="text"] {
-            padding: 0.5rem;
-            font-size: 1.5rem;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
-        }
-        
-        button[type="submit"], button[type="button"] {
-            padding: 0.5rem 1rem;
-            font-size: 1.5rem;
-            background-color: black;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 1rem;
-        }
-    </style>
+      body {
+          font-family: 'Poppins', sans-serif;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 100vh;
+          margin: 0;
+          padding: 0;
+          color: #333;
+          background-color: #f5f5f5;
+      }
+      
+      h1 {
+          text-align: center;
+      }
+      
+      #redeem-reward-code-form {
+          background-color: #f0f0f0;
+          padding: 20px;
+          border-radius: 5px;
+          width: 50%;
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+          justify-content: center;
+      }
+      
+      input[type="text"] {
+          padding: 0.5rem;
+          font-size: 1.5rem;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+          width: 100%;
+          margin-bottom: 20px;
+      }
+      
+      .form-button2 {
+          padding: 10px 20px;
+          background-color: #008C00;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          margin-top: 1rem;
+          width: 100%;
+      }
+
+      .form-button {
+          padding: 10px 20px;
+          background-color: #008C00;
+          color: #fff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          margin-top: 1rem;
+      }
+
+      .form-button:hover {
+          background-color: #006600;
+      }
+
+      p {
+          text-align: center;
+      }
+  </style>
     <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
     <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
     <script src="../app.js" defer></script>
@@ -68,7 +91,9 @@
     <h1>Redeem Reward Code</h1>
     <div id="redeem-reward-code-form">
       <input type="text" id="redeemCode" placeholder="Enter Code">
-      <button onclick="redeemRewardCode()">Redeem Code</button>
+      <div>
+        <button class="form-button2" onclick="redeemRewardCode()">Redeem Code</button>
+      </div>
     </div>
     <p id="discount-message" style="display: none;"></p>
     <div id="success-message" style="display: none;">
@@ -77,7 +102,8 @@
     <div id="failure-message" style="display: none;">
       <p>Code unsuccessful. Try again.</p>
     </div>
-    <button type="button" onclick="goToBusinessDashboard()">Back to dashboard</button>
+    <button class="form-button" type="button" onclick="goToBusinessDashboard()">Back to dashboard</button>
+
     <script>
       /*function redeemRewardCode() {
         // For now, just display a success message
