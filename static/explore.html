@@ -169,6 +169,10 @@
         // Add each restaurant to the list
         userRestaurants = result.data;
 
+        console.log("HERE")
+
+        console.log(userRestaurants)
+
         if (typeof userRestaurants !== "undefined") {
           for (let restaurant of userRestaurants) {
             const pinViewBackground = new google.maps.marker.PinView({
@@ -198,7 +202,7 @@
         
 
       }).catch(function (result) {
-        console.error("Error: " + result);
+        console.error("defaultMAP - API call error:", error);
       });
 
 
