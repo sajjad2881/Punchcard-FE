@@ -461,6 +461,60 @@ apigClientFactory.newClient = function (config) {
     };
     
     
+    apigClient.redemptionPut = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var redemptionPutRequest = {
+            verb: 'put'.toUpperCase(),
+            path: pathComponent + uritemplate('/redemption').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(redemptionPutRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.redemptionPost = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var redemptionPostRequest = {
+            verb: 'post'.toUpperCase(),
+            path: pathComponent + uritemplate('/redemption').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(redemptionPostRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.redemptionOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var redemptionOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/redemption').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(redemptionOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
     apigClient.restaurantsOptions = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
