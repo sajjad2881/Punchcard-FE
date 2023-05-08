@@ -4,14 +4,52 @@
 <head>
   <title>Restaurant Map</title>
   <style>
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+      color: #333;
+    }
+
     #map {
       height: 400px;
       width: 100%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    #info,
     #search-bar {
-      padding: 10px;
+      background-color: #fff;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #search-input {
+      flex: 1;
+      margin-right: 10px;
+      padding: 5px;
+    }
+
+    #info {
+      background-color: #fff;
+      padding: 20px;
+      max-width: 95%;
+      margin: 20px auto;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      box-sizing: border-box;
+    }
+
+    h3 {
+      font-weight: bold;
+      font-size: 24px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #777;
     }
   </style>
 
