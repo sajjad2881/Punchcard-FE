@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Restaurant Profile</title>
     <style>
@@ -27,6 +28,7 @@
     <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
     <script type="text/javascript" src="../apigClient.js"></script>
 </head>
+
 <body>
     <div id="restaurant-profile">
         <h1 id="name"></h1>
@@ -35,71 +37,81 @@
         <p id="phone-number"></p>
         <p id="description"></p>
         <button id="join-rewards-button" style="display: none;">Join Rewards Program!</button>
-        <p id="rewards-status"></p>
+        <div id="rewards-status"></div>
+        <div id="rewards-program-info"></div>
     </div>
 
     <script>
-        window.onload = function() {
-            
-        var apigClient = apigClientFactory.newClient();  // Replace with your API Gateway client initialization
+        window.onload = function () {
+            var apigClient = apigClientFactory.newClient();  // Replace with your API Gateway client initialization
 
-        var restaurantID = 'f614eb0c-0424-44f9-8954-f118a9c0950e';// Replace with your restaurant ID
-        var userID = '1f86d3f6-048a-4f62-90dc-83b105354468';  // Replace with your user ID
-        ///USER + RESTURANT
+            // Get the userID from localStorage and restaurantID from the URL parameters
+            var userID = localStorage.getItem("userID");
+            var urlParams = new URLSearchParams(window.location.search);
+            var restaurantID = urlParams.get('restaurantID');
 
-        //var urlParams = new URLSearchParams(window.location.search);
-
-        // Get the restaurantID from the URL parameters
-        //var restaurantID = urlParams.get('restaurantID');
-        //var userId = localStorage.getItem("userID")
-
-
-        document.getElementById('join-rewards-button').addEventListener('click', function() {
-            var body = {
-                userID: userID,
-                restaurantID: restaurantID
-            };
-            
-            apigClient.programsEnrolledProgramsPost({}, body, {})
+            // Check if the user is enrolled in the rewards program for the restaurant
+            apigClient.programsEnrolledProgramsUseridGet({ userid: userID }, {}, {})
                 .then(response => {
-                    document.getElementById('rewards-status').textContent = 'You are now enrolled in the rewards program at this restaurant.';
-                    document.getElementById('join-rewards-button').style.display = 'none';
+                    console.log(response)
+                    var enrolledPrograms = response.data;
+                    var isEnrolled = enrolledPrograms.some(program => program.restaurantID === restaurantID);
+
+                    console.log("isEnrolled: " + isEnrolled)
+                    if (isEnrolled) {
+                        // User is enrolled, retrieve rewards program information
+                        var instanceID = userID + restaurantID;
+                        console.log(instanceID)
+                        return apigClient.programsInstancesInstanceidGet({ instanceid: instanceID }, {}, {});
+                    } else {
+                        // User is not enrolled, display the "Join Rewards Program!" button
+                        document.getElementById('join-rewards-button').style.display = 'block';
+                        return null;
+                    }
+                })
+                .then(response => {
+                    if (response) {
+                        console.log(response)
+                        // Populate the frontend div with rewards program information
+                        var programData = response.data;
+                        console.log(programData)
+                        // Update the frontend div with programData (e.g., programData.website, programData.name, etc.)
+                        document.getElementById('rewards-program-info').textContent = JSON.stringify(programData, null, 2);
+                    }
                 })
                 .catch(error => console.error('Error:', error));
-        });
-        
+
+            document.getElementById('join-rewards-button').addEventListener('click', function () {
+                var body = {
+                    userID: userID,
+                    restaurantID: restaurantID
+                };
+
+                apigClient.programsEnrolledProgramsPost({}, body, {})
+                    .then(response => {
+                        document.getElementById('rewards-status').textContent = 'You are now enrolled in the rewards program at this restaurant.';
+                        document.getElementById('join-rewards-button').style.display = 'none';
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
 
 
-        apigClient.restaurantsRestaurantIDGet({restaurantID: restaurantID}, {}, {})
-            .then(response => {
-                var data = response.data;
-                console.log(data);
-                document.getElementById('name').textContent = data.name;
-                document.getElementById('profile-picture').src = data.picture;
-                document.getElementById('address').textContent = data.address;
-                document.getElementById('phone-number').textContent = data.phoneNumber;
-                document.getElementById('description').textContent = data["custom:descriptionText"];
-            })
-            .catch(error => console.error('Error:', error));
 
-        apigClient.programsEnrolledProgramsUseridGet({userid: userID}, {}, {})
-            .then(response => {
-                var enrolledPrograms = response.data;
-                var promises = enrolledPrograms.map(instanceID => 
-                    apigClient.programsInstancesInstanceidGet({instanceid: instanceID}, {}, {}).then(response => response.data)
-                );
-                return Promise.all(promises);
-            })
-            .then(programInstances => {
-                var isEnrolled = programInstances.some(instance => instance.restaurantID === restaurantID);
-                if (isEnrolled) {
-                    document.getElementById('rewards-status').textContent = 'You are enrolled in the rewards program at this restaurant.';
-                } else {
-                    document.getElementById('join-rewards-button').style.display = 'block';
-                }
-            })
-            .catch(error => console.error('Error:', error));
+            apigClient.restaurantsRestaurantIDGet({ restaurantID: restaurantID }, {}, {})
+                .then(response => {
+                    var data = response.data;
+                    console.log(data);
+                    document.getElementById('name').textContent = data.name;
+                    document.getElementById('profile-picture').src = data.picture;
+                    document.getElementById('address').textContent = data.address;
+                    document.getElementById('phone-number').textContent = data.phoneNumber;
+                    document.getElementById('description').textContent = data["custom:descriptionText"];
+                })
+                .catch(error => console.error('Error:', error));
+
+
         };
     </script>
 </body>
+
 </html>
