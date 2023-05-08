@@ -169,6 +169,8 @@
         // Add each restaurant to the list
         userRestaurants = result.data;
 
+        console.log(userRestaurants)
+
         if (typeof userRestaurants !== "undefined") {
           for (let restaurant of userRestaurants) {
             const pinViewBackground = new google.maps.marker.PinView({
