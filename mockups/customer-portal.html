@@ -125,6 +125,22 @@ font-size: 16px;
 }
 </style>
 
+<script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
+<script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
+ <!-- Include the API Gateway SDK scripts -->
+<script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/rollups/sha256.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/hmac.js"></script>
+<script type="text/javascript" src="../lib/CryptoJS/components/enc-base64.js"></script>
+<script type="text/javascript" src="../lib/url-template/url-template.js"></script>
+<script type="text/javascript" src="../lib/apiGatewayCore/sigV4Client.js"></script>
+<script type="text/javascript" src="../lib/apiGatewayCore/apiGatewayClient.js"></script>
+<script type="text/javascript" src="../lib/apiGatewayCore/simpleHttpClient.js"></script>
+<script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
+<script type="text/javascript" src="../apigClient.js"></script>
+<script type="text/javascript" src="../app.js"></script>
+
 </head>
 <body>
     <!-- Header -->
@@ -171,6 +187,15 @@ font-size: 16px;
         // ... more punchcards
     ];
 
+    var apigClient = apigClientFactory.newClient();
+
+    apigClient.programsEnrolledProgramsUseridGet({userid: localStorage.getItem('userID')}, {}, {}).then(function(result){
+        generatePunchcards(result.data);
+    }).catch(function(result){
+        console.log(result);
+    }
+    );
+
     // Function to generate punchcards in the gallery based on data
     function generatePunchcards(punchcardsData) {
         const punchcardGallery = document.getElementById('punchcard-gallery');
@@ -186,35 +211,35 @@ font-size: 16px;
             // Create punchcard element
             const punchcardElement = document.createElement('div');
             punchcardElement.className = 'punchcard';
-            punchcardElement.style.backgroundImage = `url(${punchcard.backgroundImage})`;
+            punchcardElement.style.backgroundImage = `url(${punchcard["picture"]})`;
             punchcardElement.innerHTML = `
                 <div class
-="punchcard-strip">${punchcard.business}</div>`;
+="punchcard-strip">${punchcard["name"]}</div>`;
 
             // Event listener for when a punchcard is clicked
             punchcardElement.addEventListener('click', () => {
-                punchcardBusiness.textContent = punchcard.business;
-                punchcardDescription.textContent = punchcard.description;
+                punchcardBusiness.textContent = punchcard["name"];
+                punchcardDescription.textContent = punchcard["custom:descriptionText"];
                 punchcardInfo.style.display = 'block';
 
-                // Populate reward selection dropdown
-                rewardSelectionDropdown.innerHTML = '';
-                punchcard.rewards.forEach(reward => {
-                    const option = document.createElement('option');
-                    option.value = reward.points;
-                    option.text = `${reward.reward} (${reward.points} points)`;
-                    rewardSelectionDropdown.add(option);
-                });
+                // // Populate reward selection dropdown
+                // rewardSelectionDropdown.innerHTML = '';
+                // punchcard.rewards.forEach(reward => {
+                //     const option = document.createElement('option');
+                //     option.value = reward.points;
+                //     option.text = `${reward.reward} (${reward.points} points)`;
+                //     rewardSelectionDropdown.add(option);
+                // });
 
                 // Set initial progress bar and labels based on the first reward
-                updateProgressBarAndLabels(punchcard, punchcard.rewards[0].points);
+                // updateProgressBarAndLabels(punchcard, punchcard.rewards[0].points);
             });
 
             // Event listener for when a reward is selected from the dropdown
-            rewardSelectionDropdown.addEventListener('change', () => {
-                const targetPoints = parseInt(rewardSelectionDropdown.value);
-                updateProgressBarAndLabels(punchcard, targetPoints);
-            });
+            // rewardSelectionDropdown.addEventListener('change', () => {
+            //     const targetPoints = parseInt(rewardSelectionDropdown.value);
+            //     updateProgressBarAndLabels(punchcard, targetPoints);
+            // });
 
             // Append punchcard to the gallery
             punchcardGallery.appendChild(punchcardElement);
@@ -249,7 +274,7 @@ font-size: 16px;
     }
 
     // Generate punchcards based on the sample data
-    generatePunchcards(punchcardsData);
+    // generatePunchcards(punchcardsData);
 </script>
 </body>
 </html>
