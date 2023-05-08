@@ -3,6 +3,7 @@
 
 <head>
   <title>Restaurant Map</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Poppins', Arial, sans-serif;
@@ -35,16 +36,25 @@
       align-items: center;
       justify-content: space-between;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      margin: 20px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     #search-input {
       flex: 1;
       margin-right: 10px;
       padding: 5px;
+      border: none;
+      border-radius: 3px;
+      outline: none;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
     #content-container {
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2), 0 10px 20px rgba(0, 0, 0, 0.1) inset;
+      box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.2), inset 0 -5px 10px rgba(0, 0, 0, 0.2);
       margin: 20px;
     }
 
@@ -60,6 +70,12 @@
       margin: 20px auto;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       box-sizing: border-box;
+      display: none; /* Hide by default */
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border-radius: 5px;
     }
 
     h3 {
@@ -72,6 +88,7 @@
       color: #777;
     }
   </style>
+
 
   <script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
   <script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
@@ -87,16 +104,25 @@
 </head>
 
 <body>
+  <!-- Header (Punchcard Menu) -->
   <div class="header">
-    <div class="logo-text">Punchcard</div>
+    <div class="logo-text">Punchcard</
+div>
+
   </div>
   <div id="search-bar">
     <input id="search-input" type="text">
     <button id="search-button" onclick="searchAndUpdate()">Search</button>
   </div>
+  <!-- Content Container -->
   <div id="content-container">
     <div id="map"></div>
+  </div>
     <div id="info"></div>
+    <div id="info"></div>
+  </div>
+
+  <div id="info"></div>
   </div>
 
   <script>
@@ -105,7 +131,6 @@
     let userRestaurants = [];
 
     let restaurants = [];
-
 
     let userLocation = {
       lat: 40.80785939999999,
@@ -156,7 +181,7 @@
         <h3>No restaurants found</h3>
         `;
       } else {
-        document.getElementById('info').innerHTML = ``;
+        document.getElementById('info').style.display = 'none';
       }
       const defaultLocation = { lat: 40.80785939999999, lng: -73.9651746 };
       const map = new google.maps.Map(document.getElementById('map'), {
@@ -182,6 +207,7 @@
             <p>${restaurant['address']}</p>
             <p>${restaurant['custom:cuisines']}</p>
             `;
+            document.getElementById('info').style.display = 'block'; // Show info section
           });
         }
       }
@@ -218,6 +244,7 @@
     }
 
     function defaultMap() {
+      document.getElementById('info').style.display = 'none'; // Hide info section
       console.log("defaultMAP");
       document.getElementById('info').innerHTML = ``;
       const defaultLocation = { lat: 40.80785939999999, lng: -73.9651746 };
@@ -255,6 +282,8 @@
             <p>${restaurant['custom:cuisines']}</p>
             `;
             });
+
+            document.getElementById('info').style.display = 'block';
           }
         }
 
@@ -298,12 +327,13 @@
       }
     }
 
+    // The rest of the code remains unchanged
+    // ...
   </script>
-
   <!-- Load the Google Maps JavaScript API -->
+
   <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAQeyUyXmQcMr3ooXhDe9bO-Z14d2cwPg&callback=defaultMap"></script>
   <!-- -->
 </body>
-
 </html>
