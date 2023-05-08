@@ -163,6 +163,8 @@
         zoom: 12
       });
 
+      addUserLocationMarker(map);
+
       apigClient.restaurantsUsersubscriptionsGet({ "userid": localStorage.getItem('userID') }, {}, {}).then(function (result) {
         // Add each restaurant to the list
         userRestaurants = result.data;
@@ -193,7 +195,7 @@
           }
         }
 
-        addUserLocationMarker(map);
+        
 
       }).catch(function (result) {
         console.error("Error: " + result);
