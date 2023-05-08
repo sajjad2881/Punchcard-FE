@@ -86,7 +86,7 @@ async function getMenuItems() {
 
 function handleQuantityChange(menuItem, newQuantity) {
   const previousQuantity = selectedItems[menuItem.item] ? selectedItems[menuItem.item].quantity : 0;
-  selectedItems[menuItem.item] = { quantity: newQuantity, price: menuItem.price };
+  selectedItems[menuItem.item] = { item: menuItem.item, quantity: newQuantity, price: menuItem.price };
   totalSpent += (newQuantity - previousQuantity) * menuItem.price;
   document.getElementById('amountSpent').value = totalSpent.toFixed(2);
 }
