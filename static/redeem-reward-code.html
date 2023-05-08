@@ -104,24 +104,30 @@
         // Make the PUT request
         var apigClient = apigClientFactory.newClient();
         apigClient.redemptionPut(params, body, additionalParams)
-            .then(function(result){
-            // This is where you would put the success callback
-            alert('Reward code redeemed successfully!');
+          .then(function(result){
+              // This is where you would put the success callback
+              alert('Reward code redeemed successfully!');
+              
+              // Log the result to inspect it
+              console.log('Result:', result);
+              
+              // Parse the response body
+              var responseBody = JSON.parse(result.data.body);
+              
+              // Log the responseBody to inspect it
+              console.log('Response Body:', responseBody);
 
-            // Parse the response body
-            var responseBody = JSON.parse(result.data.body);
-
-            // Get the reward_redeemed value from the response
-            var reward_redeemed = responseBody.reward_redeemed;
-            
-            // Set and show the discount message
-            var discountMessageElement = document.getElementById('discount-message');
-            discountMessageElement.innerText = 'Apply a ' + reward_redeemed + ' discount to customer order';
-            discountMessageElement.style.display = 'block';
-            }).catch(function(result){
-            // This is where you would put the error callback
-            alert('Something went wrong when trying to redeem the reward code.');
-            });
+              // Get the reward_redeemed value from the response
+              var reward_redeemed = responseBody.reward_redeemed;
+              
+              // Set and show the discount message
+              var discountMessageElement = document.getElementById('discount-message');
+              discountMessageElement.innerText = 'Apply a ' + reward_redeemed + ' discount to customer order';
+              discountMessageElement.style.display = 'block';
+          }).catch(function(result){
+              // This is where you would put the error callback
+              alert('Something went wrong when trying to redeem the reward code.');
+          });
         }
 
 
