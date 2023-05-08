@@ -40,10 +40,16 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             box-sizing: border-box;
             /* Include padding in total width */
+            margin-top: 40px;
+            margin-left: 100px;
+            margin-right: 100px;
+            border-radius: 10px;
         }
 
         #image-card {
-            width: 100%;
+            margin-left: 100px;
+            margin-right: 100px;
+            margin-top: 50px;
             height: 400px;
             background-position: center;
             background-size: cover;
@@ -169,10 +175,11 @@
                     style="display: block; color: black; text-align: center; padding: 14px 16px; text-decoration: none;">Home</a>
         </ul>
     </div>
-    <div id="restaurant-profile">
         <!-- <img id="profile-picture" src="" alt="Profile Picture"> -->
         <div id="image-card">         <h1 id="name"></h1>
         </div>
+        <div id="restaurant-profile">
+
         <p id="address"></p>
         <p id="phone-number"></p>
         <p id="description"></p>
@@ -313,9 +320,9 @@
                     console.log(data);
                     document.getElementById('name').textContent = data.name;
                     document.getElementById('image-card').style.backgroundImage = 'url(' + data.picture + ')';
-                    document.getElementById('address').textContent = data.address;
-                    document.getElementById('phone-number').textContent = data.phoneNumber;
-                    document.getElementById('description').textContent = data["custom:descriptionText"];
+                    // document.getElementById('address').textContent = data.address;
+                    // document.getElementById('phone-number').textContent = data.phoneNumber;
+                    // document.getElementById('description').textContent = data["custom:descriptionText"];
                 })
                 .catch(error => console.error('Error:', error));
 
