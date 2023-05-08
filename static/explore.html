@@ -165,7 +165,7 @@
 
       addUserLocationMarker(map);
 
-      apigClient.restaurantsUsersubscriptionsGet({ "userid": localStorage.getItem('userID') }, {}, {}).then(function (result) {
+      apigClient.restaurantsUsersubscriptionsGet({ "userID": localStorage.getItem('userID') }, {}, {}).then(function (result) {
         // Add each restaurant to the list
         userRestaurants = result.data;
 
