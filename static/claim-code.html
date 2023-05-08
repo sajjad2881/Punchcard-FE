@@ -73,7 +73,9 @@
 	  
 	  <div id="claim-code-form">
 		<input type="text" id="claimCode" placeholder="Enter Code">
-		<button onclick="claimCode()">Claim Code</button>
+		<div id = #button-container>
+		<button type ="button" onclick="claimCode()">Claim Code</button>	<button type="button" onclick="goToCustomerDashboard()">Back to dashboard</button>
+		</div>	
 	  </div>
 	  
 	  <div id="success-message" style="display: none;">
@@ -84,7 +86,6 @@
 		<p>Code unsuccessful. Try again.</p>
 	  </div>
 	  <!-- Add a button to go back to the customer-dashboard page -->
-	<button type="button" onclick="goToCustomerDashboard()">Back to dashboard</button>
 	
 	  <script>
 		function claimCode() {

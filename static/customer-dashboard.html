@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Customer Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -20,6 +21,7 @@
             font-weight: bold;
             margin-left: 10px;
         }
+
         /* Styles for the punchcard gallery and detailed section */
         body {
             font-family: 'Poppins', Arial, sans-serif;
@@ -28,11 +30,13 @@
             background-color: #f5f5f5;
             color: #333;
         }
+
         .punchcard-gallery {
             display: flex;
             overflow-x: auto;
             padding: 20px;
         }
+
         .punchcard {
             flex: 0 0 auto;
             width: 240px;
@@ -46,9 +50,11 @@
             background-size: cover;
             background-position: center;
         }
+
         .punchcard:hover {
             transform: translateY(-10px);
         }
+
         .punchcard-strip {
             position: absolute;
             top: 0;
@@ -62,22 +68,29 @@
             font-size: 16px;
             font-weight: 600;
         }
+
         .punchcard-info {
             background-color: #fff;
             padding: 20px;
-            max-width: 95%; /* Set a maximum width for the container */
-            margin: 20px auto; /* Center the container */
+            max-width: 95%;
+            /* Set a maximum width for the container */
+            margin: 20px auto;
+            /* Center the container */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            box-sizing: border-box; /* Include padding in total width */
+            box-sizing: border-box;
+            /* Include padding in total width */
         }
+
         .punchcard-business {
             font-weight: bold;
             font-size: 24px;
         }
+
         .punchcard-description {
             font-size: 16px;
             color: #777;
         }
+
         /* Styles for the progress bar */
         .progress-bar-container {
             width: 100%;
@@ -87,318 +100,354 @@
             position: relative;
             margin: 20px 0;
         }
+
         .progress-bar {
             height: 100%;
             background-color: #50c878;
             border-radius: 10px;
         }
+
         .progress-label {
             text-align: center;
-            font-size: 14px;        
+            font-size: 14px;
             color: #333;
             margin-top: 5px;
-            }
-        .progress-percentage {
-        position: absolute;
-        top: -20px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 12px;
-        color: #333;
         }
+
+        .progress-percentage {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #333;
+        }
+
         /* Styles for the select target reward section */
         .reward-selection-container {
-        margin: 20px 0;
+            margin: 20px 0;
         }
+
         .reward-selection-label {
-        font-size: 16px;
-        margin-bottom: 5px;
+            font-size: 16px;
+            margin-bottom: 5px;
         }
+
         .reward-selection-dropdown {
-        width: 100%;
-        padding: 5px;
-        font-size: 16px;
+            width: 100%;
+            padding: 5px;
+            font-size: 16px;
         }
+
         .progress-label {
             margin: 10px;
         }
-        .marker100, .marker-label100 {
+
+        .marker100,
+        .marker-label100 {
             position: absolute;
             bottom: 0;
         }
+
         .marker-label100 {
-            transform: translateX(-50%) translateY(20px); /* Adjust to position the label correctly */
+            transform: translateX(-50%) translateY(20px);
+            /* Adjust to position the label correctly */
             display: inline-block;
-            width: 30px; /* Adjust as necessary */
+            width: 30px;
+            /* Adjust as necessary */
             text-align: center;
         }
+
         .punchcard-info {
             display: none;
         }
-</style>
 
-<script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
-<script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
- <!-- Include the API Gateway SDK scripts -->
-<script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
-<script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
-<script type="text/javascript" src="../lib/CryptoJS/rollups/sha256.js"></script>
-<script type="text/javascript" src="../lib/CryptoJS/components/hmac.js"></script>
-<script type="text/javascript" src="../lib/CryptoJS/components/enc-base64.js"></script>
-<script type="text/javascript" src="../lib/url-template/url-template.js"></script>
-<script type="text/javascript" src="../lib/apiGatewayCore/sigV4Client.js"></script>
-<script type="text/javascript" src="../lib/apiGatewayCore/apiGatewayClient.js"></script>
-<script type="text/javascript" src="../lib/apiGatewayCore/simpleHttpClient.js"></script>
-<script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
-<script type="text/javascript" src="../apigClient.js"></script>
-<script type="text/javascript" src="../app.js"></script>
+        #sign-out {
+            display: block;
+            color: white;
+            background-color: black;
+            border-radius: 10px;
+            border-width: 0;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            margin-left: 30px;
+            height: 100%
+        }
+
+        #sign-out:hover {
+            background-color: #333;
+        }
+    </style>
+
+    <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
+    <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
+    <!-- Include the API Gateway SDK scripts -->
+    <script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/rollups/sha256.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/components/hmac.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/components/enc-base64.js"></script>
+    <script type="text/javascript" src="../lib/url-template/url-template.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/sigV4Client.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/apiGatewayClient.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/simpleHttpClient.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
+    <script type="text/javascript" src="../apigClient.js"></script>
+    <script type="text/javascript" src="../app.js"></script>
 
 </head>
+
 <body>
     <!-- Header -->
     <div class="header">
         <!-- Logo and navigation links -->
         <div class="logo-text">Punchcard</div>
         <ul style="list-style-type: none; margin: 0; padding: 0; overflow: hidden;">
-            <li style="float: left;"><a href="../static/explore.html" style="display: block; color: black; text-align: center; padding: 14px 16px; text-decoration: none;">Explore</a></li>
-            <li style="float: left;"><a href="./claim-code.html" style="display: block; color: black; text-align: center; padding: 14px 16px; text-decoration: none;">Claim</a></li>
-            <li style="float: left;"><a href="./customer-dashboard.html" style="display: block; color: black; text-align: center; padding: 14px 16px; text-decoration: none;">Home</a></li>
-          </ul>
+            <li style="float: left;"><a href="../static/explore.html"
+                    style="display: block; color: black; text-align: center; padding: 14px 16px; text-decoration: none;">Explore</a>
+            </li>
+            <li style="float: left;"><a href="./claim-code.html"
+                    style="display: block; color: black; text-align: center; padding: 14px 16px; text-decoration: none;">Claim</a>
+            </li>
+            <li style="float: left;"><button onclick="signOutCustomer()" id="sign-out">Sign Out</button></li>
+        </ul>
     </div>
-<div class="punchcard-gallery" id="punchcard-gallery">
-    <!-- Punchcards will be dynamically generated here using JavaScript -->
-</div>
-<div class="punchcard-info" id="punchcard-info">
-    <!-- Detailed information about the selected punchcard will be displayed here -->
-    <div class="punchcard-business" id="punchcard-business"></div>
-    <div class="punchcard-description" id="punchcard-description"></div>
-    
-    <!-- Select target reward section -->
+    <div class="punchcard-gallery" id="punchcard-gallery">
+        <!-- Punchcards will be dynamically generated here using JavaScript -->
+    </div>
+    <div class="punchcard-info" id="punchcard-info">
+        <!-- Detailed information about the selected punchcard will be displayed here -->
+        <div class="punchcard-business" id="punchcard-business"></div>
+        <div class="punchcard-description" id="punchcard-description"></div>
+
+        <!-- Select target reward section -->
         <!-- Rewards info section -->
-       <!-- Rewards info section -->
-    <div class="rewards-info">
-        <div class="points-earned" id="points-earned"></div>
+        <!-- Rewards info section -->
+        <div class="rewards-info">
+            <div class="points-earned" id="points-earned"></div>
 
-        <!-- Progress bar section -->
-        <div class="progress-bar-container" id="progress-bar-container">
-            <div class="progress-bar" id="progress-bar"></div> <!-- Progress bar fill -->
+            <!-- Progress bar section -->
+            <div class="progress-bar-container" id="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div> <!-- Progress bar fill -->
+            </div>
+
+            <!-- Qualifying rewards section -->
+            <div class="qualifying-rewards" id="qualifying-rewards"></div>
         </div>
-        
-        <!-- Qualifying rewards section -->
-        <div class="qualifying-rewards" id="qualifying-rewards"></div>
+
+
+        <button id="view-profile-button">View your profile with this business to redeem rewards!</button>
+
+
     </div>
 
+    <script>
+        // Sample data for punchcards (this can be replaced with data from an API call)
+        const punchcardsData = [
+            {
+                business: 'Roti Roll',
+                description: 'Earn rewards for every purchase!',
+                backgroundImage: 'https://spicecravings.com/wp-content/uploads/2020/12/Chicken-Kathi-Roll-1.jpg',
+                points: 6,
+                rewards: [
+                    { points: 5, reward: 'Free Drink' },
+                    { points: 10, reward: 'Free Roll' },
+                    { points: 15, reward: 'Free Meal' }
+                ],
+            },
+            // ... more punchcards
+        ];
 
-    <button id="view-profile-button">View your profile with this business to redeem rewards!</button>
+        var apigClient = apigClientFactory.newClient();
 
+        apigClient.programsEnrolledProgramsUseridGet({ userid: localStorage.getItem('userID') }, {}, {}).then(function (result) {
+            generatePunchcards(result.data);
+        }).catch(function (result) {
+            console.log(result);
+        }
+        );
 
-</div>
-
-<script>
-    // Sample data for punchcards (this can be replaced with data from an API call)
-    const punchcardsData = [
-        {
-            business: 'Roti Roll',
-            description: 'Earn rewards for every purchase!',
-            backgroundImage: 'https://spicecravings.com/wp-content/uploads/2020/12/Chicken-Kathi-Roll-1.jpg',
-            points: 6,
-            rewards: [
-                {points: 5, reward: 'Free Drink'},
-                {points: 10, reward: 'Free Roll'},
-                {points: 15, reward: 'Free Meal'}
-            ],
-        },
-        // ... more punchcards
-    ];
-
-    var apigClient = apigClientFactory.newClient();
-
-    apigClient.programsEnrolledProgramsUseridGet({userid: localStorage.getItem('userID')}, {}, {}).then(function(result){
-        generatePunchcards(result.data);
-    }).catch(function(result){
-        console.log(result);
-    }
-    );
-
-    // Function to generate punchcards in the gallery based on data
-    function generatePunchcards(punchcardsData) {
-        console.log("HELLLOOOO")
-        const punchcardGallery = document.getElementById('punchcard-gallery');
-        const punchcardInfo = document.getElementById('punchcard-info');
-        const punchcardBusiness = document.getElementById('punchcard-business');
-        const punchcardDescription = document.getElementById('punchcard-description');
-        const progressBar = document.getElementById('progress-bar');
-        const progressPercentageLabel = document.getElementById('progress-percentage');
-        const progressLabel = document.getElementById('progress-label');
-        const rewardSelectionDropdown = document.getElementById('reward-selection-dropdown');
+        // Function to generate punchcards in the gallery based on data
+        function generatePunchcards(punchcardsData) {
+            console.log("HELLLOOOO")
+            const punchcardGallery = document.getElementById('punchcard-gallery');
+            const punchcardInfo = document.getElementById('punchcard-info');
+            const punchcardBusiness = document.getElementById('punchcard-business');
+            const punchcardDescription = document.getElementById('punchcard-description');
+            const progressBar = document.getElementById('progress-bar');
+            const progressPercentageLabel = document.getElementById('progress-percentage');
+            const progressLabel = document.getElementById('progress-label');
+            const rewardSelectionDropdown = document.getElementById('reward-selection-dropdown');
 
 
-        punchcardsData.forEach((punchcard) => {
-            // Create punchcard element
-            const punchcardElement = document.createElement('div');
-            punchcardElement.className = 'punchcard';
-            punchcardElement.style.backgroundImage = `url(${punchcard["picture"]})`;
-            punchcardElement.innerHTML = `
+            punchcardsData.forEach((punchcard) => {
+                // Create punchcard element
+                const punchcardElement = document.createElement('div');
+                punchcardElement.className = 'punchcard';
+                punchcardElement.style.backgroundImage = `url(${punchcard["picture"]})`;
+                punchcardElement.innerHTML = `
                 <div class="punchcard-strip">${punchcard["name"]}</div>`;
 
-            // Event listener for when a punchcard is clicked
-            punchcardElement.addEventListener('click', () => {
-                console.log("HELLLOOOO2")
-                punchcardInfo.style.display = 'block';
-                punchcardBusiness.textContent = punchcard["name"];
-                punchcardDescription.textContent = punchcard["custom:descriptionText"];
-                punchcardInfo.style.display = 'block';
+                // Event listener for when a punchcard is clicked
+                punchcardElement.addEventListener('click', () => {
+                    console.log("HELLLOOOO2")
+                    punchcardInfo.style.display = 'block';
+                    punchcardBusiness.textContent = punchcard["name"];
+                    punchcardDescription.textContent = punchcard["custom:descriptionText"];
+                    punchcardInfo.style.display = 'block';
 
-                var viewProfileButton = document.getElementById('view-profile-button');
-                viewProfileButton.style.display = 'block';
-                viewProfileButton.onclick = function() {
-                    window.location.href = '../static/restaurant-profile.html?restaurantID=' + punchcard["restaurantID"];
-                };
+                    var viewProfileButton = document.getElementById('view-profile-button');
+                    viewProfileButton.style.display = 'block';
+                    viewProfileButton.onclick = function () {
+                        window.location.href = '../static/restaurant-profile.html?restaurantID=' + punchcard["restaurantID"];
+                    };
 
-                // Get the userID from localStorage and restaurantID from the punchcard data
-                var userID = localStorage.getItem("userID");
-                var restaurantID = punchcard["restaurantID"];
+                    // Get the userID from localStorage and restaurantID from the punchcard data
+                    var userID = localStorage.getItem("userID");
+                    var restaurantID = punchcard["restaurantID"];
 
-                // Check if the user is enrolled in the rewards program for the restaurant
-                apigClient.programsEnrolledProgramsUseridGet({ userid: userID }, {}, {})
-                    .then(response => {
-                        var enrolledPrograms = response.data;
-                        var isEnrolled = enrolledPrograms.some(program => program.restaurantID === restaurantID);
+                    // Check if the user is enrolled in the rewards program for the restaurant
+                    apigClient.programsEnrolledProgramsUseridGet({ userid: userID }, {}, {})
+                        .then(response => {
+                            var enrolledPrograms = response.data;
+                            var isEnrolled = enrolledPrograms.some(program => program.restaurantID === restaurantID);
 
-                        if (isEnrolled) {
-                            // User is enrolled, retrieve rewards program information
-                            var instanceID = userID + restaurantID;
-                            return apigClient.programsInstancesInstanceidGet({ instanceid: instanceID }, {}, {});
-                        } else {
-                            // User is not enrolled, display message in the rewards info section
-                            var rewardsInfo = document.getElementById('rewards-info');
-                            rewardsInfo.textContent = "You are not registered for a rewards program with this business. Please visit the restaurant page to register.";
-                            return null;
-                        }
-                    })
-                    .then(response => {
-                        if (response) {
-                            var programData = response.data;
-
-                            // Create and display rewards info
-                            var pointsEarned = document.getElementById('points-earned');
-                            pointsEarned.textContent = 'Points earned: ' + programData.pointsEarned;
-
-                            var progressBarContainer = document.getElementById('progress-bar-container');
-                            progressBarContainer.innerHTML = '';  // Clear previous info
-
-                            var progressBar = document.createElement('div');
-                            progressBar.className = 'progress-bar';
-                            progressBarContainer.appendChild(progressBar);
-
-                            var maxPoints = JSON.parse(programData.rewardTiers[programData.rewardTiers.length - 1].replace(/'/g, '"')).tierPoints;
-                            var progressPercentage = (programData.pointsEarned / maxPoints) * 100;
-                            progressBar.style.width = progressPercentage + '%';
-
-                            // Add labels on the progress bar in increments of 100 points
-                            for (var i = 100; i <= maxPoints; i += 100) {
-                                var marker = document.createElement('div');
-                                marker.className = 'marker100';
-                                marker.style.left = (i / maxPoints * 100) + '%';
-                                progressBarContainer.appendChild(marker);
-
-                                var markerLabel = document.createElement('div');
-                                markerLabel.className = 'marker-label100';
-                                markerLabel.textContent = i;
-                                markerLabel.style.left = (i / maxPoints * 100) + '%';
-                                progressBarContainer.appendChild(markerLabel);
+                            if (isEnrolled) {
+                                // User is enrolled, retrieve rewards program information
+                                var instanceID = userID + restaurantID;
+                                return apigClient.programsInstancesInstanceidGet({ instanceid: instanceID }, {}, {});
+                            } else {
+                                // User is not enrolled, display message in the rewards info section
+                                var rewardsInfo = document.getElementById('rewards-info');
+                                rewardsInfo.textContent = "You are not registered for a rewards program with this business. Please visit the restaurant page to register.";
+                                return null;
                             }
+                        })
+                        .then(response => {
+                            if (response) {
+                                var programData = response.data;
 
-                            var qualifyingRewards = document.getElementById('qualifying-rewards');
-                            qualifyingRewards.innerHTML = '';  // Clear previous info
+                                // Create and display rewards info
+                                var pointsEarned = document.getElementById('points-earned');
+                                pointsEarned.textContent = 'Points earned: ' + programData.pointsEarned;
 
-                            var qualifyingRewardsList = programData.rewardTiers.filter(tierStr => {
-                                var tier = JSON.parse(tierStr.replace(/'/g, '"'));
-                                return programData.pointsEarned >= tier.tierPoints;
-                            });
+                                var progressBarContainer = document.getElementById('progress-bar-container');
+                                progressBarContainer.innerHTML = '';  // Clear previous info
 
-                            if (qualifyingRewardsList.length > 0) {
-                                qualifyingRewards.textContent = 'You qualify for the following rewards:';
-                                qualifyingRewardsList.forEach(tierStr => {
+                                var progressBar = document.createElement('div');
+                                progressBar.className = 'progress-bar';
+                                progressBarContainer.appendChild(progressBar);
+
+                                var maxPoints = JSON.parse(programData.rewardTiers[programData.rewardTiers.length - 1].replace(/'/g, '"')).tierPoints;
+                                var progressPercentage = (programData.pointsEarned / maxPoints) * 100;
+                                progressBar.style.width = progressPercentage + '%';
+
+                                // Add labels on the progress bar in increments of 100 points
+                                for (var i = 100; i <= maxPoints; i += 100) {
+                                    var marker = document.createElement('div');
+                                    marker.className = 'marker100';
+                                    marker.style.left = (i / maxPoints * 100) + '%';
+                                    progressBarContainer.appendChild(marker);
+
+                                    var markerLabel = document.createElement('div');
+                                    markerLabel.className = 'marker-label100';
+                                    markerLabel.textContent = i;
+                                    markerLabel.style.left = (i / maxPoints * 100) + '%';
+                                    progressBarContainer.appendChild(markerLabel);
+                                }
+
+                                var qualifyingRewards = document.getElementById('qualifying-rewards');
+                                qualifyingRewards.innerHTML = '';  // Clear previous info
+
+                                var qualifyingRewardsList = programData.rewardTiers.filter(tierStr => {
                                     var tier = JSON.parse(tierStr.replace(/'/g, '"'));
-
-                                    var rewardDiv = document.createElement('div');
-                                    rewardDiv.textContent = tier.tierPoints + ' points - ' + tier.tierReward;
-                                    qualifyingRewards.appendChild(rewardDiv);
+                                    return programData.pointsEarned >= tier.tierPoints;
                                 });
-                            } 
 
-                            var nextRewardTier = programData.rewardTiers.find(tierStr => {
-                                var tier = JSON.parse(tierStr.replace(/'/g, '"'));
-                                return programData.pointsEarned < tier.tierPoints;
-                            });
+                                if (qualifyingRewardsList.length > 0) {
+                                    qualifyingRewards.textContent = 'You qualify for the following rewards:';
+                                    qualifyingRewardsList.forEach(tierStr => {
+                                        var tier = JSON.parse(tierStr.replace(/'/g, '"'));
 
-                            if (nextRewardTier) {
-                                var tier = JSON.parse(nextRewardTier.replace(/'/g, '"'));
-                                var pointsTillNextReward = tier.tierPoints - programData.pointsEarned;
-                                var pointsTillNextRewardDiv = document.createElement('div');
-                                pointsTillNextRewardDiv.textContent = pointsTillNextReward + ' points till your next reward: ' + tier.tierReward;
-                                qualifyingRewards.appendChild(pointsTillNextRewardDiv);
+                                        var rewardDiv = document.createElement('div');
+                                        rewardDiv.textContent = tier.tierPoints + ' points - ' + tier.tierReward;
+                                        qualifyingRewards.appendChild(rewardDiv);
+                                    });
+                                }
+
+                                var nextRewardTier = programData.rewardTiers.find(tierStr => {
+                                    var tier = JSON.parse(tierStr.replace(/'/g, '"'));
+                                    return programData.pointsEarned < tier.tierPoints;
+                                });
+
+                                if (nextRewardTier) {
+                                    var tier = JSON.parse(nextRewardTier.replace(/'/g, '"'));
+                                    var pointsTillNextReward = tier.tierPoints - programData.pointsEarned;
+                                    var pointsTillNextRewardDiv = document.createElement('div');
+                                    pointsTillNextRewardDiv.textContent = pointsTillNextReward + ' points till your next reward: ' + tier.tierReward;
+                                    qualifyingRewards.appendChild(pointsTillNextRewardDiv);
+                                }
                             }
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
+                        })
+                        .catch(error => console.error('Error:', error));
 
 
 
-                // // Populate reward selection dropdown
-                // rewardSelectionDropdown.innerHTML = '';
-                // punchcard.rewards.forEach(reward => {
-                //     const option = document.createElement('option');
-                //     option.value = reward.points;
-                //     option.text = `${reward.reward} (${reward.points} points)`;
-                //     rewardSelectionDropdown.add(option);
+                    // // Populate reward selection dropdown
+                    // rewardSelectionDropdown.innerHTML = '';
+                    // punchcard.rewards.forEach(reward => {
+                    //     const option = document.createElement('option');
+                    //     option.value = reward.points;
+                    //     option.text = `${reward.reward} (${reward.points} points)`;
+                    //     rewardSelectionDropdown.add(option);
+                    // });
+
+                    // Set initial progress bar and labels based on the first reward
+                    // updateProgressBarAndLabels(punchcard, punchcard.rewards[0].points);
+                });
+
+                // Event listener for when a reward is selected from the dropdown
+                // rewardSelectionDropdown.addEventListener('change', () => {
+                //     const targetPoints = parseInt(rewardSelectionDropdown.value);
+                //     updateProgressBarAndLabels(punchcard, targetPoints);
                 // });
 
-                // Set initial progress bar and labels based on the first reward
-                // updateProgressBarAndLabels(punchcard, punchcard.rewards[0].points);
+                // Append punchcard to the gallery
+                punchcardGallery.appendChild(punchcardElement);
             });
 
-            // Event listener for when a reward is selected from the dropdown
-            // rewardSelectionDropdown.addEventListener('change', () => {
-            //     const targetPoints = parseInt(rewardSelectionDropdown.value);
-            //     updateProgressBarAndLabels(punchcard, targetPoints);
-            // });
+            // Hide punchcard info section initially
+            punchcardInfo.style.display = 'none';
+        }
 
-            // Append punchcard to the gallery
-            punchcardGallery.appendChild(punchcardElement);
-        });
+        // Function to update progress bar and labels based on selected reward
+        function updateProgressBarAndLabels(punchcard, targetPoints) {
+            const progressBar = document.getElementById('progress-bar');
+            const progressPercentageLabel = document.getElementById('progress-percentage');
+            const progressLabel = document.getElementById('progress-label');
 
-        // Hide punchcard info section initially
-        punchcardInfo.style.display = 'none';
-    }
+            const points = punchcard.points;
+            const progressPercentage = (points / targetPoints) * 100;
 
-    // Function to update progress bar and labels based on selected reward
-    function updateProgressBarAndLabels(punchcard, targetPoints) {
-        const progressBar = document.getElementById('progress-bar');
-        const progressPercentageLabel = document.getElementById('progress-percentage');
-        const progressLabel = document.getElementById('progress-label');
+            // Animate the progress bar to fill up
+            progressBar.animate([
+                { width: '0%' },
+                { width: `${Math.min(100, progressPercentage)}%` }
+            ], {
+                duration: 1000,
+                fill: 'forwards'
+            });
 
-        const points = punchcard.points;
-        const progressPercentage = (points / targetPoints) * 100;
-
-        // Animate the progress bar to fill up
-        progressBar.animate([
-            { width: '0%' },
-            { width: `${Math.min(100, progressPercentage)}%` }
-        ], {
-            duration: 1000,
-            fill: 'forwards'
-        });
-
-        // Set progress percentage label and reward label
-        progressPercentageLabel.textContent = `${Math.round(progressPercentage)}%`;
-        const nextReward = punchcard.rewards.find(reward => reward.points === targetPoints);
-        // progressLabel.textContent = `Next Reward: ${nextReward.reward} at ${targetPoints} points`;
-    }
+            // Set progress percentage label and reward label
+            progressPercentageLabel.textContent = `${Math.round(progressPercentage)}%`;
+            const nextReward = punchcard.rewards.find(reward => reward.points === targetPoints);
+            // progressLabel.textContent = `Next Reward: ${nextReward.reward} at ${targetPoints} points`;
+        }
 
     // Generate punchcards based on the sample data
     // generatePunchcards(punchcardsData);
-</script>
+    </script>
 </body>
+
 </html>
