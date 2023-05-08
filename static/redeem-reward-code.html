@@ -79,7 +79,7 @@
     </div>
     <button type="button" onclick="goToBusinessDashboard()">Back to dashboard</button>
     <script>
-      function redeemRewardCode() {
+      /*function redeemRewardCode() {
         // For now, just display a success message
         alert('Reward code redeemed successfully!');
         
@@ -87,7 +87,43 @@
         var discountMessageElement = document.getElementById('discount-message');
         discountMessageElement.innerText = 'Apply a 25% discount to customer order';
         discountMessageElement.style.display = 'block';
-    }
+    }*/
+    function redeemRewardCode() {
+        // Get the redemption code from the input field
+        var redemption_code = document.getElementById('redeemCode').value;
+        
+        // Prepare the body of the request
+        var body = {
+            redemption_code: redemption_code
+        };
+
+        // Prepare the other parameters of the request
+        var params = {}; // No path parameters are needed
+        var additionalParams = {}; // No additional parameters are needed
+
+        // Make the PUT request
+        apigClient.redemptionPut(params, body, additionalParams)
+            .then(function(result){
+            // This is where you would put the success callback
+            alert('Reward code redeemed successfully!');
+
+            // Parse the response body
+            var responseBody = JSON.parse(result.data.body);
+
+            // Get the reward_redeemed value from the response
+            var reward_redeemed = responseBody.reward_redeemed;
+            
+            // Set and show the discount message
+            var discountMessageElement = document.getElementById('discount-message');
+            discountMessageElement.innerText = 'Apply a ' + reward_redeemed + ' discount to customer order';
+            discountMessageElement.style.display = 'block';
+            }).catch(function(result){
+            // This is where you would put the error callback
+            alert('Something went wrong when trying to redeem the reward code.');
+            });
+        }
+
+
 
 
       function goToBusinessDashboard() {
