@@ -5,6 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Configure Rewards Program</title>
   <link rel="stylesheet" href="configure-rewards.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      background-color: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #008C00;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 10px;
+    }
+
+    button:hover {
+      background-color: #006600;
+    }
+
+    form {
+      background-color: #f0f0f0;
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    #tiers-section {
+      margin-bottom: 20px;
+    }
+
+    #tiers-container {
+      margin-bottom: 10px;
+    }
+  </style>
 
   <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
   <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>

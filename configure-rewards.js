@@ -12,7 +12,8 @@ function createTierElement() {
     pointsInput.type = 'number';
     pointsInput.min = '1';
     pointsInput.step = '1';
-    pointsInput.value = '100';
+    //pointsInput.value = '100';
+    pointsInput.placeholder = "Add dollar Amount";
     pointsInput.required = true;
   
     const removeBtn = document.createElement('button');
