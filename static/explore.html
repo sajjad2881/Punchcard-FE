@@ -37,9 +37,12 @@
   <div id="info"></div>
 
   <script>
-    let restaurantIDs = ["e0f9f94f-c8bb-41a5-8499-3972beaafe17", "bd132eba-4dd7-4348-afa4-10ed3689893c", "06639a5a-61df-409b-84ab-27c26025526b"];
-    let restaurants = [];
     const apigClient = apigClientFactory.newClient();
+    let restaurantIDs = ["e0f9f94f-c8bb-41a5-8499-3972beaafe17", "bd132eba-4dd7-4348-afa4-10ed3689893c", "06639a5a-61df-409b-84ab-27c26025526b"];
+    let userRestaurants = [];
+
+    let restaurants = [];
+
 
     let userLocation = {
       lat: 40.80785939999999,
@@ -84,7 +87,7 @@
     }
 
     function initMap() {
-      console.log("restaurants", restaurants);
+      console.log("initMAP");
       if (restaurants && restaurants.length === 0) {
         document.getElementById('info').innerHTML = `
         <h3>No restaurants found</h3>
@@ -150,11 +153,88 @@
         map.panTo(defaultLocation);
       }
     }
+
+    function defaultMap() {
+      console.log("defaultMAP");
+      document.getElementById('info').innerHTML = ``;
+      const defaultLocation = { lat: 40.80785939999999, lng: -73.9651746 };
+      const map = new google.maps.Map(document.getElementById('map'), {
+        center: defaultLocation,
+        zoom: 12
+      });
+
+      apigClient.restaurantsUsersubscriptionsGet({ "userid": localStorage.getItem('userID') }, {}, {}).then(function (result) {
+        // Add each restaurant to the list
+        userRestaurants = result.data;
+
+        if (typeof userRestaurants !== "undefined") {
+          for (let restaurant of userRestaurants) {
+            const pinViewBackground = new google.maps.marker.PinView({
+              background: "#FBBCFF",
+            });
+            const marker = new google.maps.marker.AdvancedMarkerView({
+              position: {
+                lat: parseFloat(restaurant["custom:latitude"]),
+                lng: parseFloat(restaurant["custom:longitude"])
+              },
+              map: map,
+              title: restaurant.name,
+              content: pinViewBackground.element,
+            });
+
+            marker.addListener('click', () => {
+              document.getElementById('info').innerHTML = `
+            <h3>${restaurant['name']}</h3>
+            <p>${restaurant['custom:descriptionText']}</p>
+            <p>${restaurant['address']}</p>
+            <p>${restaurant['custom:cuisines']}</p>
+            `;
+            });
+          }
+        }
+
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(position => {
+            const userLocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            const userMarker = new google.maps.Marker({
+              position: userLocation,
+              map: map,
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 10,
+                strokeColor: '#FFFFFF',
+                strokeOpacity: 0.9,
+                strokeWeight: 4.25,
+                fillColor: '#0000FF',
+                fillOpacity: 0.6,
+              },
+            });
+
+            map.panTo(userLocation);
+          }, () => {
+            // If the user declines to share their location, use the default center
+            map.panTo(defaultLocation);
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          map.panTo(defaultLocation);
+        }
+      }).catch(function (result) {
+        console.error("Error: " + result);
+      });
+
+
+    }
+
   </script>
 
   <!-- Load the Google Maps JavaScript API -->
   <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAQeyUyXmQcMr3ooXhDe9bO-Z14d2cwPg&callback=initMap"></script>
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAQeyUyXmQcMr3ooXhDe9bO-Z14d2cwPg&callback=defaultMap"></script>
+  <!-- -->
 </body>
 
 </html>
