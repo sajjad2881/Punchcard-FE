@@ -152,14 +152,22 @@ font-size: 16px;
     <!-- Punchcards will be dynamically generated here using JavaScript -->
 </div>
 <div class="punchcard-info" id="punchcard-info">
-    <h1 id="name"></h1>
-    <img id="profile-picture" src="" alt="Profile Picture">
-    <p id="address"></p>
-    <p id="phone-number"></p>
-    <p id="description"></p>
-    <button id="join-rewards-button" style="display: none;">Join Rewards Program!</button>
-    <div id="rewards-status"></div>
-    <div id="rewards-program-info"></div>
+    <!-- Detailed information about the selected punchcard will be displayed here -->
+    <div class="punchcard-business" id="punchcard-business"></div>
+    <div class="punchcard-description" id="punchcard-description"></div>
+    
+    <!-- Select target reward section -->
+    <div class="reward-selection-container">
+        <div class="reward-selection-label">Select Reward:</div>
+        <select class="reward-selection-dropdown" id="reward-selection-dropdown"></select>
+    </div>
+    
+    <!-- Progress bar section -->
+    <div class="progress-bar-container">
+        <div class="progress-percentage" id="progress-percentage"></div> <!-- Percentage label -->
+        <div class="progress-bar" id="progress-bar"></div> <!-- Progress bar fill -->
+    </div>
+    <div class="progress-label" id="progress-label"></div> <!-- Reward label -->
 </div>
 
 <script>
@@ -192,7 +200,7 @@ font-size: 16px;
     function generatePunchcards(punchcardsData) {
         const punchcardGallery = document.getElementById('punchcard-gallery');
         const punchcardInfo = document.getElementById('punchcard-info');
-        const punchcardBusiness = document.getElementById('name');  // changed 'punchcard-business' to 'name'
+        const punchcardBusiness = document.getElementById('punchcard-business');
         const punchcardDescription = document.getElementById('punchcard-description');
         const progressBar = document.getElementById('progress-bar');
         const progressPercentageLabel = document.getElementById('progress-percentage');
@@ -266,150 +274,7 @@ font-size: 16px;
     }
 
     // Generate punchcards based on the sample data
-    ///generatePunchcards(punchcardsData);
-
-
-
-    window.onload = function () {
-            var apigClient = apigClientFactory.newClient();  // Replace with your API Gateway client initialization
-
-            // Get the userID from localStorage and restaurantID from the URL parameters
-            var userID = localStorage.getItem("userID");
-            var urlParams = new URLSearchParams(window.location.search);
-            var restaurantID = urlParams.get('restaurantID');
-
-            // Check if the user is enrolled in the rewards program for the restaurant
-            apigClient.programsEnrolledProgramsUseridGet({ userid: userID }, {}, {})
-                .then(response => {
-                    console.log(response)
-                    var enrolledPrograms = response.data;
-                    var isEnrolled = enrolledPrograms.some(program => program.restaurantID === restaurantID);
-
-                    console.log("isEnrolled: " + isEnrolled)
-                    if (isEnrolled) {
-                        // User is enrolled, retrieve rewards program information
-                        var instanceID = userID + restaurantID;
-                        console.log(instanceID)
-                        return apigClient.programsInstancesInstanceidGet({ instanceid: instanceID }, {}, {});
-                    } else {
-                        // User is not enrolled, display the "Join Rewards Program!" button
-                        document.getElementById('join-rewards-button').style.display = 'block';
-                        return null;
-                    }
-                })
-                .then(response => {
-                    if (response) {
-                        var programData = response.data;
-
-                        var rewardsProgramInfoDiv = document.getElementById('rewards-program-info');
-                        rewardsProgramInfoDiv.innerHTML = '';
-
-                        var progressBarContainer = document.createElement('div');
-                        progressBarContainer.className = 'progress-bar-container';
-                        rewardsProgramInfoDiv.appendChild(progressBarContainer);
-
-                        var progressBar = document.createElement('div');
-                        progressBar.className = 'progress-bar';
-                        progressBarContainer.appendChild(progressBar);
-
-                        var maxPoints = JSON.parse(programData.rewardTiers[programData.rewardTiers.length - 1].replace(/'/g, '"')).tierPoints;
-                        for (var i = 100; i <= maxPoints; i += 100) {
-                            var marker = document.createElement('div');
-                            marker.className = 'marker100';
-                            marker.style.left = (i / maxPoints * 100) + '%';
-                            progressBarContainer.appendChild(marker);
-
-                            var markerLabel = document.createElement('div');
-                            markerLabel.className = 'marker-label100';
-                            markerLabel.textContent = i;
-                            markerLabel.style.left = (i / maxPoints * 100) + '%';
-                            progressBarContainer.appendChild(markerLabel);
-                        }
-
-                        var currentPointsLabel = document.createElement('div');
-                        currentPointsLabel.className = 'current-points';
-                        currentPointsLabel.textContent = programData.pointsEarned;
-                        currentPointsLabel.style.left = (programData.pointsEarned / maxPoints * 100) + '%';
-                        progressBarContainer.appendChild(currentPointsLabel);
-
-                        var progressPercentage = Math.min((programData.pointsEarned / maxPoints) * 100, 100);
-                        progressBar.style.width = progressPercentage + '%';
-
-                        programData.rewardTiers.forEach((tierStr, index) => {
-                        var tier = JSON.parse(tierStr.replace(/'/g, '"'));
-
-                        var rewardTierDiv = document.createElement('div');
-                        rewardTierDiv.className = 'reward-tier';
-                        rewardsProgramInfoDiv.appendChild(rewardTierDiv);
-
-                        var tierLabel = document.createElement('div');
-                        tierLabel.className = 'tier-label';
-                        tierLabel.textContent = 'Tier ' + (index + 1) + ': ' + tier.tierPoints + ' points - ' + tier.tierReward;
-                        rewardTierDiv.appendChild(tierLabel);
-
-                        var redeemButton = document.createElement('button');
-                        if (programData.pointsEarned >= tier.tierPoints) {
-                            redeemButton.textContent = 'Redeem';
-
-                            // Updated event listener
-                            redeemButton.addEventListener('click', function () {
-                                var body = {
-                                    'restaurantID': urlParams.get('restaurantID'),  // replace with actual restaurant ID
-                                    'userID': localStorage.getItem("userID"),  // replace with actual user ID
-                                    'amountUsed': tier.tierPoints,  // amount of points used for redemption
-                                    'rewardRedeemed': tier.tierReward  // the reward that is being redeemed
-                                };
-                                console.log("body is", body);
-
-                                apigClient.redemptionPost({}, body, {})
-                                    .then(response => {
-                                        alert('Reward redeemed successfully');
-                                        // You may also want to update the rewards UI here
-                                    })
-                                    .catch(error => console.error('Error:', error));
-                            });
-                        } else {
-                            redeemButton.textContent = 'Redeem (Not enough points)';
-                            redeemButton.disabled = true;
-                        }
-                        rewardTierDiv.appendChild(redeemButton);
-                    });
-                }
-            })
-
-        .catch(error => console.error('Error:', error));
-
-            document.getElementById('join-rewards-button').addEventListener('click', function () {
-                var body = {
-                    userID: userID,
-                    restaurantID: restaurantID
-                };
-
-                apigClient.programsEnrolledProgramsPost({}, body, {})
-                    .then(response => {
-                        document.getElementById('rewards-status').textContent = 'You are now enrolled in the rewards program at this restaurant.';
-                        document.getElementById('join-rewards-button').style.display = 'none';
-                    })
-                    .catch(error => console.error('Error:', error));
-            });
-
-
-
-            apigClient.restaurantsRestaurantIDGet({ restaurantID: restaurantID }, {}, {})
-                .then(response => {
-                    var data = response.data;
-                    console.log(data);
-                    document.getElementById('name').textContent = data.name;
-                    document.getElementById('profile-picture').src = data.picture;
-                    document.getElementById('address').textContent = data.address;
-                    document.getElementById('phone-number').textContent = data.phoneNumber;
-                    document.getElementById('description').textContent = data["custom:descriptionText"];
-                })
-                .catch(error => console.error('Error:', error));
-
-
-        };
-        
+    // generatePunchcards(punchcardsData);
 </script>
 </body>
 </html>
