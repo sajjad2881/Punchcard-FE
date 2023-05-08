@@ -179,11 +179,11 @@ function signUpBusiness() {
   const descriptors = document.getElementById('business-signup-descriptors').value;
   const locationTags = document.getElementById('business-signup-locationTags').value;
   const pictureInput = document.getElementById('business-signup-picture');
-  // const latitude = place.geometry.location.lat();
-  // const longitude = place.geometry.location.lng();
+  const latitude = place.geometry.location.lat();
+  const longitude = place.geometry.location.lng();
   //Temporary replacement
-  const latitude = 45.508271;
-  const longitude = -122.610036;
+  // const latitude = 45.508271;
+  // const longitude = -122.610036;
 
   const file = pictureInput.files[0];
   const reader = new FileReader();
