@@ -64,6 +64,20 @@
         .reward-tier button {
             margin-left: 10px;
         }
+        .marker100 {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 1px;
+            height: 10px;
+            background-color: black;
+        }
+        .marker-label100 {
+            position: absolute;
+            top: 120%;
+            transform: translateX(-50%);
+            font-size: 12px;
+        }
     </style>
     <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
     <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
@@ -122,47 +136,52 @@
                     }
                 })
                 .then(response => {
-                    if (response) {
-                        var programData = response.data;
+            if (response) {
+                    var programData = response.data;
+                    /* existing code... */
 
-                        var rewardsProgramInfoDiv = document.getElementById('rewards-program-info');
-                        rewardsProgramInfoDiv.innerHTML = '';
+                    var maxPoints = JSON.parse(programData.rewardTiers[programData.rewardTiers.length - 1].replace(/'/g, '"')).tierPoints;
+                    for (var i = 100; i <= maxPoints; i += 100) {
+                        var marker = document.createElement('div');
+                        marker.className = 'marker100';
+                        marker.style.left = (i / maxPoints * 100) + '%';
+                        progressBarContainer.appendChild(marker);
 
-                        var progressBarContainer = document.createElement('div');
-                        progressBarContainer.className = 'progress-bar-container';
-                        rewardsProgramInfoDiv.appendChild(progressBarContainer);
-
-                        var progressBar = document.createElement('div');
-                        progressBar.className = 'progress-bar';
-                        progressBarContainer.appendChild(progressBar);
-
-                        var maxPoints = JSON.parse(programData.rewardTiers[programData.rewardTiers.length - 1].replace(/'/g, '"')).tierPoints;
-                        for (var i = 50; i <= maxPoints; i += 50) {
-                            var marker = document.createElement('div');
-                            marker.className = 'marker';
-                            marker.style.left = (i / maxPoints * 100) + '%';
-                            progressBarContainer.appendChild(marker);
-
-                            var markerLabel = document.createElement('div');
-                            markerLabel.className = 'marker-label';
-                            markerLabel.textContent = i;
-                            markerLabel.style.left = (i / maxPoints * 100) + '%';
-                            progressBarContainer.appendChild(markerLabel);
-                        }
-
-                        var currentPointsLabel = document.createElement('div');
-                        currentPointsLabel.className = 'current-points';
-                        currentPointsLabel.textContent = programData.pointsEarned;
-                        currentPointsLabel.style.left = (programData.pointsEarned / maxPoints * 100) + '%';
-                        progressBarContainer.appendChild(currentPointsLabel);
-
-                        var progressPercentage = Math.min((programData.pointsEarned / maxPoints) * 100, 100);
-                        progressBar.style.width = progressPercentage + '%';
-                        progressBarContainer.appendChild(progressBar);
-
-                        // rest of the code...
+                        var markerLabel = document.createElement('div');
+                        markerLabel.className = 'marker-label100';
+                        markerLabel.textContent = i;
+                        markerLabel.style.left = (i / maxPoints * 100) + '%';
+                        progressBarContainer.appendChild(markerLabel);
                     }
-                })
+
+                    /* existing code... */
+
+                    programData.rewardTiers.forEach((tierStr, index) => {
+                        var tier = JSON.parse(tierStr.replace(/'/g, '"'));
+
+                        var rewardTierDiv = document.createElement('div');
+                        rewardTierDiv.className = 'reward-tier';
+                        rewardsProgramInfoDiv.appendChild(rewardTierDiv);
+
+                        var tierLabel = document.createElement('div');
+                        tierLabel.className = 'tier-label';
+                        tierLabel.textContent = 'Tier ' + (index + 1) + ': ' + tier.tierPoints + ' points - ' + tier.tierReward;
+                        rewardTierDiv.appendChild(tierLabel);
+
+                        var redeemButton = document.createElement('button');
+                        if (programData.pointsEarned >= tier.tierPoints) {
+                            redeemButton.textContent = 'Redeem';
+                            redeemButton.addEventListener('click', function () {
+                                alert('Hello');
+                            });
+                        } else {
+                            redeemButton.textContent = 'Redeem (Not enough points)';
+                            redeemButton.disabled = true;
+                        }
+                        rewardTierDiv.appendChild(redeemButton);
+                    });
+                }
+            })
 
                 .catch(error => console.error('Error:', error));
 
