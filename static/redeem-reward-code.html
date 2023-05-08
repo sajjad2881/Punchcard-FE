@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Redeem Reward Code</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        
+        input[type="text"] {
+            padding: 0.5rem;
+            font-size: 1.5rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+        
+        button[type="submit"], button[type="button"] {
+            padding: 0.5rem 1rem;
+            font-size: 1.5rem;
+            background-color: black;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+    </style>
+    <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
+    <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
+    <script src="../app.js" defer></script>
+    <!-- Include the API Gateway SDK scripts -->
+    <script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/rollups/sha256.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/components/hmac.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/components/enc-base64.js"></script>
+    <script type="text/javascript" src="../lib/url-template/url-template.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/sigV4Client.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/apiGatewayClient.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/simpleHttpClient.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
+    <script type="text/javascript" src="../apigClient.js"></script>
+  </head>
+  <body>
+    <h1>Redeem Reward Code</h1>
+    <div id="redeem-reward-code-form">
+      <input type="text" id="redeemCode" placeholder="Enter Code">
+      <button onclick="redeemRewardCode()">Redeem Code</button>
+    </div>
+    <p id="discount-message" style="display: none;"></p>
+    <div id="success-message" style="display: none;">
+      <p>Successfully redeemed code!</p>
+    </div>
+    <div id="failure-message" style="display: none;">
+      <p>Code unsuccessful. Try again.</p>
+    </div>
+    <button type="button" onclick="goToBusinessDashboard()">Back to dashboard</button>
+    <script>
+      function redeemRewardCode() {
+        // For now, just display a success message
+        alert('Reward code redeemed successfully!');
+        
+        // Set and show the discount message
+        var discountMessageElement = document.getElementById('discount-message');
+        discountMessageElement.innerText = 'Apply a 25% discount to customer order';
+        discountMessageElement.style.display = 'block';
+    }
+
+
+      function goToBusinessDashboard() {
+        // Replace 'business-dashboard.html' with the actual path to the business dashboard page
+        window.location.href = 'business-dashboard.html';
+      }
+    </script>
+  </body>
+</html>

@@ -359,7 +359,6 @@ function verifyBusiness() {
     alert('No username found. Please sign up first.');
     return;
   }
-
   const verificationCode = document.getElementById('business-verification-code').value;
 
   const userData = {

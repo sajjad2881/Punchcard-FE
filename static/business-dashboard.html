@@ -37,6 +37,7 @@
     <button onclick="goToScheduledAnalyticsPage()">Customize analytics emails</button>
     <button onclick="goToConfigureRewardsPage()">Configure Rewards</button>
     <button onclick="goToConfigureMenuItemsPage()">Configure Menu Items</button>
+    <button onclick="redeemCustomerRewardCode()">Redeem Customer Reward Code</button>
     <button onclick="signOut()">Sign out</button>
     <script>
         document.getElementById('admin-name').innerText = localStorage.getItem('adminName');
@@ -68,6 +69,10 @@
 
         function goToConfigureRewardsPage() {
         window.location.href = 'configure-rewards.html';
+        }
+
+        function goToRedeemRewardCodePage() {
+        window.location.href = 'redeem-reward-code.html';
         }
     </script>
 </body>
