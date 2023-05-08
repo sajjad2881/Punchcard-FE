@@ -102,6 +102,7 @@
         var additionalParams = {}; // No additional parameters are needed
 
         // Make the PUT request
+        var apigClient = apigClientFactory.newClient();
         apigClient.redemptionPut(params, body, additionalParams)
             .then(function(result){
             // This is where you would put the success callback
