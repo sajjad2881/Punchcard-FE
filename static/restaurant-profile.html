@@ -197,6 +197,7 @@
                                     'amountUsed': tier.tierPoints,  // amount of points used for redemption
                                     'rewardRedeemed': tier.tierReward  // the reward that is being redeemed
                                 };
+                                console.log("body is", body);
 
                                 apigClient.redemptionPost({}, body, {})
                                     .then(response => {
