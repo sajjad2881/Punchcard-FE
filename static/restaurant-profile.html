@@ -282,6 +282,11 @@
                                         .then(response => {
                                             console.log("The response object is", response);
                                             alert('Reward redeemed successfully!!!!!');
+                                            
+                                            programData.pointsEarned -= tier.tierPoints;
+                                            currentPointsLabel.textContent = programData.pointsEarned;
+                                            currentPointsLabel.style.left = (programData.pointsEarned / maxPoints * 100) + '%';
+                                            progressPercentage = Math.min((programData.pointsEarned / maxPoints) * 100, 100);
                                             // You may also want to update the rewards UI here
                                         })
                                         .catch(error => console.error('Error:', error));
