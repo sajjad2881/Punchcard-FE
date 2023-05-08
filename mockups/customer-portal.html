@@ -158,17 +158,9 @@ font-size: 16px;
     <button id="view-profile-button">View your profile with this business!</button>
 
     <!-- Select target reward section -->
-    <div class="reward-selection-container">
-        <div class="reward-selection-label">Select Reward:</div>
-        <select class="reward-selection-dropdown" id="reward-selection-dropdown"></select>
-    </div>
-    
-    <!-- Progress bar section -->
-    <div class="progress-bar-container">
-        <div class="progress-percentage" id="progress-percentage"></div> <!-- Percentage label -->
-        <div class="progress-bar" id="progress-bar"></div> <!-- Progress bar fill -->
-    </div>
-    <div class="progress-label" id="progress-label"></div> <!-- Reward label -->
+        <!-- Rewards info section -->
+        <div class="rewards-info" id="rewards-info"></div>
+
 </div>
 
 <script>
@@ -242,21 +234,36 @@ font-size: 16px;
                         var enrolledPrograms = response.data;
                         var isEnrolled = enrolledPrograms.some(program => program.restaurantID === restaurantID);
 
-                        console.log("isEnrolled: " + isEnrolled)
                         if (isEnrolled) {
                             // User is enrolled, retrieve rewards program information
                             var instanceID = userID + restaurantID;
                             return apigClient.programsInstancesInstanceidGet({ instanceid: instanceID }, {}, {});
                         } else {
-                            // User is not enrolled
-                            console.log("User not subscribed to this restaurant");
+                            // User is not enrolled, display message in the rewards info section
+                            var rewardsInfo = document.getElementById('rewards-info');
+                            rewardsInfo.textContent = "You are not registered for a rewards program with this business. Please visit the restaurant page to register.";
                             return null;
                         }
                     })
                     .then(response => {
                         if (response) {
                             var programData = response.data;
-                            console.log(programData);
+
+                            // Create and display rewards info
+                            var rewardsInfo = document.getElementById('rewards-info');
+                            rewardsInfo.innerHTML = '';  // Clear previous info
+
+                            var pointsEarned = document.createElement('div');
+                            pointsEarned.textContent = 'Points earned: ' + programData.pointsEarned;
+                            rewardsInfo.appendChild(pointsEarned);
+
+                            programData.rewardTiers.forEach((tierStr, index) => {
+                                var tier = JSON.parse(tierStr.replace(/'/g, '"'));
+
+                                var rewardTierDiv = document.createElement('div');
+                                rewardTierDiv.textContent = 'Tier ' + (index + 1) + ': ' + tier.tierPoints + ' points - ' + tier.tierReward;
+                                rewardsInfo.appendChild(rewardTierDiv);
+                            });
                         }
                     })
                     .catch(error => console.error('Error:', error));
