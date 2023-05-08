@@ -221,9 +221,8 @@
           marker.addListener('click', () => {
             document.getElementById('info').innerHTML = `
             <h3><a href = ./restaurant-profile.html?restaurantID=${restaurant['restaurantID']}>${restaurant['name']}</a></h3>
-            <p>${restaurant['custom:descriptionText']}</p>
             <p>${restaurant['address']}</p>
-            <p>${restaurant['custom:cuisines']}</p>
+            <p>${restaurant['custom:descriptionText']}</p>
             `;
             document.getElementById('info').style.display = 'block'; // Show info section
           });
@@ -295,9 +294,8 @@
             marker.addListener('click', () => {
               document.getElementById('info').innerHTML = `
             <h3><a href = ./restaurant-profile.html?restaurantID=${restaurant['restaurantID']}>${restaurant['name']}</a></h3>
-            <p>${restaurant['custom:descriptionText']}</p>
             <p>${restaurant['address']}</p>
-            <p>${restaurant['custom:cuisines']}</p>
+            <p>${restaurant['custom:descriptionText']}</p>
             `;
               document.getElementById('info').style.display = 'block';
             });
