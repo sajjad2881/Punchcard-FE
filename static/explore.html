@@ -158,7 +158,7 @@
       console.log("defaultMAP");
       document.getElementById('info').innerHTML = ``;
       const defaultLocation = { lat: 40.80785939999999, lng: -73.9651746 };
-      const map = new google.maps.Map(document.getElementById('map'), {
+      map = new google.maps.Map(document.getElementById('map'), {
         center: defaultLocation,
         zoom: 12
       });
