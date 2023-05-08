@@ -94,35 +94,44 @@
         }
         .progress-label {
             text-align: center;
-            font-size: 14px;
-           
-color: #333;
-margin-top: 5px;
-}
-.progress-percentage {
-position: absolute;
-top: -20px;
-left: 50%;
-transform: translateX(-50%);
-font-size: 12px;
-color: #333;
-}
-/* Styles for the select target reward section */
-.reward-selection-container {
-margin: 20px 0;
-}
-.reward-selection-label {
-font-size: 16px;
-margin-bottom: 5px;
-}
-.reward-selection-dropdown {
-width: 100%;
-padding: 5px;
-font-size: 16px;
-}
-.progress-label {
-    margin: 10px;
-}
+            font-size: 14px;        
+            color: #333;
+            margin-top: 5px;
+            }
+        .progress-percentage {
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 12px;
+        color: #333;
+        }
+        /* Styles for the select target reward section */
+        .reward-selection-container {
+        margin: 20px 0;
+        }
+        .reward-selection-label {
+        font-size: 16px;
+        margin-bottom: 5px;
+        }
+        .reward-selection-dropdown {
+        width: 100%;
+        padding: 5px;
+        font-size: 16px;
+        }
+        .progress-label {
+            margin: 10px;
+        }
+        .marker100, .marker-label100 {
+            position: absolute;
+            bottom: 0;
+        }
+        .marker-label100 {
+            transform: translateX(-50%) translateY(20px); /* Adjust to position the label correctly */
+            display: inline-block;
+            width: 30px; /* Adjust as necessary */
+            text-align: center;
+        }
 </style>
 
 <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
