@@ -106,13 +106,20 @@ function generateCode() {
     // Get the ID token from local storage
     const restaurantID = localStorage.getItem('restaurantID');
     const selectedItemsArray = Array.from(selectedItems, ([item, data]) => ({item, ...data}));
+
     console.log('Selected Items Array:', selectedItemsArray);
+
+    // Manually serialize and deserialize the selectedItems array
+    const selectedItemsJson = JSON.stringify(selectedItemsArray);
+    const selectedItemsObject = JSON.parse(selectedItemsJson);
+
+    console.log('Selected Items Object:', selectedItemsObject);
 
     // Prepare the request body
     const requestBody = {
       amountSpent: amountSpent,
       restaurantID: restaurantID,
-      selectedItems: selectedItemsArray
+      selectedItems: selectedItemsObject  // Use the object here
     };
 
     // Log the selected items
