@@ -136,27 +136,44 @@
                     }
                 })
                 .then(response => {
-            if (response) {
-                    var programData = response.data;
-                    /* existing code... */
+                    if (response) {
+                        var programData = response.data;
 
-                    var maxPoints = JSON.parse(programData.rewardTiers[programData.rewardTiers.length - 1].replace(/'/g, '"')).tierPoints;
-                    for (var i = 100; i <= maxPoints; i += 100) {
-                        var marker = document.createElement('div');
-                        marker.className = 'marker100';
-                        marker.style.left = (i / maxPoints * 100) + '%';
-                        progressBarContainer.appendChild(marker);
+                        var rewardsProgramInfoDiv = document.getElementById('rewards-program-info');
+                        rewardsProgramInfoDiv.innerHTML = '';
 
-                        var markerLabel = document.createElement('div');
-                        markerLabel.className = 'marker-label100';
-                        markerLabel.textContent = i;
-                        markerLabel.style.left = (i / maxPoints * 100) + '%';
-                        progressBarContainer.appendChild(markerLabel);
-                    }
+                        var progressBarContainer = document.createElement('div');
+                        progressBarContainer.className = 'progress-bar-container';
+                        rewardsProgramInfoDiv.appendChild(progressBarContainer);
 
-                    /* existing code... */
+                        var progressBar = document.createElement('div');
+                        progressBar.className = 'progress-bar';
+                        progressBarContainer.appendChild(progressBar);
 
-                    programData.rewardTiers.forEach((tierStr, index) => {
+                        var maxPoints = JSON.parse(programData.rewardTiers[programData.rewardTiers.length - 1].replace(/'/g, '"')).tierPoints;
+                        for (var i = 100; i <= maxPoints; i += 100) {
+                            var marker = document.createElement('div');
+                            marker.className = 'marker100';
+                            marker.style.left = (i / maxPoints * 100) + '%';
+                            progressBarContainer.appendChild(marker);
+
+                            var markerLabel = document.createElement('div');
+                            markerLabel.className = 'marker-label100';
+                            markerLabel.textContent = i;
+                            markerLabel.style.left = (i / maxPoints * 100) + '%';
+                            progressBarContainer.appendChild(markerLabel);
+                        }
+
+                        var currentPointsLabel = document.createElement('div');
+                        currentPointsLabel.className = 'current-points';
+                        currentPointsLabel.textContent = programData.pointsEarned;
+                        currentPointsLabel.style.left = (programData.pointsEarned / maxPoints * 100) + '%';
+                        progressBarContainer.appendChild(currentPointsLabel);
+
+                        var progressPercentage = Math.min((programData.pointsEarned / maxPoints) * 100, 100);
+                        progressBar.style.width = progressPercentage + '%';
+
+                        programData.rewardTiers.forEach((tierStr, index) => {
                         var tier = JSON.parse(tierStr.replace(/'/g, '"'));
 
                         var rewardTierDiv = document.createElement('div');
@@ -183,7 +200,7 @@
                 }
             })
 
-                .catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error:', error));
 
             document.getElementById('join-rewards-button').addEventListener('click', function () {
                 var body = {
