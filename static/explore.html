@@ -152,7 +152,7 @@
 
       apigClient.searchRestaurantsGet(queryParams, {}, {})
         .then(function (result) {
-          
+
           // Update the restaurantIDs with the result
           console.log(result)
           restaurantIDs = result.data;
@@ -162,19 +162,25 @@
             const pathParameters = { restaurantID };
             console.log(pathParameters);
             // console log the responses
-            return apigClient.restaurantsRestaurantIDGet(pathParameters, {}, {}).then(response => {
-              console.log(response);
-              return response;
-            });
+            return apigClient.restaurantsRestaurantIDGet(pathParameters, {}, {})
+              .then(response => {
+                console.log(response);
+                return response;
+              })
+              .catch(error => {
+                console.error("Error with restaurantID " + restaurantID + ": " + error);
+                return null; // return null, or a default value for failed requests
+              });
           }));
           restaurantsPromise.then(responses => {
-            restaurants = responses.map(response => response.data);
+            // filter out null (or default) values
+            restaurants = responses.filter(response => response !== null).map(response => response.data);
             console.log("restaurants", restaurants);
             initMap();
-          });
-
-        }).catch(function (result) {
-          console.error("Error: " + result);
+          })
+            .catch(function (result) {
+              console.error("Error: " + result);
+            });
         });
     }
 
@@ -285,7 +291,7 @@
             <p>${restaurant['address']}</p>
             <p>${restaurant['custom:cuisines']}</p>
             `;
-            document.getElementById('info').style.display = 'block';
+              document.getElementById('info').style.display = 'block';
             });
 
           }
