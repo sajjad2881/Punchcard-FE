@@ -4,6 +4,71 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Generate Code</title>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      background-color: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #008C00;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 10px;
+    }
+
+    button.full-width {
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #006600;
+    }
+
+    #generate-code-form {
+      background-color: #f0f0f0;
+      padding: 20px;
+      border-radius: 5px;
+      width: 50%;
+    }
+
+    #generate-code-form input {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    #code-display {
+      padding: 20px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      margin-top: 20px;
+      width: 50%;
+      text-align: center;
+    }
+
+    #menu-items {
+      width: 50%;
+      background-color: #f0f0f0;
+      padding: 20px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+  </style>
   <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
   <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
   <script src="../app.js" defer></script>
@@ -167,9 +232,9 @@ function generateCode() {
 
   <div id="generate-code-form">
     <input type="number" id="amountSpent" placeholder="Amount Spent" min="0" step="0.01" readonly>
-    <button onclick="generateCode()">Generate Code</button>
+    <button onclick="generateCode()" class="full-width">Generate Code</button>
     <!-- Add a button to go back to the customer-dashboard page -->
-    <button type="button" onclick="goToBusinessDashboard()">Back to dashboard</button>
+    <button type="button" onclick="goToBusinessDashboard()" class="full-width">Back to dashboard</button>
   </div>
   
   
