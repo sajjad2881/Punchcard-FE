@@ -105,12 +105,13 @@ function generateCode() {
 
     // Get the ID token from local storage
     const restaurantID = localStorage.getItem('restaurantID');
+    const selectedItemsArray = Array.from(selectedItems, ([item, data]) => ({item, ...data}));
 
     // Prepare the request body
     const requestBody = {
       amountSpent: amountSpent,
       restaurantID: restaurantID,
-      selectedItems: selectedItems
+      selectedItems: selectedItemsArray
     };
 
     // Log the selected items
