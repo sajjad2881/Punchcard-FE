@@ -168,7 +168,7 @@
     <!-- Select target reward section -->
         <!-- Rewards info section -->
        <!-- Rewards info section -->
-    <div class="rewards-info">
+    <div class="rewards-info" style="display: none;">
         <div class="points-earned" id="points-earned"></div>
 
         <!-- Progress bar section -->
@@ -181,7 +181,7 @@
     </div>
 
 
-    <button id="view-profile-button">View your profile with this business to redeem rewards!</button>
+    <button id="view-profile-button" style="display: none;">View your profile with this business to redeem rewards!</button>
 
 
 </div>
@@ -236,6 +236,8 @@
             // Event listener for when a punchcard is clicked
             punchcardElement.addEventListener('click', () => {
                 console.log("HELLLOOOO2")
+                document.getElementById('view-profile-button').style.display = 'block';
+                document.querySelector('rewards-info').style.display = 'block';
                 punchcardBusiness.textContent = punchcard["name"];
                 punchcardDescription.textContent = punchcard["custom:descriptionText"];
                 punchcardInfo.style.display = 'block';
