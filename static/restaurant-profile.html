@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurant Profile</title>
+    <style>
+        #restaurant-profile {
+            text-align: center;
+        }
+
+        #profile-picture {
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+    <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
+    <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
+    <!-- Include the API Gateway SDK scripts -->
+    <script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/rollups/sha256.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/components/hmac.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/components/enc-base64.js"></script>
+    <script type="text/javascript" src="../lib/url-template/url-template.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/sigV4Client.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/apiGatewayClient.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/simpleHttpClient.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
+    <script type="text/javascript" src="../apigClient.js"></script>
+</head>
+<body>
+    <div id="restaurant-profile">
+        <h1 id="name"></h1>
+        <img id="profile-picture" src="" alt="Profile Picture">
+        <p id="address"></p>
+        <p id="phone-number"></p>
+        <p id="description"></p>
+        <button id="rewards-button" style="display: none;">Join Rewards Program</button>
+        <p id="rewards-status"></p>
+    </div>
+
+    <script>
+        window.onload = function() {
+            
+        var apigClient = apigClientFactory.newClient();  // Replace with your API Gateway client initialization
+
+        var restaurantID = 'f614eb0c-0424-44f9-8954-f118a9c0950e';// Replace with your restaurant ID
+        var userID = '1f86d3f6-048a-4f62-90dc-83b105354468';  // Replace with your user ID
+
+        apigClient.restaurantsRestaurantIDGet({restaurantID: restaurantID}, {}, {})
+            .then(response => {
+                var data = response.data;
+                console.log(data);
+                document.getElementById('name').textContent = data.name;
+                document.getElementById('profile-picture').src = data.picture;
+                document.getElementById('address').textContent = data.address;
+                document.getElementById('phone-number').textContent = data.phoneNumber;
+                document.getElementById('description').textContent = data["custom:descriptionText"];
+            })
+            .catch(error => console.error('Error:', error));
+
+        apigClient.programsEnrolledProgramsUseridGet({userid: userID}, {}, {})
+            .then(response => {
+                var enrolledPrograms = response.data;
+                var promises = enrolledPrograms.map(instanceID => 
+                    apigClient.programsInstancesInstanceidGet({instanceid: instanceID}, {}, {}).then(response => response.data)
+                );
+                return Promise.all(promises);
+            })
+            .then(programInstances => {
+                var isEnrolled = programInstances.some(instance => instance.restaurantID === restaurantID);
+                if (isEnrolled) {
+                    document.getElementById('rewards-status').textContent = 'You are enrolled in the rewards program at this restaurant.';
+                } else {
+                    document.getElementById('rewards-button').style.display = 'block';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        };
+    </script>
+</body>
+</html>
