@@ -60,6 +60,8 @@
                 })
                 .catch(error => console.error('Error:', error));
         });
+        document.getElementById('join-rewards-button').style.display = 'none'; //added this
+        
 
 
         apigClient.restaurantsRestaurantIDGet({restaurantID: restaurantID}, {}, {})
