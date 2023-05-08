@@ -1,16 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configure Menu Items</title>
-    <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
     <style>
         .menu-item-row {
             margin-bottom: 10px;
         }
+
+        /* Add styles for the menu display */
+        .menu-display {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 300px;
+        }
+
+        .menu-display h2 {
+            text-align: center;
+        }
+
+        .menu-display ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .menu-display li {
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .menu-display li:last-child {
+            border-bottom: none;
+        }
     </style>
+
+    <script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/rollups/sha256.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/components/hmac.js"></script>
+    <script type="text/javascript" src="../lib/CryptoJS/components/enc-base64.js"></script>
+    <script type="text/javascript" src="../lib/url-template/url-template.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/sigV4Client.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/apiGatewayClient.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/simpleHttpClient.js"></script>
+    <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
+    <script type="text/javascript" src="../apigClient.js"></script>
 </head>
+
 <body>
     <h1>Configure Menu Items</h1>
     <form id="menu-items-form">
@@ -22,9 +61,15 @@
         <button type="submit">Submit</button>
     </form>
     <!-- Add this button -->
-    <button onclick="goBackToDashboard()">Go Back to Dashboard</button>
+    <button onclick="goBackToDashboard()">Back to Dashboard</button>
+
+    <!-- Add a container for the menu display -->
+    <div id="menu-display-container"></div>
 
     <script>
+        // Create an instance of the API Gateway client
+        var apigClient = apigClientFactory.newClient();
+
         function addMenuItem() {
             const container = document.getElementById('menu-items-container');
             const newRow = document.createElement('div');
@@ -68,20 +113,46 @@
                     menuItems
                 };
 
-                const response = await axios.post('https://st9n96e2x7.execute-api.us-east-1.amazonaws.com/Stage1/analytics/menu', payload);
-                console.log(response.data);
+                // Use the API Gateway SDK to make the API call
+                const response = await apigClient.analyticsMenuPost({}, payload);
+
+                // Clear the form content and display the formatted menu
+                document.getElementById('menu-items-form').style.display = 'none';
+                displayFormattedMenu(menuItems);
             } catch (error) {
                 console.error('Error sending menu items:', error);
             }
         }
 
-        // Add this function
-        function goBackToDashboard() {
-            window.location.href = 'business-dashboard.html'; // Replace 'index.html' with the actual path to your dashboard page
+        function displayFormattedMenu(menuItems) {
+            // Create the menu display container
+            const menuDisplay = document.createElement('div');
+            menuDisplay.classList.add('menu-display');
+
+            // Create the menu title
+            const menuTitle = document.createElement('h2');
+            menuTitle.textContent = 'Menu';
+            menuDisplay.appendChild(menuTitle);
+
+            // Create the menu list
+            const menuList = document.createElement('ul');
+            menuItems.forEach(menuItem => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${menuItem.item} - $${menuItem.price}`;
+                menuList.appendChild(listItem);
+            });
+            menuDisplay.appendChild(menuList);
+
+            // Append the menu display to the container
+            const menuDisplayContainer = document.getElementById('menu-display-container');
+            menuDisplayContainer.appendChild(menuDisplay);
         }
 
-        // Add the first menu item row
-        addMenuItem();
+        function goBackToDashboard() {
+            // Redirect to the dashboard page
+            window.location.href = 'business-dashboard.html';
+        }
     </script>
 </body>
+
 </html>
