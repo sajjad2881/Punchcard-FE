@@ -155,11 +155,25 @@ font-size: 16px;
     <!-- Detailed information about the selected punchcard will be displayed here -->
     <div class="punchcard-business" id="punchcard-business"></div>
     <div class="punchcard-description" id="punchcard-description"></div>
-    <button id="view-profile-button">View your profile with this business!</button>
-
+    
     <!-- Select target reward section -->
         <!-- Rewards info section -->
-        <div class="rewards-info" id="rewards-info"></div>
+       <!-- Rewards info section -->
+    <div class="rewards-info">
+        <div class="points-earned" id="points-earned"></div>
+
+        <!-- Progress bar section -->
+        <div class="progress-bar-container" id="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div> <!-- Progress bar fill -->
+        </div>
+        
+        <!-- Qualifying rewards section -->
+        <div class="qualifying-rewards" id="qualifying-rewards"></div>
+    </div>
+
+
+    <button id="view-profile-button">View your profile with this business to redeem rewards!</button>
+
 
 </div>
 
@@ -208,8 +222,7 @@ font-size: 16px;
             punchcardElement.className = 'punchcard';
             punchcardElement.style.backgroundImage = `url(${punchcard["picture"]})`;
             punchcardElement.innerHTML = `
-                <div class
-="punchcard-strip">${punchcard["name"]}</div>`;
+                <div class="punchcard-strip">${punchcard["name"]}</div>`;
 
             // Event listener for when a punchcard is clicked
             punchcardElement.addEventListener('click', () => {
@@ -247,26 +260,48 @@ font-size: 16px;
                     })
                     .then(response => {
                         if (response) {
-                            var programData = response.data;
+                var programData = response.data;
 
-                            // Create and display rewards info
-                            var rewardsInfo = document.getElementById('rewards-info');
-                            rewardsInfo.innerHTML = '';  // Clear previous info
+                // Create and display rewards info
+                var pointsEarned = document.getElementById('points-earned');
+                pointsEarned.textContent = 'Points earned: ' + programData.pointsEarned;
 
-                            var pointsEarned = document.createElement('div');
-                            pointsEarned.textContent = 'Points earned: ' + programData.pointsEarned;
-                            rewardsInfo.appendChild(pointsEarned);
+                var progressBarContainer = document.getElementById('progress-bar-container');
+                progressBarContainer.innerHTML = '';  // Clear previous info
 
-                            programData.rewardTiers.forEach((tierStr, index) => {
-                                var tier = JSON.parse(tierStr.replace(/'/g, '"'));
+                var progressBar = document.createElement('div');
+                progressBar.className = 'progress-bar';
+                progressBarContainer.appendChild(progressBar);
 
-                                var rewardTierDiv = document.createElement('div');
-                                rewardTierDiv.textContent = 'Tier ' + (index + 1) + ': ' + tier.tierPoints + ' points - ' + tier.tierReward;
-                                rewardsInfo.appendChild(rewardTierDiv);
-                            });
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
+                var maxPoints = JSON.parse(programData.rewardTiers[programData.rewardTiers.length - 1].replace(/'/g, '"')).tierPoints;
+                var progressPercentage = (programData.pointsEarned / maxPoints) * 100;
+                progressBar.style.width = progressPercentage + '%';
+
+                var qualifyingRewards = document.getElementById('qualifying-rewards');
+                qualifyingRewards.innerHTML = '';  // Clear previous info
+
+                var qualifyingRewardsList = programData.rewardTiers.filter(tierStr => {
+                    var tier = JSON.parse(tierStr.replace(/'/g, '"'));
+                    return programData.pointsEarned >= tier.tierPoints;
+                });
+
+                if (qualifyingRewardsList.length > 0) {
+                    qualifyingRewards.textContent = 'You qualify for the following rewards:';
+                    qualifyingRewardsList.forEach(tierStr => {
+                        var tier = JSON.parse(tierStr.replace(/'/g, '"'));
+
+                        var rewardDiv = document.createElement('div');
+                        rewardDiv.textContent = tier.tierPoints + ' points - ' + tier.tierReward;
+                        qualifyingRewards.appendChild(rewardDiv);
+                    });
+                } else {
+                    var nextRewardTier = JSON.parse(programData.rewardTiers[0].replace(/'/g, '"'));
+                    var pointsTillNextReward = nextRewardTier.tierPoints - programData.pointsEarned;
+                    qualifyingRewards.textContent = pointsTillNextReward + ' points till your next reward.';
+                }
+            }
+        })
+        .catch(error => console.error('Error:', error));
 
 
 
