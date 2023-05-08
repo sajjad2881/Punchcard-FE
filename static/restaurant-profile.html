@@ -34,7 +34,7 @@
         <p id="address"></p>
         <p id="phone-number"></p>
         <p id="description"></p>
-        <button id="rewards-button" style="display: none;">Join Rewards Program</button>
+        <button id="join-rewards-button" style="display: none;">Join Rewards Program!</button>
         <p id="rewards-status"></p>
     </div>
 
@@ -45,6 +45,22 @@
 
         var restaurantID = 'f614eb0c-0424-44f9-8954-f118a9c0950e';// Replace with your restaurant ID
         var userID = '1f86d3f6-048a-4f62-90dc-83b105354468';  // Replace with your user ID
+        ///USER + RESTURANT
+
+        document.getElementById('join-rewards-button').addEventListener('click', function() {
+            var body = {
+                userID: userID,
+                restaurantID: restaurantID
+            };
+            
+            apigClient.programsEnrolledProgramsPost({}, body, {})
+                .then(response => {
+                    document.getElementById('rewards-status').textContent = 'You are now enrolled in the rewards program at this restaurant.';
+                    document.getElementById('join-rewards-button').style.display = 'none';
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
 
         apigClient.restaurantsRestaurantIDGet({restaurantID: restaurantID}, {}, {})
             .then(response => {
@@ -71,7 +87,7 @@
                 if (isEnrolled) {
                     document.getElementById('rewards-status').textContent = 'You are enrolled in the rewards program at this restaurant.';
                 } else {
-                    document.getElementById('rewards-button').style.display = 'block';
+                    document.getElementById('join-rewards-button').style.display = 'block';
                 }
             })
             .catch(error => console.error('Error:', error));
