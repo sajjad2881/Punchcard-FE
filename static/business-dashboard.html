@@ -6,6 +6,8 @@
     <title>Business Dashboard</title>
     <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
     <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
+
+    
     <script src="../app.js" defer></script>
     <script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
     <script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
@@ -18,11 +20,68 @@
     <script type="text/javascript" src="../lib/apiGatewayCore/simpleHttpClient.js"></script>
     <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
     <script type="text/javascript" src="../apigClient.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  
+    <style>
+        body {
+          font-family: 'Poppins', sans-serif;
+          margin: 0;
+          padding: 0;
+          color: #333;
+          background-color: #f5f5f5;
+          display: flex;
+          flex-direction: column;
+          align-items: start;
+          justify-content: center;
+          padding-left: 20px; /* added padding to the left */
+        }
+    
+        h1, h2 {
+          text-align: center;
+        }
+    
+        button {
+          padding: 10px 20px;
+          border: none;
+          background-color: #008C00;
+          color: #fff;
+          cursor: pointer;
+          border-radius: 5px;
+          margin: 10px;
+        }
+    
+        button:hover {
+          background-color: #006600;
+        }
+    
+        img {
+          max-width: 200px;
+          height: auto;
+        }
+    
+        .details-dropdown-content {
+          display: none;
+          border: 1px solid #ccc;
+          padding: 10px;
+          margin-top: 10px;
+        }
+      </style>
+
 </head>
 <body>
     <h1>Business Dashboard!!</h1>
-    <h2>Welcome, <span id="admin-name"></span>!</h2>
+  <h2>Welcome, <span id="admin-name"></span>!</h2>
+
+    <button onclick="goToConfigureRewardsPage()">Configure Rewards</button>
     <button onclick="goToConfigureMenuItemsPage()">Configure Menu Items</button>
+    <button onclick="goToGenerateCodePage()">Generate new transaction code!</button>
+    <button onclick="goToScheduledAnalyticsPage()">Customize analytics emails</button>
+    <button onclick="goToRedeemRewardCodePage()">Redeem Customer Reward Code</button>
+    <button onclick="signOut()">Sign out</button>
+  
+    <button id="details-dropdown-button">View My Details</button>
+  <div id="details-dropdown-content">
     <p>Email: <span id="email"></span></p>
     <p>Address: <span id="address"></span></p>
     <p>Name: <span id="name"></span></p>
@@ -33,12 +92,21 @@
     <p>Descriptors: <span id="descriptors"></span></p>
     <p>Location Tags: <span id="location-tags"></span></p>
     <img id="profile-image" src="#" alt="Profile Image" />
-    <button onclick="goToGenerateCodePage()">Generate new transaction code!</button>
-    <button onclick="goToScheduledAnalyticsPage()">Customize analytics emails</button>
-    <button onclick="goToConfigureRewardsPage()">Configure Rewards</button>
-    <button onclick="goToConfigureMenuItemsPage()">Configure Menu Items</button>
-    <button onclick="goToRedeemRewardCodePage()">Redeem Customer Reward Code</button>
-    <button onclick="signOut()">Sign out</button>
+  </div>
+
+  <script>
+    document.getElementById('details-dropdown-button').onclick = function() {
+      var content = document.getElementById('details-dropdown-content');
+      var button = document.getElementById('details-dropdown-button');
+      if (content.style.display === 'none' || content.style.display === '') {
+        content.style.display = 'block';
+        button.textContent = 'Hide My Details'; // Change text to "Hide My Details"
+      } else {
+        content.style.display = 'none';
+        button.textContent = 'Show My Details'; // Change text back to "Show My Details"
+      }
+    }
+  </script>
     <script>
         document.getElementById('admin-name').innerText = localStorage.getItem('adminName');
         document.getElementById('email').innerText = localStorage.getItem('userEmail');
@@ -51,12 +119,13 @@
         document.getElementById('descriptors').innerText = localStorage.getItem('descriptors');
         document.getElementById('location-tags').innerText = localStorage.getItem('locationTags');
         document.getElementById('profile-image').src = localStorage.getItem('profileImageUrl');
-
+        
 
         function goToGenerateCodePage() {
             // Replace 'claim-code.html' with the actual path to the claim-code page
             window.location.href = 'generate-code.html';
         }
+       
 
         function goToScheduledAnalyticsPage() {
             // Replace 'claim-code.html' with the actual path to the claim-code page
