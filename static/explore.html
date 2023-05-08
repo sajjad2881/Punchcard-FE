@@ -175,18 +175,14 @@
 
         if (typeof userRestaurants !== "undefined") {
           for (let restaurant of userRestaurants) {
-            const pinViewBackground = new google.maps.marker.PinView({
-              background: "#FBBCFF",
-            });
-            const marker = new google.maps.marker.AdvancedMarkerView({
-              position: {
-                lat: parseFloat(restaurant["custom:latitude"]),
-                lng: parseFloat(restaurant["custom:longitude"])
-              },
-              map: map,
-              title: restaurant.name,
-              content: pinViewBackground.element,
-            });
+            const marker = new google.maps.Marker({
+            position: {
+              lat: parseFloat(restaurant["custom:latitude"]),
+              lng: parseFloat(restaurant["custom:longitude"])
+            },
+            map: map,
+            title: restaurant.name
+          });
 
             marker.addListener('click', () => {
               document.getElementById('info').innerHTML = `
@@ -202,7 +198,7 @@
         
 
       }).catch(function (result) {
-        console.error("defaultMAP - API call error:", error);
+        console.error("defaultMAP - API call error:", result);
       });
 
 
