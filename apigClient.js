@@ -479,6 +479,42 @@ apigClientFactory.newClient = function (config) {
     };
     
     
+    apigClient.restaurantsUsersubscriptionsGet = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, ['userID'], ['body']);
+        
+        var restaurantsUsersubscriptionsGetRequest = {
+            verb: 'get'.toUpperCase(),
+            path: pathComponent + uritemplate('/restaurants/usersubscriptions').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, ['userID']),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(restaurantsUsersubscriptionsGetRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
+    apigClient.restaurantsUsersubscriptionsOptions = function (params, body, additionalParams) {
+        if(additionalParams === undefined) { additionalParams = {}; }
+        
+        apiGateway.core.utils.assertParametersDefined(params, [], ['body']);
+        
+        var restaurantsUsersubscriptionsOptionsRequest = {
+            verb: 'options'.toUpperCase(),
+            path: pathComponent + uritemplate('/restaurants/usersubscriptions').expand(apiGateway.core.utils.parseParametersToObject(params, [])),
+            headers: apiGateway.core.utils.parseParametersToObject(params, []),
+            queryParams: apiGateway.core.utils.parseParametersToObject(params, []),
+            body: body
+        };
+        
+        
+        return apiGatewayClient.makeRequest(restaurantsUsersubscriptionsOptionsRequest, authType, additionalParams, config.apiKey);
+    };
+    
+    
     apigClient.restaurantsRestaurantIDGet = function (params, body, additionalParams) {
         if(additionalParams === undefined) { additionalParams = {}; }
         
