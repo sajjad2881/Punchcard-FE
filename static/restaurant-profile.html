@@ -98,7 +98,10 @@
                         rewardsProgramInfoDiv.innerHTML = '';
 
                         for (var i = 0; i < programData.rewardTiers.length; i++) {
-                            var tier = JSON.parse(programData.rewardTiers[i]);
+                            var tierString = programData.rewardTiers[i];
+                            console.log(tierString);
+                            var validJsonString = tierString.replace(/'/g, '"'); // replace single quotes with double quotes
+                            var tier = JSON.parse(validJsonString);
                             var tierDiv = document.createElement('div');
                             tierDiv.className = 'reward-tier';
 
