@@ -188,8 +188,22 @@
                         var redeemButton = document.createElement('button');
                         if (programData.pointsEarned >= tier.tierPoints) {
                             redeemButton.textContent = 'Redeem';
+
+                            // Updated event listener
                             redeemButton.addEventListener('click', function () {
-                                alert('Hello');
+                                var body = {
+                                    'restaurantID': urlParams.get('restaurantID'),  // replace with actual restaurant ID
+                                    'userID': localStorage.getItem("userID"),  // replace with actual user ID
+                                    'amountUsed': tier.tierPoints,  // amount of points used for redemption
+                                    'rewardRedeemed': tier.tierReward  // the reward that is being redeemed
+                                };
+
+                                apigClient.redemptionPost({}, body, {})
+                                    .then(response => {
+                                        alert('Reward redeemed successfully');
+                                        // You may also want to update the rewards UI here
+                                    })
+                                    .catch(error => console.error('Error:', error));
                             });
                         } else {
                             redeemButton.textContent = 'Redeem (Not enough points)';
