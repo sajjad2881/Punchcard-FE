@@ -3,18 +3,60 @@
 
 <head>
     <title>Restaurant Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        #restaurant-profile {
-            text-align: center;
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
         }
 
-        #profile-picture {
-            width: 200px;
-            height: 200px;
+        .header {
+            background-color: #fff;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+
+        .header .logo-text {
+            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        #restaurant-profile {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            max-width: 95%;
+            /* Set a maximum width for the container */
+            margin: 20px auto;
+            /* Center the container */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+            /* Include padding in total width */
+        }
+
+        #image-card {
+            width: 100%;
+            height: 400px;
+            background-position: center;
+            background-size: cover;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
         #rewards-program-info {
-        width: 100%;
+            width: 100%;
+
+            margin-top: 20px;
         }
+
         .progress-bar-container {
             background-color: #eee;
             height: 20px;
@@ -22,13 +64,16 @@
             border-radius: 10px;
             position: relative;
         }
+
         .progress-bar {
             margin-top: 20px;
             background-color: #4CAF50;
             height: 20px;
             width: 0;
             border-radius: 10px;
+            margin-bottom: 40px; 
         }
+
         .marker {
             position: absolute;
             top: 100%;
@@ -37,12 +82,14 @@
             height: 10px;
             background-color: black;
         }
+
         .marker-label {
             position: absolute;
             top: 120%;
             transform: translateX(-50%);
             font-size: 12px;
         }
+
         .current-points {
             position: absolute;
             top: -20px;
@@ -52,19 +99,23 @@
             border-radius: 5px;
             transform: translateX(-50%);
         }
+
         .reward-tier {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: 10px;
+            margin-top: 30px;
         }
+
         .reward-tier .tier-label {
             font-size: 18px;
             font-weight: bold;
         }
+
         .reward-tier button {
             margin-left: 10px;
         }
+
         .marker100 {
             position: absolute;
             top: 100%;
@@ -73,13 +124,21 @@
             height: 10px;
             background-color: black;
         }
+
         .marker-label100 {
             position: absolute;
             top: 120%;
             transform: translateX(-50%);
             font-size: 12px;
         }
+
+        #name {
+            background-color: rgba(255, 255, 255, 0.8);
+            margin-top: 0;
+            padding: 20px;
+        }
     </style>
+    <!-- Include your scripts here -->
     <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
     <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
     <!-- Include the API Gateway SDK scripts -->
@@ -94,12 +153,26 @@
     <script type="text/javascript" src="../lib/apiGatewayCore/simpleHttpClient.js"></script>
     <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
     <script type="text/javascript" src="../apigClient.js"></script>
+
 </head>
 
 <body>
+    <!--Header -->
+    <div class="header">
+        <!-- Logo and navigation links -->
+        <div class="logo-text">Punchcard</div>
+        <ul style="list-style-type: none; margin: 0; padding: 0; overflow: hidden;">
+            <li style="float: left;"><a href="../static/explore.html"
+                    style="display: block; color: black; text-align: center; padding: 14px 16px; text-decoration: none;">Explore</a>
+            </li>
+            <li style="float: left;"><a href="../static/customer-dashboard.html"
+                    style="display: block; color: black; text-align: center; padding: 14px 16px; text-decoration: none;">Home</a>
+        </ul>
+    </div>
     <div id="restaurant-profile">
-        <h1 id="name"></h1>
-        <img id="profile-picture" src="" alt="Profile Picture">
+        <!-- <img id="profile-picture" src="" alt="Profile Picture"> -->
+        <div id="image-card">         <h1 id="name"></h1>
+        </div>
         <p id="address"></p>
         <p id="phone-number"></p>
         <p id="description"></p>
@@ -107,7 +180,7 @@
         <div id="rewards-status"></div>
         <div id="rewards-program-info"></div>
     </div>
-
+    <!-- Include your scripts here -->
     <script>
         window.onload = function () {
             var apigClient = apigClientFactory.newClient();  // Replace with your API Gateway client initialization
@@ -175,48 +248,48 @@
                         progressBar.style.width = progressPercentage + '%';
 
                         programData.rewardTiers.forEach((tierStr, index) => {
-                        var tier = JSON.parse(tierStr.replace(/'/g, '"'));
+                            var tier = JSON.parse(tierStr.replace(/'/g, '"'));
 
-                        var rewardTierDiv = document.createElement('div');
-                        rewardTierDiv.className = 'reward-tier';
-                        rewardsProgramInfoDiv.appendChild(rewardTierDiv);
+                            var rewardTierDiv = document.createElement('div');
+                            rewardTierDiv.className = 'reward-tier';
+                            rewardsProgramInfoDiv.appendChild(rewardTierDiv);
 
-                        var tierLabel = document.createElement('div');
-                        tierLabel.className = 'tier-label';
-                        tierLabel.textContent = 'Tier ' + (index + 1) + ': ' + tier.tierPoints + ' points - ' + tier.tierReward;
-                        rewardTierDiv.appendChild(tierLabel);
+                            var tierLabel = document.createElement('div');
+                            tierLabel.className = 'tier-label';
+                            tierLabel.textContent = 'Tier ' + (index + 1) + ': ' + tier.tierPoints + ' points - ' + tier.tierReward;
+                            rewardTierDiv.appendChild(tierLabel);
 
-                        var redeemButton = document.createElement('button');
-                        if (programData.pointsEarned >= tier.tierPoints) {
-                            redeemButton.textContent = 'Redeem';
+                            var redeemButton = document.createElement('button');
+                            if (programData.pointsEarned >= tier.tierPoints) {
+                                redeemButton.textContent = 'Redeem';
 
-                            // Updated event listener
-                            redeemButton.addEventListener('click', function () {
-                                var body = {
-                                    'restaurantID': urlParams.get('restaurantID'),  // replace with actual restaurant ID
-                                    'userID': localStorage.getItem("userID"),  // replace with actual user ID
-                                    'amountUsed': tier.tierPoints,  // amount of points used for redemption
-                                    'rewardRedeemed': tier.tierReward  // the reward that is being redeemed
-                                };
-                                console.log("body is", body);
+                                // Updated event listener
+                                redeemButton.addEventListener('click', function () {
+                                    var body = {
+                                        'restaurantID': urlParams.get('restaurantID'),  // replace with actual restaurant ID
+                                        'userID': localStorage.getItem("userID"),  // replace with actual user ID
+                                        'amountUsed': tier.tierPoints,  // amount of points used for redemption
+                                        'rewardRedeemed': tier.tierReward  // the reward that is being redeemed
+                                    };
+                                    console.log("body is", body);
 
-                                apigClient.redemptionPost({}, body, {})
-                                    .then(response => {
-                                        alert('Reward redeemed successfully');
-                                        // You may also want to update the rewards UI here
-                                    })
-                                    .catch(error => console.error('Error:', error));
-                            });
-                        } else {
-                            redeemButton.textContent = 'Redeem (Not enough points)';
-                            redeemButton.disabled = true;
-                        }
-                        rewardTierDiv.appendChild(redeemButton);
-                    });
-                }
-            })
+                                    apigClient.redemptionPost({}, body, {})
+                                        .then(response => {
+                                            alert('Reward redeemed successfully');
+                                            // You may also want to update the rewards UI here
+                                        })
+                                        .catch(error => console.error('Error:', error));
+                                });
+                            } else {
+                                redeemButton.textContent = 'Redeem (Not enough points)';
+                                redeemButton.disabled = true;
+                            }
+                            rewardTierDiv.appendChild(redeemButton);
+                        });
+                    }
+                })
 
-        .catch(error => console.error('Error:', error));
+                .catch(error => console.error('Error:', error));
 
             document.getElementById('join-rewards-button').addEventListener('click', function () {
                 var body = {
@@ -239,7 +312,7 @@
                     var data = response.data;
                     console.log(data);
                     document.getElementById('name').textContent = data.name;
-                    document.getElementById('profile-picture').src = data.picture;
+                    document.getElementById('image-card').style.backgroundImage = 'url(' + data.picture + ')';
                     document.getElementById('address').textContent = data.address;
                     document.getElementById('phone-number').textContent = data.phoneNumber;
                     document.getElementById('description').textContent = data["custom:descriptionText"];
