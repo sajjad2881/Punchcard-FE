@@ -172,34 +172,46 @@
         console.log("HERE")
 
         console.log(userRestaurants)
-
         if (typeof userRestaurants !== "undefined") {
+          // Define an SVG image of a gold-colored marker icon
+          const goldIconSvg = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+      <path fill="gold" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+    </svg>
+  `;
+
+          // Convert the SVG image to a data URL
+          const goldIconUrl = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(goldIconSvg);
+
           for (let restaurant of userRestaurants) {
             const marker = new google.maps.Marker({
-            position: {
-              lat: parseFloat(restaurant["custom:latitude"]),
-              lng: parseFloat(restaurant["custom:longitude"])
-            },
-            map: map,
-            title: restaurant.name
-          });
+              position: {
+                lat: parseFloat(restaurant["custom:latitude"]),
+                lng: parseFloat(restaurant["custom:longitude"])
+              },
+              map: map,
+              title: restaurant.name,
+              icon: goldIconUrl  // Use the custom gold-colored marker icon
+            });
+          }
+        }
 
-            marker.addListener('click', () => {
-              document.getElementById('info').innerHTML = `
+        marker.addListener('click', () => {
+          document.getElementById('info').innerHTML = `
             <h3>${restaurant['name']}</h3>
             <p>${restaurant['custom:descriptionText']}</p>
             <p>${restaurant['address']}</p>
             <p>${restaurant['custom:cuisines']}</p>
             `;
-            });
-          }
+        });
+      }
         }
 
         
 
-      }).catch(function (result) {
-        console.error("defaultMAP - API call error:", result);
-      });
+      }).catch (function (result) {
+      console.error("defaultMAP - API call error:", result);
+    });
 
 
     }
