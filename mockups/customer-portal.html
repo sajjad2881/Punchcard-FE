@@ -221,6 +221,7 @@ font-size: 16px;
 
             // Event listener for when a punchcard is clicked
             punchcardElement.addEventListener('click', () => {
+                console.log("HELLLOOOO2")
                 punchcardBusiness.textContent = punchcard["name"];
                 punchcardDescription.textContent = punchcard["custom:descriptionText"];
                 punchcardInfo.style.display = 'block';
