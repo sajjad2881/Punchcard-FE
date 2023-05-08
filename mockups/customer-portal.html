@@ -260,48 +260,71 @@ font-size: 16px;
                     })
                     .then(response => {
                         if (response) {
-                var programData = response.data;
+                            var programData = response.data;
 
-                // Create and display rewards info
-                var pointsEarned = document.getElementById('points-earned');
-                pointsEarned.textContent = 'Points earned: ' + programData.pointsEarned;
+                            // Create and display rewards info
+                            var pointsEarned = document.getElementById('points-earned');
+                            pointsEarned.textContent = 'Points earned: ' + programData.pointsEarned;
 
-                var progressBarContainer = document.getElementById('progress-bar-container');
-                progressBarContainer.innerHTML = '';  // Clear previous info
+                            var progressBarContainer = document.getElementById('progress-bar-container');
+                            progressBarContainer.innerHTML = '';  // Clear previous info
 
-                var progressBar = document.createElement('div');
-                progressBar.className = 'progress-bar';
-                progressBarContainer.appendChild(progressBar);
+                            var progressBar = document.createElement('div');
+                            progressBar.className = 'progress-bar';
+                            progressBarContainer.appendChild(progressBar);
 
-                var maxPoints = JSON.parse(programData.rewardTiers[programData.rewardTiers.length - 1].replace(/'/g, '"')).tierPoints;
-                var progressPercentage = (programData.pointsEarned / maxPoints) * 100;
-                progressBar.style.width = progressPercentage + '%';
+                            var maxPoints = JSON.parse(programData.rewardTiers[programData.rewardTiers.length - 1].replace(/'/g, '"')).tierPoints;
+                            var progressPercentage = (programData.pointsEarned / maxPoints) * 100;
+                            progressBar.style.width = progressPercentage + '%';
 
-                var qualifyingRewards = document.getElementById('qualifying-rewards');
-                qualifyingRewards.innerHTML = '';  // Clear previous info
+                            // Add labels on the progress bar in increments of 100 points
+                            for (var i = 100; i <= maxPoints; i += 100) {
+                                var marker = document.createElement('div');
+                                marker.className = 'marker100';
+                                marker.style.left = (i / maxPoints * 100) + '%';
+                                progressBarContainer.appendChild(marker);
 
-                var qualifyingRewardsList = programData.rewardTiers.filter(tierStr => {
-                    var tier = JSON.parse(tierStr.replace(/'/g, '"'));
-                    return programData.pointsEarned >= tier.tierPoints;
-                });
+                                var markerLabel = document.createElement('div');
+                                markerLabel.className = 'marker-label100';
+                                markerLabel.textContent = i;
+                                markerLabel.style.left = (i / maxPoints * 100) + '%';
+                                progressBarContainer.appendChild(markerLabel);
+                            }
 
-                if (qualifyingRewardsList.length > 0) {
-                    qualifyingRewards.textContent = 'You qualify for the following rewards:';
-                    qualifyingRewardsList.forEach(tierStr => {
-                        var tier = JSON.parse(tierStr.replace(/'/g, '"'));
+                            var qualifyingRewards = document.getElementById('qualifying-rewards');
+                            qualifyingRewards.innerHTML = '';  // Clear previous info
 
-                        var rewardDiv = document.createElement('div');
-                        rewardDiv.textContent = tier.tierPoints + ' points - ' + tier.tierReward;
-                        qualifyingRewards.appendChild(rewardDiv);
-                    });
-                } else {
-                    var nextRewardTier = JSON.parse(programData.rewardTiers[0].replace(/'/g, '"'));
-                    var pointsTillNextReward = nextRewardTier.tierPoints - programData.pointsEarned;
-                    qualifyingRewards.textContent = pointsTillNextReward + ' points till your next reward.';
-                }
-            }
-        })
-        .catch(error => console.error('Error:', error));
+                            var qualifyingRewardsList = programData.rewardTiers.filter(tierStr => {
+                                var tier = JSON.parse(tierStr.replace(/'/g, '"'));
+                                return programData.pointsEarned >= tier.tierPoints;
+                            });
+
+                            if (qualifyingRewardsList.length > 0) {
+                                qualifyingRewards.textContent = 'You qualify for the following rewards:';
+                                qualifyingRewardsList.forEach(tierStr => {
+                                    var tier = JSON.parse(tierStr.replace(/'/g, '"'));
+
+                                    var rewardDiv = document.createElement('div');
+                                    rewardDiv.textContent = tier.tierPoints + ' points - ' + tier.tierReward;
+                                    qualifyingRewards.appendChild(rewardDiv);
+                                });
+                            } 
+
+                            var nextRewardTier = programData.rewardTiers.find(tierStr => {
+                                var tier = JSON.parse(tierStr.replace(/'/g, '"'));
+                                return programData.pointsEarned < tier.tierPoints;
+                            });
+
+                            if (nextRewardTier) {
+                                var tier = JSON.parse(nextRewardTier.replace(/'/g, '"'));
+                                var pointsTillNextReward = tier.tierPoints - programData.pointsEarned;
+                                var pointsTillNextRewardDiv = document.createElement('div');
+                                pointsTillNextRewardDiv.textContent = pointsTillNextReward + ' points till your next reward: ' + tier.tierReward;
+                                qualifyingRewards.appendChild(pointsTillNextRewardDiv);
+                            }
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
 
 
 
