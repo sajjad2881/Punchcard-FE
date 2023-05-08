@@ -19,6 +19,38 @@
     <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
     <script type="text/javascript" src="../apigClient.js"></script>
 </head>
+<style>
+    .card {
+    padding: 20px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    text-decoration: none;
+    color: black;
+    display: block;
+    width: 200px;
+    height: 300px;
+    text-align: center;
+    transition: box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.card-img {
+    width: 100%;
+    height: auto;
+}
+
+.card-text {
+    margin-top: 10px;
+}
+
+
+</style>
 <body>
     <script> 
         console.log("hi");
@@ -58,13 +90,45 @@
         }
 
         getEnrolledPrograms().then(function(response) {
-            var programs = response.data;
-            var programCards = document.getElementById('instance-cards');
-            programs.forEach(function(program) {
-                var card = document.createElement('div');
-                card.className = 'card';
-                card.innerText = program.id; // replace 'id' with the actual property you want to display
-                programCards.appendChild(card);
+        var programs = response.data;
+        var programCards = document.getElementById('instance-cards');
+        programs.forEach(function(program) {
+            getEnrolledPrograms().then(function(response) {
+    var programs = response.data;
+    var programCards = document.getElementById('instance-cards');
+        programs.forEach(function(program) {
+        console.log("restaurant data should be", program);
+        
+        // Create a new anchor element
+        var card = document.createElement('a');
+        card.className = 'card'; 
+        
+        // Set the href to the restaurant-profile.html page, appending the restaurantID as a URL parameter
+        card.href = 'restaurant-profile.html?restaurantID=' + program.restaurantID;
+        
+        // Create an img element
+        var img = document.createElement('img');
+        img.src = program.picture; // replace 'picture' with the actual property you want to display
+        img.alt = program.name + ' picture';
+        img.className = 'card-img';
+        
+        // Append the img to the card
+        card.appendChild(img);
+
+        // Create a div to hold the restaurant's name
+        var textDiv = document.createElement('div');
+        textDiv.className = 'card-text';
+        
+        // Set the text to the restaurant's name
+        textDiv.innerText = program.name; // replace 'name' with the actual property you want to display
+
+        // Append the text div to the card
+        card.appendChild(textDiv);
+        
+        programCards.appendChild(card);
+    });
+});
+
         });
          }).catch(function(error) {
             console.error(error);
