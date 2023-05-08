@@ -54,7 +54,7 @@
     }
 
     #content-container {
-      box-shadow:  0 5px 5px rgba(0, 0, 0, 0.2), inset 0 -5px 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2), inset 0 -5px 10px rgba(0, 0, 0, 0.2);
       margin: 20px;
     }
 
@@ -70,7 +70,8 @@
       margin: 20px auto;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       box-sizing: border-box;
-      display: none; /* Hide by default */
+      display: none;
+      /* Hide by default */
       position: fixed;
       bottom: 150px;
       left: 0;
@@ -109,18 +110,18 @@
     <div class="logo-text">Punchcard</div>
 
   </div>
-  
+
   <!-- Content Container -->
   <div id="content-container">
     <div id="map"></div>
-    </div>
+  </div>
 
   <div id="search-bar">
     <input id="search-input" type="text">
     <button id="search-button" onclick="searchAndUpdate()">Search</button>
   </div>
 
-  <div id="info" style = "display: none"></div>
+  <div id="info" style="display: none"></div>
   </div>
 
   <script>
@@ -264,13 +265,13 @@
         if (typeof userRestaurants !== "undefined") {
           for (let restaurant of userRestaurants) {
             const marker = new google.maps.Marker({
-            position: {
-              lat: parseFloat(restaurant["custom:latitude"]),
-              lng: parseFloat(restaurant["custom:longitude"])
-            },
-            map: map,
-            title: restaurant.name
-          });
+              position: {
+                lat: parseFloat(restaurant["custom:latitude"]),
+                lng: parseFloat(restaurant["custom:longitude"])
+              },
+              map: map,
+              title: restaurant.name
+            });
 
             marker.addListener('click', () => {
               document.getElementById('info').innerHTML = `
@@ -285,7 +286,7 @@
           }
         }
 
-        
+
 
       }).catch(function (result) {
         console.error("defaultMAP - API call error:", result);
@@ -334,4 +335,5 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAQeyUyXmQcMr3ooXhDe9bO-Z14d2cwPg&callback=defaultMap"></script>
   <!-- -->
 </body>
+
 </html>
