@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loyalty Rewards App</title>
+  <title>Punchcard Authentication Page</title>
   <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
   <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
   <script src="../app.js" defer></script>
@@ -24,6 +24,58 @@
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAQeyUyXmQcMr3ooXhDe9bO-Z14d2cwPg&libraries=places"></script>
   
+  <style>
+    /* Add styling rules here */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      background-color: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #008C00; /* Change button color to green */
+      color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 10px;
+    }
+
+    button:hover {
+      background-color: #006600; /* Darken button color on hover */
+    }
+
+    input[type="text"], input[type="password"], input[type="date"], input[type="file"] {
+      width: 80%; /* Make form fields smaller */
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      border-radius: 4px;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 400px;
+      padding: 16px;
+      background-color: white;
+      margin: auto;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
   <h1>Loyalty Rewards App</h1>
