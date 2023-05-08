@@ -109,13 +109,14 @@ function generateCode() {
      // quantity: data.quantity,
      // price: data.price
     //}));
+    const selectedItemsArray = Object.values(selectedItems);
 
     console.log('Selected Items Array:', selectedItems);
 
     // Prepare the request body
     const requestBody = {
       amountSpent: amountSpent,
-      selectedItems: selectedItems,
+      selectedItems: selectedItemsArray,
       restaurantID: restaurantID,
     };
 
