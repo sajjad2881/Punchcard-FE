@@ -168,7 +168,7 @@
                 return response;
               })
               .catch(error => {
-                console.error("Error with restaurantID " + restaurantID + ": " + error);
+                console.log("Error with restaurantID " + restaurantID + ": " + error);
                 return null; // return null, or a default value for failed requests
               });
           }));
