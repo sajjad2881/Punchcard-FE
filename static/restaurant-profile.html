@@ -12,26 +12,30 @@
             width: 200px;
             height: 200px;
         }
-        .reward-tier {
-            margin: 20px 0;
-            width: 100%;
-        }
-        .reward-tier .tier-label {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .reward-tier .progress-bar-container {
+        .progress-bar-container {
             background-color: #eee;
             height: 20px;
             width: 100%;
             border-radius: 10px;
         }
-        .reward-tier .progress-bar {
+        .progress-bar {
             background-color: #4CAF50;
             height: 20px;
             width: 0;
             border-radius: 10px;
+        }
+        .reward-tier {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .reward-tier .tier-label {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .reward-tier button {
+            margin-left: 10px;
         }
     </style>
     <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
@@ -97,31 +101,39 @@
                         var rewardsProgramInfoDiv = document.getElementById('rewards-program-info');
                         rewardsProgramInfoDiv.innerHTML = '';
 
+                        var progressBarContainer = document.createElement('div');
+                        progressBarContainer.className = 'progress-bar-container';
+                        rewardsProgramInfoDiv.appendChild(progressBarContainer);
+
+                        var progressBar = document.createElement('div');
+                        progressBar.className = 'progress-bar';
+                        progressBarContainer.appendChild(progressBar);
+
                         for (var i = 0; i < programData.rewardTiers.length; i++) {
                             var tierString = programData.rewardTiers[i];
-                            console.log(tierString);
                             var validJsonString = tierString.replace(/'/g, '"'); // replace single quotes with double quotes
                             var tier = JSON.parse(validJsonString);
+
                             var tierDiv = document.createElement('div');
                             tierDiv.className = 'reward-tier';
 
-                            var tierLabel = document.createElement('p');
+                            var tierLabel = document.createElement('span');
                             tierLabel.className = 'tier-label';
                             tierLabel.textContent = tier.tierReward + ' (' + tier.tierPoints + ' points)';
                             tierDiv.appendChild(tierLabel);
 
-                            var progressBarContainer = document.createElement('div');
-                            progressBarContainer.className = 'progress-bar-container';
-                            tierDiv.appendChild(progressBarContainer);
-
-                            var progressBar = document.createElement('div');
-                            progressBar.className = 'progress-bar';
-                            var progressPercentage = Math.min((programData.pointsEarned / tier.tierPoints) * 100, 100);
-                            progressBar.style.width = progressPercentage + '%';
-                            progressBarContainer.appendChild(progressBar);
+                            var redeemButton = document.createElement('button');
+                            redeemButton.textContent = 'Redeem';
+                            redeemButton.disabled = (programData.pointsEarned < tier.tierPoints);
+                            redeemButton.onclick = function() { alert('Hello'); };
+                            tierDiv.appendChild(redeemButton);
 
                             rewardsProgramInfoDiv.appendChild(tierDiv);
                         }
+
+                        var maxPoints = JSON.parse(programData.rewardTiers[programData.rewardTiers.length - 1].replace(/'/g, '"')).tierPoints;
+                        var progressPercentage = Math.min((programData.pointsEarned / maxPoints) * 100, 100);
+                        progressBar.style.width = progressPercentage + '%';
                     }
                 })
                 .catch(error => console.error('Error:', error));
