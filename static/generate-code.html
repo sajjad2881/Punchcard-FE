@@ -90,25 +90,51 @@ async function getMenuItems() {
     const menuItemsContainer = document.getElementById('menu-items');
     for (const menuItem of menuItems) {
       const itemElement = document.createElement('p');
+      const quantityDiv = document.createElement('div');
+      const decrementButton = document.createElement('button');
+      const incrementButton = document.createElement('button');
       const quantityInput = document.createElement('input');
+      
       quantityInput.type = 'number';
       quantityInput.min = 0;
       quantityInput.value = 0;
-      quantityInput.onchange = function() {
-        const quantity = parseInt(this.value);
-        const previousQuantity = selectedItems[menuItem.item] ? selectedItems[menuItem.item].quantity : 0;
-        selectedItems[menuItem.item] = { quantity, price: menuItem.price };
-        totalSpent += (quantity - previousQuantity) * menuItem.price;
-        document.getElementById('amountSpent').value = totalSpent.toFixed(2);
+      quantityInput.style.width = '50px';  // adjust as needed
+      quantityInput.readOnly = true;  // make it read-only
+
+      decrementButton.innerText = '-';
+      decrementButton.onclick = function() {
+        if (quantityInput.value > 0) {
+          quantityInput.value--;
+          handleQuantityChange(menuItem, quantityInput.value);
+        }
       };
+      
+      incrementButton.innerText = '+';
+      incrementButton.onclick = function() {
+        quantityInput.value++;
+        handleQuantityChange(menuItem, quantityInput.value);
+      };
+      
+      quantityDiv.appendChild(decrementButton);
+      quantityDiv.appendChild(quantityInput);
+      quantityDiv.appendChild(incrementButton);
+
       itemElement.innerText = `${menuItem.item}: $${menuItem.price}`;
-      itemElement.prepend(quantityInput);
+      itemElement.appendChild(quantityDiv);
       menuItemsContainer.appendChild(itemElement);
     }
   } catch (error) {
     console.error('Error fetching menu items:', error);
   }
 }
+
+function handleQuantityChange(menuItem, newQuantity) {
+  const previousQuantity = selectedItems[menuItem.item] ? selectedItems[menuItem.item].quantity : 0;
+  selectedItems[menuItem.item] = { quantity: newQuantity, price: menuItem.price };
+  totalSpent += (newQuantity - previousQuantity) * menuItem.price;
+  document.getElementById('amountSpent').value = totalSpent.toFixed(2);
+}
+
 
 
 function generateCode() {
