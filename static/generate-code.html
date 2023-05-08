@@ -30,33 +30,107 @@
   <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
   <script type="text/javascript" src="../apigClient.js"></script>
   <script>
-    function generateCode() {
+
+  let totalSpent = 0;
+const selectedItems = [];
+
+async function getMenuItems() {
+  try {
+    const restaurantID = localStorage.getItem('restaurantID');
+    const response = await axios.get(`https://st9n96e2x7.execute-api.us-east-1.amazonaws.com/Stage1/analytics/menu/${restaurantID}`);
+    const menuItems = response.data;
+    console.log('Response:', response);
+    console.log('Menu Items:', menuItems);
+
+    // Display menu items in the HTML
+    const menuItemsContainer = document.getElementById('menu-items');
+    for (const menuItem of menuItems) {
+      const itemElement = document.createElement('p');
+      const quantityDiv = document.createElement('div');
+      const decrementButton = document.createElement('button');
+      const incrementButton = document.createElement('button');
+      const quantityInput = document.createElement('input');
+      
+      quantityInput.type = 'number';
+      quantityInput.min = 0;
+      quantityInput.value = 0;
+      quantityInput.style.width = '50px';  // adjust as needed
+      quantityInput.readOnly = true;  // make it read-only
+
+      decrementButton.innerText = '-';
+      decrementButton.onclick = function() {
+        if (quantityInput.value > 0) {
+          quantityInput.value--;
+          handleQuantityChange(menuItem, quantityInput.value);
+        }
+      };
+      
+      incrementButton.innerText = '+';
+      incrementButton.onclick = function() {
+        quantityInput.value++;
+        handleQuantityChange(menuItem, quantityInput.value);
+      };
+      
+      quantityDiv.appendChild(decrementButton);
+      quantityDiv.appendChild(quantityInput);
+      quantityDiv.appendChild(incrementButton);
+
+      itemElement.innerText = `${menuItem.item}: $${menuItem.price}`;
+      itemElement.appendChild(quantityDiv);
+      menuItemsContainer.appendChild(itemElement);
+    }
+  } catch (error) {
+    console.error('Error fetching menu items:', error);
+  }
+}
+
+function handleQuantityChange(menuItem, newQuantity) {
+  const previousQuantity = selectedItems[menuItem.item] ? selectedItems[menuItem.item].quantity : 0;
+  selectedItems[menuItem.item] = { item: menuItem.item, quantity: newQuantity, price: menuItem.price };
+  totalSpent += (newQuantity - previousQuantity) * menuItem.price;
+  document.getElementById('amountSpent').value = totalSpent.toFixed(2);
+}
+
+
+function generateCode() {
     // Get the amountSpent value from the input field
     const amountSpent = document.getElementById('amountSpent').value;
-  
+
     // Validate the amountSpent value
     if (isNaN(amountSpent) || amountSpent <= 0) {
-      alert('Please enter a valid amount spent.');
+      alert('Please select at least one menu item.');
       return;
     }
-  
+
     // Get the ID token from local storage
     const restaurantID = localStorage.getItem('restaurantID');
-  
+    //const selectedItemsArray = Array.from(selectedItems, ([item, data]) => ({
+     // item: item,
+     // quantity: data.quantity,
+     // price: data.price
+    //}));
+    const selectedItemsArray = Object.values(selectedItems);
+
+    console.log('Selected Items Array:', selectedItems);
+
     // Prepare the request body
     const requestBody = {
       amountSpent: amountSpent,
-      restaurantID: restaurantID
+      selectedItems: selectedItemsArray,
+      restaurantID: restaurantID,
     };
-  
+
+    console.log('Request Body:', requestBody);
+
     // Prepare the parameters for the API call
     const params = {}; // No path or query parameters are needed for this API call
     const body = requestBody;
+    console.log("body", body)
     const additionalParams = {}; // No additional headers or query parameters are needed
-  
+
     // Create an instance of the API Gateway client
     var apigClient = apigClientFactory.newClient();
-  
+
     // Make the API call to transactionPost
     apigClient.transactionPost(params, body, additionalParams)
       .then(function (result) {
@@ -73,24 +147,6 @@
       });
   }
 
-  async function getMenuItems() {
-    try {
-      const restaurantID = localStorage.getItem('restaurantID');
-      const response = await axios.get(`https://st9n96e2x7.execute-api.us-east-1.amazonaws.com/Stage1/analytics/menu/${restaurantID}`);
-      const menuItems = response.data;
-      console.log("menu items are", menuItems);
-
-      // Display menu items in the HTML
-      const menuItemsContainer = document.getElementById('menu-items');
-      for (const menuItem of menuItems) {
-        const itemElement = document.createElement('p');
-        itemElement.innerText = `${menuItem.item}: $${menuItem.price}`;
-        menuItemsContainer.appendChild(itemElement);
-      }
-    } catch (error) {
-      console.error('Error fetching menu items:', error);
-    }
-  }
 
   // Function to navigate to the customer-dashboard page
   function goToBusinessDashboard() {
@@ -103,16 +159,17 @@
 <body>
   <h1>Generate Code</h1>
   
-  <div id="generate-code-form">
-    <input type="number" id="amountSpent" placeholder="Amount Spent" min="0" step="0.01">
-    <button onclick="generateCode()">Generate Code</button>
-    <!-- Add a button to go back to the customer-dashboard page -->
-	<button type="button" onclick="goToBusinessDashboard()">Back to dashboard</button>
-  </div>
 
   <div id="menu-items">
     <h2>Menu Items:</h2>
     <!-- Menu items will be displayed here -->
+  </div>
+
+  <div id="generate-code-form">
+    <input type="number" id="amountSpent" placeholder="Amount Spent" min="0" step="0.01" readonly>
+    <button onclick="generateCode()">Generate Code</button>
+    <!-- Add a button to go back to the customer-dashboard page -->
+    <button type="button" onclick="goToBusinessDashboard()">Back to dashboard</button>
   </div>
   
   
