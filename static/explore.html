@@ -73,7 +73,7 @@
       display: none;
       /* Hide by default */
       position: fixed;
-      bottom: 125px;
+      bottom: 100px;
       left: 0;
       right: 0;
       border-radius: 5px;
@@ -108,6 +108,14 @@
   <!-- Header (Punchcard Menu) -->
   <div class="header">
     <div class="logo-text">Punchcard</div>
+
+    <nav>
+      <ul style="list-style-type: none; margin: 0; padding: 0; overflow: hidden;">
+        <li style="float: left;"><a href="./customer-dashboard.html" style="display: block; color: black; text-align: center; padding: 14px 16px; text-decoration: none;">Home</a></li>
+        <!-- <li style="float: left;"><a href="#about" style="display: block; color: black; text-align: center; padding: 14px 16px; text-decoration: none;">About</a></li> -->
+        <!-- <li style="float: left;"><a href="#contact" style="display: block; color: black; text-align: center; padding: 14px 16px; text-decoration: none;">Contact</a></li> -->
+      </ul>
+    </nav>
   </div>
 
   <!-- Content Container -->
@@ -152,6 +160,7 @@
 
       apigClient.searchRestaurantsGet(queryParams, {}, {})
         .then(function (result) {
+
           // Update the restaurantIDs with the result
           console.log(result)
           restaurantIDs = result.data;
@@ -159,15 +168,27 @@
 
           const restaurantsPromise = Promise.all(restaurantIDs.map(restaurantID => {
             const pathParameters = { restaurantID };
-            return apigClient.restaurantsRestaurantIDGet(pathParameters, {}, {});
+            console.log(pathParameters);
+            // console log the responses
+            return apigClient.restaurantsRestaurantIDGet(pathParameters, {}, {})
+              .then(response => {
+                console.log(response);
+                return response;
+              })
+              .catch(error => {
+                console.log("Error with restaurantID " + restaurantID + ": " + error);
+                return null; // return null, or a default value for failed requests
+              });
           }));
           restaurantsPromise.then(responses => {
-            restaurants = responses.map(response => response.data);
+            // filter out null (or default) values
+            restaurants = responses.filter(response => response !== null).map(response => response.data);
+            console.log("restaurants", restaurants);
             initMap();
-          });
-
-        }).catch(function (result) {
-          console.error("Error: " + result);
+          })
+            .catch(function (result) {
+              console.error("Error: " + result);
+            });
         });
     }
 
@@ -199,10 +220,9 @@
 
           marker.addListener('click', () => {
             document.getElementById('info').innerHTML = `
-            <h3>${restaurant['name']}</h3>
-            <p>${restaurant['custom:descriptionText']}</p>
+            <h3><a href = ./restaurant-profile.html?restaurantID=${restaurant['restaurantID']}>${restaurant['name']}</a></h3>
             <p>${restaurant['address']}</p>
-            <p>${restaurant['custom:cuisines']}</p>
+            <p>${restaurant['custom:descriptionText']}</p>
             `;
             document.getElementById('info').style.display = 'block'; // Show info section
           });
@@ -273,12 +293,11 @@
 
             marker.addListener('click', () => {
               document.getElementById('info').innerHTML = `
-            <h3>${restaurant['name']}</h3>
-            <p>${restaurant['custom:descriptionText']}</p>
+            <h3><a href = ./restaurant-profile.html?restaurantID=${restaurant['restaurantID']}>${restaurant['name']}</a></h3>
             <p>${restaurant['address']}</p>
-            <p>${restaurant['custom:cuisines']}</p>
+            <p>${restaurant['custom:descriptionText']}</p>
             `;
-            document.getElementById('info').style.display = 'block';
+              document.getElementById('info').style.display = 'block';
             });
 
           }
