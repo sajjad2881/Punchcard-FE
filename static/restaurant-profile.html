@@ -280,8 +280,8 @@
 
                                     apigClient.redemptionPost({}, body, {})
                                         .then(response => {
-                                            console.log(response);
-                                            alert('Reward redeemed successfully');
+                                            console.log("The response object is", response);
+                                            alert('Reward redeemed successfully!!!!!');
                                             // You may also want to update the rewards UI here
                                         })
                                         .catch(error => console.error('Error:', error));
