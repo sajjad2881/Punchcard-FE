@@ -169,7 +169,7 @@
           }));
           restaurantsPromise.then(responses => {
             restaurants = responses.map(response => response.data);
-            console.log(restaurants);
+            console.log("restaurants", restaurants);
             initMap();
           });
 
