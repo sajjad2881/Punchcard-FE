@@ -310,11 +310,40 @@ function initUserPools() {
   return userPoolBusiness;
 }
 
+function initUserPoolsCustomer() {
+  const poolDataCustomer = {
+    UserPoolId: 'us-east-1_ViBGmruWb',
+    ClientId: '5v1l1dgami6h8qufckv96p5vrj',
+  };
+
+  const poolDataBusiness = {
+    UserPoolId: 'us-east-1_ztoLLvLv4',
+    ClientId: '3umbif497oieqmdl493cv9tr6g',
+  };
+
+  let userPoolCustomer = new AmazonCognitoIdentity.CognitoUserPool(poolDataCustomer);
+  let userPoolBusiness = new AmazonCognitoIdentity.CognitoUserPool(poolDataBusiness);
+  return userPoolCustomer;
+}
+
 function signOut() {
   let userPoolBusiness = initUserPools();
   const userData = {
     Username: localStorage.getItem('userEmail'),
     Pool: userPoolBusiness
+  };
+  console.log("trying to signout")
+  const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+  cognitoUser.signOut();
+  localStorage.clear();
+  window.location.href = '/static/index.html';
+}
+
+function signOutCustomer() {
+  let userPoolCustomer = initUserPoolsCustomer();
+  const userData = {
+    Username: localStorage.getItem('userEmail'),
+    Pool: userPoolCustomer
   };
   console.log("trying to signout")
   const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
