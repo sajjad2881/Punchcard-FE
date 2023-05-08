@@ -84,12 +84,18 @@ async function getMenuItems() {
   }
 }
 
+
 function handleQuantityChange(menuItem, newQuantity) {
-  const previousQuantity = selectedItems[menuItem.item] ? selectedItems[menuItem.item].quantity : 0;
-  selectedItems[menuItem.item] = { quantity: newQuantity, price: menuItem.price };
+  const previousQuantity = selectedItems.has(menuItem.item) ? selectedItems.get(menuItem.item) : 0;
+  selectedItems.set(menuItem.item, newQuantity);
   totalSpent += (newQuantity - previousQuantity) * menuItem.price;
   document.getElementById('amountSpent').value = totalSpent.toFixed(2);
+
+  console.log('Item:', menuItem.item);
+  console.log('New Quantity:', newQuantity);
+  console.log('Selected Items:', selectedItems);
 }
+
 
 
 
@@ -105,22 +111,21 @@ function generateCode() {
 
     // Get the ID token from local storage
     const restaurantID = localStorage.getItem('restaurantID');
-    const selectedItemsArray = Array.from(selectedItems, ([item, data]) => ({
-      item: item,
-      quantity: data.quantity,
-      price: data.price
-    }));
+    const selectedItemsArray = Array.from(selectedItems, ([item, quantity]) => ({
+    item: item,
+    quantity: quantity
+  }));
 
     console.log('Selected Items Array:', selectedItemsArray);
 
-    // Prepare the request body
+  // Prepare the request body
     const requestBody = {
       amountSpent: amountSpent,
       restaurantID: restaurantID,
       selectedItems: selectedItemsArray
     };
 
-    console.log('Request Body:', requestBody);
+  console.log('Request Body:', requestBody);
 
     // Prepare the parameters for the API call
     const params = {}; // No path or query parameters are needed for this API call
