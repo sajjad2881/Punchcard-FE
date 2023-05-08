@@ -70,7 +70,7 @@
       margin: 20px auto;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       box-sizing: border-box;
-      display: block; /* Hide by default */
+      display: none; /* Hide by default */
       border-radius: 5px;
     }
 
@@ -119,8 +119,7 @@
     <button id="search-button" onclick="searchAndUpdate()">Search</button>
   </div>
 
-  <div id="info" style = "display: none"></div>
-  </div>
+  <div id="info"></div>
 
   <script>
     const apigClient = apigClientFactory.newClient();
