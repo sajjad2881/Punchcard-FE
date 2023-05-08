@@ -202,7 +202,7 @@
 
     }
 
-    function addUserLocationMarker(map) {
+    function addUserLocationMarker() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(position => {
           const userLocation = {
