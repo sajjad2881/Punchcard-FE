@@ -5,37 +5,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configure Menu Items</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
+        body {
+          font-family: 'Poppins', sans-serif;
+          margin: 0;
+          padding: 0;
+          color: #333;
+          background-color: #f5f5f5;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+
+        h1 {
+          text-align: center;
+        }
+
+        button {
+          padding: 10px 20px;
+          border: none;
+          background-color: #008C00;
+          color: #fff;
+          cursor: pointer;
+          border-radius: 5px;
+          margin: 10px;
+        }
+
+        button.full-width {
+          width: 100%;
+        }
+
+        button:hover {
+          background-color: #006600;
+        }
+
+        form {
+          background-color: #f0f0f0;
+          padding: 20px;
+          border-radius: 5px;
+          width: 50%;
+        }
+
+        #menu-items-container {
+          margin-bottom: 20px;
+        }
+
         .menu-item-row {
-            margin-bottom: 10px;
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
         }
 
-        /* Add styles for the menu display */
-        .menu-display {
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            width: 300px;
-        }
-
-        .menu-display h2 {
-            text-align: center;
-        }
-
-        .menu-display ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .menu-display li {
-            padding: 5px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .menu-display li:last-child {
-            border-bottom: none;
+        .menu-item-row input {
+          width: 45%;
         }
     </style>
+
 
     <script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
     <script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
@@ -56,9 +84,9 @@
         <div id="menu-items-container">
             <!-- The menu items will be dynamically added here -->
         </div>
-        <button type="button" onclick="addMenuItem()">Add Another Menu Item</button>
+        <button type="button" onclick="addMenuItem()" class="full-width">Add Another Menu Item</button>
         <br>
-        <button type="submit">Submit</button>
+        <button type="submit" class="full-width">Submit</button>
     </form>
     <!-- Add this button -->
     <button onclick="goBackToDashboard()">Back to Dashboard</button>
