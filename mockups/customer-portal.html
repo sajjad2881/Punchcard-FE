@@ -155,7 +155,8 @@ font-size: 16px;
     <!-- Detailed information about the selected punchcard will be displayed here -->
     <div class="punchcard-business" id="punchcard-business"></div>
     <div class="punchcard-description" id="punchcard-description"></div>
-    
+    <button id="view-profile-button">View your profile</button>
+
     <!-- Select target reward section -->
     <div class="reward-selection-container">
         <div class="reward-selection-label">Select Reward:</div>
@@ -207,6 +208,7 @@ font-size: 16px;
         const progressLabel = document.getElementById('progress-label');
         const rewardSelectionDropdown = document.getElementById('reward-selection-dropdown');
 
+
         punchcardsData.forEach((punchcard) => {
             // Create punchcard element
             const punchcardElement = document.createElement('div');
@@ -221,6 +223,13 @@ font-size: 16px;
                 punchcardBusiness.textContent = punchcard["name"];
                 punchcardDescription.textContent = punchcard["custom:descriptionText"];
                 punchcardInfo.style.display = 'block';
+
+                var viewProfileButton = document.getElementById('view-profile-button');
+                viewProfileButton.style.display = 'block';
+                viewProfileButton.onclick = function() {
+                    window.location.href = '../static/restaurant-profile.html?restaurantID=' + punchcard["restaurantID"];
+                };
+
 
                 // // Populate reward selection dropdown
                 // rewardSelectionDropdown.innerHTML = '';
