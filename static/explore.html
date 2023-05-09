@@ -217,28 +217,6 @@
         zoom: 12
       });
 
-      if (typeof restaurants !== "undefined") {
-        for (let restaurant of restaurants) {
-          const marker = new google.maps.Marker({
-            position: {
-              lat: parseFloat(restaurant["custom:latitude"]),
-              lng: parseFloat(restaurant["custom:longitude"])
-            },
-            map: map,
-            title: restaurant.name
-          });
-
-          marker.addListener('click', () => {
-            document.getElementById('info').innerHTML = `
-            <h3><a href = ./restaurant-profile.html?restaurantID=${restaurant['restaurantID']}>${restaurant['name']}</a></h3>
-            <p>${restaurant['address']}</p>
-            <p>${restaurant['custom:descriptionText']}</p>
-            `;
-            document.getElementById('info').style.display = 'block'; // Show info section
-          });
-        }
-      }
-
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(position => {
           const userLocation = {
@@ -259,14 +237,52 @@
             },
           });
 
-          map.panTo(userLocation);
+          // map.panTo(userLocation);
         }, () => {
           // If the user declines to share their location, use the default center
-          map.panTo(defaultLocation);
+          // map.panTo(defaultLocation);
         });
       } else {
         // Browser doesn't support Geolocation
-        map.panTo(defaultLocation);
+        // map.panTo(defaultLocation);
+      }
+
+      if (typeof restaurants !== "undefined") {
+        var bounds = new google.maps.LatLngBounds();
+        for (let restaurant of restaurants) {
+          var position= {
+              lat: parseFloat(restaurant["custom:latitude"]),
+              lng: parseFloat(restaurant["custom:longitude"])
+            };
+          const marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: restaurant.name
+          });
+
+          bounds.extend(position);
+
+          marker.addListener('click', () => {
+            document.getElementById('info').innerHTML = `
+            <h3><a href = ./restaurant-profile.html?restaurantID=${restaurant['restaurantID']}>${restaurant['name']}</a></h3>
+            <p>${restaurant['address']}</p>
+            <p>${restaurant['custom:descriptionText']}</p>
+            `;
+            document.getElementById('info').style.display = 'block'; // Show info section
+          });
+        }
+
+        map.fitBounds(bounds);
+
+        var boundsCenter = bounds.getCenter();
+
+        // Adjust the center of the map to be closer to the user's location.
+        var newCenter = new google.maps.LatLng(
+          (userLocation.lat + boundsCenter.lat()) / 2,
+          (userLocation.lng + boundsCenter.lng()) / 2
+        );
+
+        map.setCenter(newCenter);
       }
     }
 
@@ -322,8 +338,8 @@
 
           // Adjust the center of the map to be closer to the user's location.
           var newCenter = new google.maps.LatLng(
-            (defaultLocation.lat + boundsCenter.lat()) / 2,
-            (defaultLocation.lng + boundsCenter.lng()) / 2
+            (userLocation.lat + boundsCenter.lat()) / 2,
+            (userLocation.lng + boundsCenter.lng()) / 2
           );
 
           map.setCenter(newCenter);
