@@ -46,11 +46,12 @@
             border-radius: 10px;
         }
 
-        #id {
+        #code {
             text-align: center;
             background-color: #fff;
-            padding: 20px;
+            padding: 10px;
             max-width: 95%;
+            height:auto;
             /* Set a maximum width for the container */
             margin: 20px auto;
             /* Center the container */
@@ -212,15 +213,9 @@
         <div id="rewards-status"></div>
         <div id="rewards-program-info"></div>
 
-<<<<<<< HEAD
-=======
-
     </div>
 
-    <div id="code">
-
-
->>>>>>> 4a05bb1 (recommendations link on restaurant page)
+    <div id="code" style = "display:none">
     </div>
     <!-- Include your scripts here -->
     <script>
@@ -320,11 +315,9 @@
                                         .then(response => {
                                             console.log("The response object is", response);
                                             var redemptionCode = response.data.redemption_code;
-                                            alert('Reward redeemed successfully! Your redemption code is ' + redemptionCode);
+                                            // alert('Reward redeemed successfully! Your redemption code is ' + redemptionCode);
                                             // You may also want to update the rewards UI here
-                                            var redemptionCode = response.data.redemption_code;
-                                            alert('Reward redeemed successfully! Your redemption code is ' + redemptionCode);
-                                            
+
                                             programData.pointsEarned -= tier.tierPoints;
 
                                             currentPointsLabel.textContent = programData.pointsEarned;
@@ -334,6 +327,8 @@
                                             progressBar.style.width = progressPercentage + '%';
 
                                             // You may also want to update the rewards UI here
+                                            document.getElementById('code').innerHTML = `<h3>Your Code Is: ${redemptionCode}</h3>`;
+                                            document.getElementById('code').style.display = 'block';
                                         })
                                         .catch(error => console.error('Error:', error));
                                 });
