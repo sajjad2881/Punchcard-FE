@@ -219,12 +219,6 @@
         zoom: 12
       });
 
-      google.maps.event.addListener(map, 'bounds_changed', function () {
-        if (map.getZoom() > 15) {
-          map.setZoom(15);
-        }
-      });
-
       // if (navigator.geolocation) {
       //   navigator.geolocation.getCurrentPosition(position => {
       //     const userLocation = {
@@ -292,6 +286,10 @@
         );
 
         map.setCenter(newCenter);
+
+        if (map.getZoom() > 15) {
+          map.setZoom(15);
+        }
       }
     }
 
