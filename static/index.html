@@ -1,151 +1,292 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Punchcard Authentication Page</title>
-  <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
-  <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
-  <script src="../app.js" defer></script>
+    <title>Punchcard - Loyalty Programs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        @keyframes gradient-bursts-1 {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
 
-  <script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
-  <script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
-  <script type="text/javascript" src="../lib/CryptoJS/rollups/sha256.js"></script>
-  <script type="text/javascript" src="../lib/CryptoJS/components/hmac.js"></script>
-  <script type="text/javascript" src="../lib/CryptoJS/components/enc-base64.js"></script>
-  <script type="text/javascript" src="../lib/url-template/url-template.js"></script>
-  <script type="text/javascript" src="../lib/apiGatewayCore/sigV4Client.js"></script>
-  <script type="text/javascript" src="../lib/apiGatewayCore/apiGatewayClient.js"></script>
-  <script type="text/javascript" src="../lib/apiGatewayCore/simpleHttpClient.js"></script>
-  <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
-  <script type="text/javascript" src="../apigClient.js"></script>
+        @keyframes gradient-bursts-2 {
+            0% {
+                background-position: 100% 0%;
+            }
+            50% {
+                background-position: 0% 100%;
+            }
+            100% {
+                background-position: 100% 0%;
+            }
+        }
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+        @keyframes gradient-bursts-3 {
+            0% {
+                background-position: 50% 0%;
+            }
+            50% {
+                background-position: 50% 100%;
+            }
+            100% {
+                background-position: 50% 0%;
+            }
+        }
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAQeyUyXmQcMr3ooXhDe9bO-Z14d2cwPg&libraries=places"></script>
-  
-  <style>
-    /* Add styling rules here */
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      color: #333;
-      background-color: #f5f5f5;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+        @keyframes gradient-bursts-4 {
+            0% {
+                background-position: 0% 0%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            100% {
+                background-position: 0% 0%;
+            }
+        }
+
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .header {
+            background-color: #fff;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .logo-text {
+            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .nav-links .login {
+            border: 2px solid #333;
+            margin-left: 10px;
+            padding: 5px 10px;
+        }
+
+        .hero-section {
+            position: relative;
+            color: #fff;
+            text-align: center;
+            padding: 80px;
+            overflow: hidden;
+        }
+
+        .gradient-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            animation-duration: 96s;
+            animation-iteration-count: infinite;
+        }
+
+        .gradient-layer-1 {
+            background: linear-gradient(45deg, rgba(255,95,109,1) 
+0%, rgba(255,195,113,0.5) 25%, rgba(51,153,255,0.5) 50%, rgba(153,51,255,0.5) 75%);
+background-size: 400% 400%;
+animation-name: gradient-bursts-1;
+z-index: -1;
+}
+
+    .gradient-layer-2 {
+        background: linear-gradient(45deg, rgba(153,51,255,0.6) 0%, rgba(51,153,255,0.6) 25%, rgba(255,95,109,0.6) 50%, rgba(255,195,113,0.6) 75%);
+        background-size: 400% 400%;
+        animation-name: gradient-bursts-2;
+        animation-delay: 24s;
+        z-index: -2;
     }
 
-    h1, h2 {
-      text-align: center;
+    .gradient-layer-3 {
+        background: linear-gradient(45deg, rgba(51,153,255,0.4) 0%, rgba(255,95,109,0.4) 25%, rgba(153,51,255,0.4) 50%, rgba(255,195,113,0.4) 75%);
+        background-size: 400% 400%;
+        animation-name: gradient-bursts-3;
+        animation-delay: 48s;
+        z-index: -3;
     }
 
-    button {
-      padding: 10px 20px;
-      border: none;
-      background-color: #008C00; /* Change button color to green */
-      color: #fff;
-      cursor: pointer;
-      border-radius: 5px;
-      margin: 10px;
+    .gradient-layer-4 {
+        background: linear-gradient(45deg, rgba(255,195,113,0.7) 0%, rgba(153,51,255,0.7) 25%, rgba(255,95,109,0.7) 50%, rgba(51,153,255,0.7) 75%);
+        background-size: 400% 400%;
+        animation-name: gradient-bursts-4;
+        animation-delay: 72s;
+        z-index: -4;
     }
 
-    button:hover {
-      background-color: #006600; /* Darken button color on hover */
+    .title {
+        font-size: 48px;
+        font-weight: 600;
+        margin-bottom: 20px;
     }
 
-    input[type="text"], input[type="password"], input[type="date"], input[type="file"] {
-      width: 80%; /* Make form fields smaller */
-      padding: 12px 20px;
-      margin: 8px 0;
-      display: inline-block;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-      border-radius: 4px;
+    .subtitle {
+        font-size: 24px;
+        color: #e0e0e0;
+        margin-bottom: 40px;
     }
 
-    .form-container {
-      width: 100%;
-      max-width: 400px;
-      padding: 16px;
-      background-color: white;
-      margin: auto;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+    .button {
+        padding: 15px 30px;
+        font-size: 16px;
+        border: none;
+        background-color: #fff;
+        color: #3f2b96;
+        cursor: pointer;
+        margin: 5px;
+        border-radius: 30px;
+        font-weight: 600;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
     }
-  </style>
+
+    .button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .button:active {
+        transform: translateY(0);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .section {
+        padding: 80px;
+    }
+
+    .features-section {
+        text-align: center;
+    }
+
+    .feature {
+        display: inline-block;
+        width: 30%;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .feature-title {
+        font-weight: 600;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .feature-description {
+        font-size: 16px;
+        color: #777;
+    }
+
+    .about-section {
+        background-color
+: #f0f0f0;
+text-align: center;
+padding: 80px;
+}
+
+    .about-title {
+        font-size: 32px;
+        font-weight: 600;
+        margin-bottom: 30px;
+    }
+
+    .about-text {
+        font-size: 18px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .footer {
+        text-align: center;
+        font-size: 14px;
+        color: #777;
+        padding: 20px;
+    }
+</style>
 </head>
 <body>
-  <h1>Loyalty Rewards App</h1>
-
-  <div id="business-actions" style="display: none;">
-    <h2>Business Actions</h2>
-    <a href="static/generate-code.html">Generate Code</a>
-  </div>
-  
-  <div id="selection-form">
-    <button onclick="showCustomer()">I'm a Customer</button>
-    <button onclick="showBusiness()">I'm a Business</button>
-  </div>
-
-  <div id="customer-form" style="display: none;">
-    <div id="login-form">
-      <h2>Login</h2>
-      <input type="text" id="login-username" placeholder="Username">
-      <input type="password" id="login-password" placeholder="Password">
-      <button onclick="signIn()">Login</button>
+    <div class="header">
+        <!-- Logo and navigation links -->
+        <div class="logo-text">Punchcard</div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#contact">Contact</a>
+            <a href="../static/customer-index.html" class="login">Customer Login!</a>
+            <a href="../static/business-index.html" class="login">Business Login</a>
+        </div>
     </div>
-
-    <div id="signup-form">
-      <h2>Sign up</h2>
-      <input type="text" id="signup-username" placeholder="Username">
-      <input type="text" id="signup-name" placeholder="Name">
-      <input type="date" id="signup-birthdate" placeholder="Birthday">
-      <input type="password" id="signup-password" placeholder="Password">
-      <button onclick="signUp()">Sign up</button>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <!-- Gradient Layers -->
+        <div class="gradient-layer gradient-layer-1"></div>
+        <div class="gradient-layer gradient-layer-2"></div>
+        <div class="gradient-layer gradient-layer-3"></div>
+        <div class="gradient-layer gradient-layer-4"></div>
+        <!-- Content -->
+        <div class="title">Loyalty Programs Made Easy</div>
+        <div class="subtitle">Experience the joy of earning rewards and redeeming them at your favorite stores.</div>
     </div>
-  </div>
-
-  <div id="business-form" style="display: none;">
-    <div id="business-login-form">
-      <h2>Business Login</h2>
-      <input type="text" id="business-login-username" placeholder="Username">
-      <input type="password" id="business-login-password" placeholder="Password">
-      <button onclick="signInBusiness()">Login</button>
+    <!-- Features Section -->
+    <div class="section features-section" id="features">
+        <div class="title">Why Punchcard</div>
+        <div class="feature">
+            <div class="feature-title">Seamless Experience</div>
+            <div class="feature-description">Easily earn and redeem rewards at your favorite stores.</div>
+        </div>
+        <div class="feature">
+            <div class="feature-title">Exclusive Offers</div>
+            <div class="feature-description">Gain access to special deals and promotions just for you.</div>
+        </div>
+        <div class="feature">
+            <div class="feature-title">All in One Place</div>
+            <div class="feature-description">Track rewards from multiple stores, all in one convenient app.</div>
+        </div>
     </div>
-  
-    <div id="business-signup-form">
-      <h2>Business Sign up</h2>
-      <input type="text" id="business-signup-username" placeholder="Email Username">
-      <input type="text" id="business-signup-name" placeholder="Business Name">
-      <input type="text" id="business-signup-address" placeholder="Address">
-      <input type="text" id="business-signup-email" placeholder="Email">
-      <input type="text" id="business-signup-phone" placeholder="Phone Number">
-      <input type="text" id="business-signup-website" placeholder="Website">
-      <input type="text" id="business-signup-adminName" placeholder="Admin Name">
-      <!-- Add input fields for the new attributes -->
-      <input type="text" id="business-signup-cuisines" placeholder="Cuisines">
-      <input type="text" id="business-signup-descriptionText" placeholder="Description Text">
-      <input type="text" id="business-signup-descriptors" placeholder="Descriptors">
-      <input type="text" id="business-signup-locationTags" placeholder="Location Tags">
-      <input type="password" id="business-signup-password" placeholder="Password">
-      <input type="file" id="business-signup-picture" accept="image/*" placeholder="Picture">
-      <button onclick="signUpBusiness()">Sign up</button>
+    <!-- About Section -->
+    <div class="section about-section">
+        <div class="about-title">About Punchcard</div>
+        <div class="about-text">
+            Punchcard is a modern loyalty program platform that empowers businesses to create customized reward programs and provides customers with a seamless experience to earn and redeem rewards. With Punchcard, we're making loyalty programs simple, fun, and rewarding for everyone.
+        </div>
     </div>
-  </div>
-  
-  <div id="business-verification-form" style="display: none;">
-    <input type="text" id="business-verification-code" placeholder="Verification code">
-    <button onclick="verifyBusiness()">Verify</button>
-  </div>
-  
-
-  <div id="verification-form" style="display: none;">
-    <input type="text" id="verification-code" placeholder="Verification code">
-    <button onclick="verify()">Verify</button>
-  </div>
-  
+    <!-- Footer -->
+    <div class="footer">
+        Made with ❤️ by the Snooty Machines.
+    </div>
 </body>
 </html>

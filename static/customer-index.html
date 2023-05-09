@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Punchcard Authentication Page -- Customer</title>
+        <script src="https://unpkg.com/aws-sdk@2.799.0/dist/aws-sdk.min.js"></script>
+        <script src="https://unpkg.com/amazon-cognito-identity-js@4.6.0/dist/amazon-cognito-identity.min.js"></script>
+        <script src="../app.js" defer></script>
+      
+        <script type="text/javascript" src="../lib/axios/dist/axios.standalone.js"></script>
+        <script type="text/javascript" src="../lib/CryptoJS/rollups/hmac-sha256.js"></script>
+        <script type="text/javascript" src="../lib/CryptoJS/rollups/sha256.js"></script>
+        <script type="text/javascript" src="../lib/CryptoJS/components/hmac.js"></script>
+        <script type="text/javascript" src="../lib/CryptoJS/components/enc-base64.js"></script>
+        <script type="text/javascript" src="../lib/url-template/url-template.js"></script>
+        <script type="text/javascript" src="../lib/apiGatewayCore/sigV4Client.js"></script>
+        <script type="text/javascript" src="../lib/apiGatewayCore/apiGatewayClient.js"></script>
+        <script type="text/javascript" src="../lib/apiGatewayCore/simpleHttpClient.js"></script>
+        <script type="text/javascript" src="../lib/apiGatewayCore/utils.js"></script>
+        <script type="text/javascript" src="../apigClient.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+      
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAQeyUyXmQcMr3ooXhDe9bO-Z14d2cwPg&libraries=places"></script>
+        
+        <style>
+          /* Add styling rules here */
+          body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+          }
+      
+          h1, h2 {
+            text-align: center;
+          }
+      
+          button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #008C00; /* Change button color to green */
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 10px;
+          }
+      
+          button:hover {
+            background-color: #006600; /* Darken button color on hover */
+          }
+      
+          input[type="text"], input[type="password"], input[type="date"], input[type="file"] {
+            width: 80%; /* Make form fields smaller */
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            border-radius: 4px;
+          }
+      
+          .form-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 16px;
+            background-color: white;
+            margin: auto;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+          }
+        </style>
+      </head>
+<body>
+  <h1>Loyalty Rewards App</h1>
+
+  <div id="customer-form">
+    <div id="login-form">
+      <h2>Login</h2>
+      <input type="text" id="login-username" placeholder="Username">
+      <input type="password" id="login-password" placeholder="Password">
+      <button onclick="signIn()">Login</button>
+    </div>
+
+    <div id="signup-form">
+      <h2>Sign up</h2>
+      <input type="text" id="signup-username" placeholder="Username">
+      <input type="text" id="signup-name" placeholder="Name">
+      <input type="date" id="signup-birthdate" placeholder="Birthday">
+      <input type="password" id="signup-password" placeholder="Password">
+      <button onclick="signUp()">Sign up</button>
+    </div>
+  </div>
+
+  <div id="verification-form" style="display: none;">
+    <input type="text" id="verification-code" placeholder="Verification code">
+    <button onclick="verify()">Verify</button>
+  </div>
+</body>
+</html>
