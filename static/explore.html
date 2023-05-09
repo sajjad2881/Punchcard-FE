@@ -293,8 +293,8 @@
           var bounds = new google.maps.LatLngBounds();
           for (let restaurant of userRestaurants) {
             position = {
-                lat: parseFloat(restaurant["custom:latitude"]),
-                lng: parseFloat(restaurant["custom:longitude"])
+              lat: parseFloat(restaurant["custom:latitude"]),
+              lng: parseFloat(restaurant["custom:longitude"])
             };
 
             const marker = new google.maps.Marker({
@@ -316,6 +316,17 @@
 
           }
           map.fitBounds(bounds);
+
+          var boundsCenter = bounds.getCenter();
+
+          // Adjust the center of the map to be closer to the user's location.
+          var newCenter = new google.maps.LatLng(
+            (defaultLocation.lat + boundsCenter.lat()) / 2,
+            (defaultLocation.lng + boundsCenter.lng()) / 2
+          );
+
+          map.setCenter(newCenter);
+
         }
 
 
