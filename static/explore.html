@@ -152,14 +152,14 @@
       lng: -73.9651746
     };
 
-    // if (navigator.geolocation) {
-    //   navigator.geolocation.getCurrentPosition(position => {
-    //     userLocation = {
-    //       lat: position.coords.latitude,
-    //       lng: position.coords.longitude
-    //     };
-    //   });
-    // }
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        userLocation = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+      });
+    }
 
     function searchAndUpdate() {
       const query = document.getElementById("search-input").value;
@@ -251,10 +251,10 @@
         var bounds = new google.maps.LatLngBounds();
         bounds.extend(userLocation);
         for (let restaurant of restaurants) {
-          var position = {
-            lat: parseFloat(restaurant["custom:latitude"]),
-            lng: parseFloat(restaurant["custom:longitude"])
-          };
+          var position= {
+              lat: parseFloat(restaurant["custom:latitude"]),
+              lng: parseFloat(restaurant["custom:longitude"])
+            };
           const marker = new google.maps.Marker({
             position: position,
             map: map,
@@ -291,94 +291,103 @@
       document.getElementById('info').style.display = 'none'; // Hide info section
       console.log("defaultMAP");
       document.getElementById('info').innerHTML = ``;
+      const defaultLocation = { lat: 40.80785939999999, lng: -73.9651746 };
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: defaultLocation,
+        zoom: 12
+      });
 
+      addUserLocationMarker(map);
 
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-          userLocation = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
+      apigClient.restaurantsUsersubscriptionsGet({ "userID": localStorage.getItem('userID') }, {}, {}).then(function (result) {
+        // Add each restaurant to the list
+        userRestaurants = result.data;
 
-          map = new google.maps.Map(document.getElementById('map'), {
-            center: userLocation,
-            zoom: 12
-          });
+        console.log("HERE")
 
-          showUserLocation(map);
+        console.log(userRestaurants)
 
-          apigClient.restaurantsUsersubscriptionsGet({ "userID": localStorage.getItem('userID') }, {}, {}).then(function (result) {
-            // Add each restaurant to the list
-            userRestaurants = result.data;
+        if (typeof userRestaurants !== "undefined") {
+          var bounds = new google.maps.LatLngBounds();
+          for (let restaurant of userRestaurants) {
+            position = {
+              lat: parseFloat(restaurant["custom:latitude"]),
+              lng: parseFloat(restaurant["custom:longitude"])
+            };
 
-            console.log("HERE")
+            const marker = new google.maps.Marker({
+              position: position,
+              map: map,
+              title: restaurant.name
+            });
 
-            console.log(userRestaurants)
+            bounds.extend(position);
 
-            if (typeof userRestaurants !== "undefined") {
-              var bounds = new google.maps.LatLngBounds();
-              for (let restaurant of userRestaurants) {
-                position = {
-                  lat: parseFloat(restaurant["custom:latitude"]),
-                  lng: parseFloat(restaurant["custom:longitude"])
-                };
-
-                const marker = new google.maps.Marker({
-                  position: position,
-                  map: map,
-                  title: restaurant.name
-                });
-
-                bounds.extend(position);
-
-                marker.addListener('click', () => {
-                  document.getElementById('info').innerHTML = `
+            marker.addListener('click', () => {
+              document.getElementById('info').innerHTML = `
             <h3><a href = ./restaurant-profile.html?restaurantID=${restaurant['restaurantID']}>${restaurant['name']}</a></h3>
             <p>${restaurant['address']}</p>
             <p>${restaurant['custom:descriptionText']}</p>
             `;
-                  document.getElementById('info').style.display = 'block';
-                });
+              document.getElementById('info').style.display = 'block';
+            });
 
-              }
-              map.fitBounds(bounds);
+          }
+          map.fitBounds(bounds);
 
-              var boundsCenter = bounds.getCenter();
+          var boundsCenter = bounds.getCenter();
 
-              // Adjust the center of the map to be closer to the user's location.
-              var newCenter = new google.maps.LatLng(
-                (userLocation.lat + boundsCenter.lat()) / 2,
-                (userLocation.lng + boundsCenter.lng()) / 2
-              );
+          // Adjust the center of the map to be closer to the user's location.
+          var newCenter = new google.maps.LatLng(
+            (userLocation.lat + boundsCenter.lat()) / 2,
+            (userLocation.lng + boundsCenter.lng()) / 2
+          );
 
-              map.setCenter(newCenter);
+          map.setCenter(newCenter);
 
-            }
-            document.getElementById('info').style.display = 'none';
-          }).catch(function (result) {
-            console.error("defaultMAP - API call error:", result);
-          });
+        }
 
-        });
-      }
+
+        document.getElementById('info').style.display = 'none';
+
+
+
+      }).catch(function (result) {
+        console.error("defaultMAP - API call error:", result);
+      });
 
 
     }
 
-    function showUserLocation(map) {
-      const userMarker = new google.maps.Marker({
-        position: userLocation,
-        map: map,
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 10,
-          strokeColor: '#FFFFFF',
-          strokeOpacity: 0.9,
-          strokeWeight: 4.25,
-          fillColor: '#0000FF',
-          fillOpacity: 0.6,
-        },
-      });
+    function addUserLocationMarker() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const userLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          const userMarker = new google.maps.Marker({
+            position: userLocation,
+            map: map,
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 10,
+              strokeColor: '#FFFFFF',
+              strokeOpacity: 0.9,
+              strokeWeight: 4.25,
+              fillColor: '#0000FF',
+              fillOpacity: 0.6,
+            },
+          });
+          // map.panTo(userLocation);
+        }, () => {
+          // If the user declines to share their location, use the default center
+          // map.panTo(defaultLocation);
+        });
+      } else {
+        // Browser doesn't support Geolocation
+        // map.panTo(defaultLocation);
+      }
     }
 
     // The rest of the code remains unchanged
