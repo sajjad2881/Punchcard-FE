@@ -288,6 +288,9 @@
                                             console.log("The response object is", response);
                                             var redemptionCode = response.data.redemption_code;
                                             alert('Reward redeemed successfully! Your redemption code is ' + redemptionCode);
+                                            // You may also want to update the rewards UI here
+                                            var redemptionCode = response.data.redemption_code;
+                                            alert('Reward redeemed successfully! Your redemption code is ' + redemptionCode);
                                             
                                             programData.pointsEarned -= tier.tierPoints;
 
