@@ -146,6 +146,7 @@
 
     let restaurants = [];
 
+
     let userLocation = {
       lat: 40.80785939999999,
       lng: -73.9651746
@@ -361,14 +362,14 @@
               fillOpacity: 0.6,
             },
           });
-          map.panTo(userLocation);
+          // map.panTo(userLocation);
         }, () => {
           // If the user declines to share their location, use the default center
-          map.panTo(defaultLocation);
+          // map.panTo(defaultLocation);
         });
       } else {
         // Browser doesn't support Geolocation
-        map.panTo(defaultLocation);
+        // map.panTo(defaultLocation);
       }
     }
 
