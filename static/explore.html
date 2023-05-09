@@ -290,15 +290,20 @@
         console.log(userRestaurants)
 
         if (typeof userRestaurants !== "undefined") {
+          var bounds = new google.maps.LatLngBounds();
           for (let restaurant of userRestaurants) {
-            const marker = new google.maps.Marker({
-              position: {
+            position = {
                 lat: parseFloat(restaurant["custom:latitude"]),
                 lng: parseFloat(restaurant["custom:longitude"])
-              },
+            };
+
+            const marker = new google.maps.Marker({
+              position: position,
               map: map,
               title: restaurant.name
             });
+
+            bounds.extend(position);
 
             marker.addListener('click', () => {
               document.getElementById('info').innerHTML = `
@@ -310,7 +315,9 @@
             });
 
           }
+          map.fitBounds(bounds);
         }
+
 
         document.getElementById('info').style.display = 'none';
 
