@@ -184,6 +184,7 @@
         <button id="join-rewards-button" style="display: none;">Join Rewards Program!</button>
         <div id="rewards-status"></div>
         <div id="rewards-program-info"></div>
+
     </div>
     <!-- Include your scripts here -->
     <script>
@@ -278,13 +279,15 @@
                                     };
                                     console.log("body is", body);
 
+
                                     apigClient.redemptionPost({}, body, {})
-                                        .then(response => {
-                                            console.log("The response object is", response);
-                                            alert('Reward redeemed successfully!!!!!');
-                                            // You may also want to update the rewards UI here
-                                        })
-                                        .catch(error => console.error('Error:', error));
+                                            .then(response => {
+                                                console.log("The response object is", response);
+                                                var redemptionCode = response.data.redemption_code;
+                                                alert('Reward redeemed successfully! Your redemption code is ' + redemptionCode);
+                                                // You may also want to update the rewards UI here
+                                            })
+                                            .catch(error => console.error('Error:', error));
                                 });
                             } else {
                                 redeemButton.textContent = 'Redeem (Not enough points)';
