@@ -275,10 +275,15 @@
           });
         }
 
-        map.fitBounds(bounds).then(() => {
+        map.fitBounds(bounds);
+
+        var listener = google.maps.event.addListener(map, 'bounds_changed', function () {
           if (map.getZoom() > 15) {
             map.setZoom(15);
-        } });
+          }
+          // Remove the listener after it's been triggered.
+          google.maps.event.removeListener(listener);
+        });
 
         var boundsCenter = bounds.getCenter();
 
