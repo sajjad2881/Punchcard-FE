@@ -169,6 +169,9 @@
         <div class="logo-text">Punchcard</div>
         <ul style="list-style-type: none; margin: 0; padding: 0; overflow: hidden;">
             <li style="float: left;"><a href="../static/explore.html" style="display: block; color: black; text-align: center; padding: 14px 16px; text-decoration: none;">Explore</a></li>
+            <li style="float: left;"><a href="./schedule-recommendations.html"
+                style="display: block; color: black; text-align: center; padding: 14px 16px; text-decoration: none;">Recommendations</a>
+        </li>
             <li style="float: left;"><a href="./claim-code.html" style="display: block; color: black; text-align: center; padding: 14px 16px; text-decoration: none;">Claim</a></li>
             <li style="float: left;"><a href="./customer-dashboard.html" style="display: block; color: black; text-align: center; padding: 14px 16px; text-decoration: none;">Home</a></li>
           </ul>
@@ -281,13 +284,22 @@
 
 
                                     apigClient.redemptionPost({}, body, {})
-                                            .then(response => {
-                                                console.log("The response object is", response);
-                                                var redemptionCode = response.data.redemption_code;
-                                                alert('Reward redeemed successfully! Your redemption code is ' + redemptionCode);
-                                                // You may also want to update the rewards UI here
-                                            })
-                                            .catch(error => console.error('Error:', error));
+                                        .then(response => {
+                                            console.log("The response object is", response);
+                                            var redemptionCode = response.data.redemption_code;
+                                            alert('Reward redeemed successfully! Your redemption code is ' + redemptionCode);
+                                            
+                                            programData.pointsEarned -= tier.tierPoints;
+
+                                            currentPointsLabel.textContent = programData.pointsEarned;
+                                            currentPointsLabel.style.left = (programData.pointsEarned / maxPoints * 100) + '%';
+                                            progressPercentage = Math.min((programData.pointsEarned / maxPoints) * 100, 100);
+                                            progressBarContainer.appendChild(progressBar);
+                                            progressBar.style.width = progressPercentage + '%';
+
+                                            // You may also want to update the rewards UI here
+                                        })
+                                        .catch(error => console.error('Error:', error));
                                 });
                             } else {
                                 redeemButton.textContent = 'Redeem (Not enough points)';
