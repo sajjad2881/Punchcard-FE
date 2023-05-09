@@ -249,6 +249,7 @@
 
       if (typeof restaurants !== "undefined") {
         var bounds = new google.maps.LatLngBounds();
+        bounds.extend(userLocation);
         for (let restaurant of restaurants) {
           var position= {
               lat: parseFloat(restaurant["custom:latitude"]),
