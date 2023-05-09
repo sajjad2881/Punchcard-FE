@@ -235,7 +235,7 @@
           fillColor: '#0000FF',
           fillOpacity: 0.6,
         },
-          });
+      });
 
       //     // map.panTo(userLocation);
       //   }, () => {
@@ -251,10 +251,10 @@
         var bounds = new google.maps.LatLngBounds();
         bounds.extend(userLocation);
         for (let restaurant of restaurants) {
-          var position= {
-              lat: parseFloat(restaurant["custom:latitude"]),
-              lng: parseFloat(restaurant["custom:longitude"])
-            };
+          var position = {
+            lat: parseFloat(restaurant["custom:latitude"]),
+            lng: parseFloat(restaurant["custom:longitude"])
+          };
           const marker = new google.maps.Marker({
             position: position,
             map: map,
@@ -389,6 +389,12 @@
         // map.panTo(defaultLocation);
       }
     }
+
+    google.maps.event.addListener(map, 'bounds_changed', function () {
+      if (map.getZoom() > 15) {
+        map.setZoom(15);
+      }
+    });
 
     // The rest of the code remains unchanged
     // ...
