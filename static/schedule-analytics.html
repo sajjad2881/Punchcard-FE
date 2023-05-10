@@ -66,56 +66,79 @@
     <div class="form-container">
         <h2>Schedule Recurring Analytics Tasks!</h2>
         <form id="schedule-form">
-            <label for="frequency">Frequency of Analytics Tasks (in minutes):</label>
-            <input type="number" id="frequency" required>
+            <label for="frequency">Frequency of Analytics Tasks:</label>
+            <select id="frequency" required>
+                <option value="Daily">Daily</option>
+                <option value="Weekly">Weekly</option>
+                <option value="Annually">Annually</option>
+                <option value="Every Minute">Every Minute</option>
+            </select>
+            <label for="time-period">Time Period to Analyze Results:</label>
+            <select id="time-period" required>
+                <option value="Day">Past Day</option>
+                <option value="Week">Past Week</option>
+                <option value="Year">Past Year</option>
+                <option value="Minute">Past Minute</option>
+            </select>
             <button type="submit">Schedule Recurring Task</button>
             <button type="button" onclick="goToBusinessDashboard()">Back to dashboard</button>
         </form>
         <div class="confirmation" id="confirmation"></div>
     </div>
 
+
+    <div class="confirmation" id="confirmation"></div>
+    </div>
+
     <script>
-        // API Gateway client
+
         var apigClient = apigClientFactory.newClient();
 
-        function goToBusinessDashboard() {
-            // Replace 'business-dashboard.html' with the actual path to the business-dashboard page
-            window.location.href = 'business-dashboard.html';
-        }
+        var frequencyToMinutes = {
+            'Daily': 24 * 60,
+            'Weekly': 7 * 24 * 60,
+            'Annually': 365 * 24 * 60,
+            'Every Minute': 1
+        };
 
-        // Form submit event handler
-        document.getElementById
-            ('schedule-form').addEventListener('submit', function (event) {
-                event.preventDefault();
+        var timePeriodToMinutes = {
+            'Day': 24 * 60,
+            'Week': 7 * 24 * 60,
+            'Year': 365 * 24 * 60,
+            'Minute': 1
+        };
 
-                // Get form values
-                var frequency = document.getElementById('frequency').value;
+        document.getElementById('schedule-form').addEventListener('submit', function (event) {
+            event.preventDefault();
 
-                // Schedule the event
-                function scheduleEvent() {
-                    var params = {};
-                    var body = {
-                        restaurant_id: localStorage.getItem('restaurantID'),
-                        frequency: frequency
-                    };
-                    var additionalParams = {};
+            var frequency = document.getElementById('frequency').value;
+            var timePeriod = document.getElementById('time-period').value;
 
-                    apigClient.analyticsScheduledEventPost(params, body, additionalParams)
-                        .then(function (result) {
-                            // Show confirmation message
-                            var confirmation = document.getElementById('confirmation');
-                            confirmation.innerHTML = 'Task scheduled! Details:<br>' +
-                                'Frequency: ' + frequency + ' minutes';
-                            confirmation.style.display = 'block';
+            var frequencyInMinutes = frequencyToMinutes[frequency];
+            var timePeriodInMinutes = timePeriodToMinutes[timePeriod];
 
-                            // Clear form fields
-                            document.getElementById('frequency').value = '';
-                        }).catch(function (error) {
-                            console.error('Error scheduling task:', error);
-                        });
-                }
-                scheduleEvent();
-            });
+            var params = {};
+            var body = {
+                restaurant_id: localStorage.getItem('restaurantID'),
+                frequency: frequencyInMinutes,
+                timeFrame: timePeriodInMinutes,
+                timeFrameChoice: timePeriod
+            };
+            console.log(body);
+            var additionalParams = {};
+
+            apigClient.analyticsScheduledEventPost(params, body, additionalParams)
+                .then(function (result) {
+                    var confirmation = document.getElementById('confirmation');
+                    confirmation.innerHTML = 'Task scheduled! Details:<br>' +
+                        'Frequency: ' + frequency + '<br>' +
+                        'Time Period: ' + timePeriod;
+                    confirmation.style.display = 'block';
+                }).catch(function (error) {
+                    console.error('Error scheduling task:', error);
+                });
+        });
+
     </script>
 </body>
 
